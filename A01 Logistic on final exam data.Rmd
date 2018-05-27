@@ -1,0 +1,40 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Author: Joss Ives, *updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*.
+
+# Setup
+
+## Load libraries
+```{r}
+suppressWarnings(library(lme4))
+require(lme4)
+suppressWarnings(library(ggplot2))
+require(ggplot2)
+source("jossfunc.R")
+```
+
+## Data files
+
+### Load data
+```{r}
+dat.all <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat.csv")
+```
+
+### Set categorical variables
+```{r}
+dat.all$ID        <- factor(dat.all$ID)
+dat.all$QNUM      <- factor(dat.all$QNUM)
+
+```
+
+
+# Data exploration
+```{r}
+dat.cur <- dat.all
+summarySE(dat.cur, 
+          measurevar="QCORRECT", groupvars=c("TREATMENT"))
+```
+
