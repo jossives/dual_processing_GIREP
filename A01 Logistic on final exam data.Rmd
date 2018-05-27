@@ -23,6 +23,19 @@ source("jossfunc.R")
 dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat.csv")
 ```
 
+### Add additional calculated values
+```{r}
+dat.raw$course.grade.frac <- dat.raw$course.grade/100.
+dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
+dat.raw$final.grade.LMH <- as.integer(
+  cut(dat.raw$f.tot78, quantile(dat.raw$f.tot78, probs=0:3/3), include.lowest=TRUE)
+  )
+names(dat.raw)
+#summary(dat.raw$grade.LMH)
+summarySE(dat.raw, measurevar="QCORRECT", groupvars=c("final.grade.LMH"))
+```
+
+
 ### Set categorical variables
 ```{r}
 dat.raw$ID        <- factor(dat.raw$ID)
@@ -38,7 +51,7 @@ dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
 
 # Look only at the 4 questions that had TREATMENT
 dat.trt <- subset(dat.all, QNUM==5 | QNUM==6 | QNUM==9 | QNUM==10)
-
+names(dat.trt)
 ```
 
 
@@ -106,9 +119,87 @@ as.table(odds.table)
 ```
 
 # Digging into the logistic regressions a bit more
+
+### QNUM as a random effect
+First, let's look at making QNUM a random effect. Not sure if it is correct, but it makes no difference to the results and cleans up the reporting.
 ```{r}
 m.2re <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + (1|ID), 
                 data = dat.trt, 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
-print(summary(m.2re))
+summary(m.2re)$coefficients
+```
+
+```{r}
+summary(m.2re)
+```
+
+
+### Fitting using all the questions
+
+This makes the AIC and BIC quadruple and doesn't provide a significant change in TREATMENT1. 
+
+```{r}
+#m.allQs <- glmer(QCORRECT ~ QNUM + TREATMENT + (1|ID), 
+#                data = dat.all, 
+#                family = binomial, control=glmerControl(optimizer="bobyqa"))
+#summary(m.allQs)
+```
+
+```{r}
+#m.allQs.2re <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + (1|ID), 
+#                data = dat.all, 
+#                family = binomial, control=glmerControl(optimizer="bobyqa"))
+#summary(m.allQs.2re)
+```
+
+# Looking at other variables with only the treatment questions
+
+## Course grade
+
+Course grade and NCRT both are significant and improve the model slightly, but do not have a significant impact on TREATMENT1
+```{r}
+m.grade <- glmer(QCORRECT ~ QNUM + TREATMENT + course.grade.frac + NCRT + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.grade)
+```
+
+# Time to dig into NCRT
+
+## Graphs
+
+### EYA performance vs NCRT and median split
+
+```{r}
+s.ncrt <- summarySE(dat.trt, measurevar="QCORRECT",
+                              groupvars=c("NCRT","TREATMENT"), .drop=FALSE)
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+#options(repr.plot.width=5, repr.plot.height=3)
+
+ggplot(s.ncrt, aes(x=NCRT, y=QCORRECT, fill=TREATMENT)) + 
+    geom_bar(stat="identity", position=dodge) + 
+    geom_errorbar(limits, position=dodge, width=0.5)
+```
+
+```{r}
+s.crtsplit <- summarySE(dat.trt, measurevar="QCORRECT",
+                              groupvars=c("CRT.medsplit","TREATMENT"), .drop=FALSE)
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+#options(repr.plot.width=5, repr.plot.height=3)
+
+ggplot(s.crtsplit, aes(x=CRT.medsplit, y=QCORRECT, fill=TREATMENT)) + 
+    geom_bar(stat="identity", position=dodge) + 
+    geom_errorbar(limits, position=dodge, width=0.5)
+```
+
+# And looking at correlations with final exam grades
+```{r}
+s.fLMH <- summarySE(dat.trt, measurevar="QCORRECT",
+                              groupvars=c("final.grade.LMH","TREATMENT"), .drop=FALSE)
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+#options(repr.plot.width=5, repr.plot.height=3)
+
+ggplot(s.fLMH, aes(x=final.grade.LMH, y=QCORRECT, fill=TREATMENT)) + 
+    geom_bar(stat="identity", position=dodge) + 
+    geom_errorbar(limits, position=dodge, width=0.5)
 ```
