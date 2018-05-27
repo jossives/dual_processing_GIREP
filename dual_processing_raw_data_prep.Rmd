@@ -1,0 +1,64 @@
+---
+title: "Dual processing data preparation"
+output:
+  html_notebook: default
+---
+Produced by Joss Ives, *updated `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*. Based on data preparation documents by Patrick Dubois: [GitHub](https://github.com/pajodu/GERG/)
+
+## Overview
+
+This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.
+
+## Load libraries
+```{r}
+#install.packages("dplyr")
+library("dplyr")
+```
+
+
+## Set directories
+
+Start by setting directories
+
+```{r}
+StartDir <- getwd()
+#SourceDir <- "W:/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
+RawDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P101 - 2018-01"
+#DerivedDir <- "W:/Shared/DP_Derived_Data"
+#DerivedDir <- "C:/Users/Joss/ownCloud/Shared/DP_Derived_Data"
+AnonDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
+```
+
+Load raw data
+
+```{r}
+### This wasn't working with one file
+#DataSources <- data.frame(Filename=c("Diagnostic - Raw - Anon Random.csv"), Tag=c("P101-2018-01"))
+#dat1801 <- read.csv(DataSources$Filename[1])
+DataSources <- data.frame(Filename=c(
+                                      "Classlist.csv", 
+                                      "Diagnostic - Raw - Not Anon.csv" 
+                                    ),
+                            Tag=c("Classlist", "Diagnostic") )
+
+
+#DatClass <- read.csv(paste0(RawDir,"/",DataSources$Filename[1]))
+DatClass <- read.csv(file.path(RawDir,DataSources$Filename[1]))
+DatDiagn <- read.csv(paste0(RawDir,"/",DataSources$Filename[2]))
+```
+
+## Make a new classlist data frame with only the desired columsn
+
+
+```{r}
+NamesClass <-names(DatClass)
+NamesClass
+#NameRef1801 <- data.frame(NewNames,Names1801)
+```
+
+Temporary cheat to see workflow. Let's just save this anonymized data set to the derived data folder
+
+```{r}
+write.csv(dat1801, file.path(AnonDir,"test.csv"), row.names = FALSE)
+```
+

@@ -1,0 +1,46 @@
+---
+title: "Dual processing data preparation"
+output:
+  html_notebook: default
+---
+Produced by Joss Ives, *updated `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*. Based on data preparation documents by Patrick Dubois: [GitHub](https://github.com/pajodu/GERG/)
+
+## Overview
+
+This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.
+
+## To action
+
+Start by setting directories
+
+```{r}
+StartDir <- getwd()
+SourceDir <- "W:/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
+DerivedDir <- "W:/Shared/DP_Derived_Data"
+```
+
+Load anonymized data
+
+```{r}
+### This wasn't working with one file
+#DataSources <- data.frame(Filename=c("Diagnostic - Raw - Anon Random.csv"), Tag=c("P101-2018-01"))
+#dat1801 <- read.csv(DataSources$Filename[1])
+dat1801 <- read.csv(file.path(SourceDir,"Diagnostic - Raw - Anon Random.csv"))
+
+```
+
+
+
+```{r}
+Names1801 <-names(dat1801)
+Names1801
+NewNames <- ("dunno")
+NameRef1801 <- data.frame(NewNames,Names1801)
+```
+
+Temporary cheat to see workflow. Let's just save this anonymized data set to the derived data folder
+
+```{r}
+write.csv(dat1801, file.path(DerivedDir,"test.csv"), row.names = FALSE)
+```
+
