@@ -30,9 +30,10 @@ dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
 dat.raw$final.grade.LMH <- as.integer(
   cut(dat.raw$f.tot78, quantile(dat.raw$f.tot78, probs=0:3/3), include.lowest=TRUE)
   )
+dat.raw$final.grade.fix <- (dat.raw$f.tot78-2.*dat.raw$QCORRECT)/76.
+dat.raw$final.gradeA.fix <- (dat.raw$f.Atot40-2.*dat.raw$QCORRECT)/38.
+
 names(dat.raw)
-#summary(dat.raw$grade.LMH)
-summarySE(dat.raw, measurevar="QCORRECT", groupvars=c("final.grade.LMH"))
 ```
 
 
@@ -202,4 +203,106 @@ limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error
 ggplot(s.fLMH, aes(x=final.grade.LMH, y=QCORRECT, fill=TREATMENT)) + 
     geom_bar(stat="identity", position=dodge) + 
     geom_errorbar(limits, position=dodge, width=0.5)
+```
+
+# Finally, let's look at gender
+
+### Bar graph splitting on gender and looking at the effect of treatment
+
+Splitting on gender shows that there may be a significant difference in who the intervention helps
+```{r}
+sum.gender <- summarySE(dat.trt, measurevar="QCORRECT",
+                              groupvars=c("Gender","TREATMENT"), .drop=FALSE)
+
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(sum.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) + 
+    geom_bar(stat="identity", position=dodge) + 
+    geom_errorbar(limits, position=dodge, width=0.5)
+```
+
+
+### Logistic regression with gender added
+
+Gender is significant.
+
+```{r}
+m.gender0 <- glmer(QCORRECT ~ QNUM + TREATMENT + Gender + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.gender0)
+```
+
+
+### Run logistic regressions on the two gender populations seperately 
+
+First without course grades included. Treatment is only significant for females, not males.
+
+```{r}
+m.female <- glmer(QCORRECT ~ QNUM + TREATMENT + (1|ID), 
+                data = subset(dat.trt, Gender=="Female"), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.female)
+m<-m.female
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+```{r}
+m.male <- glmer(QCORRECT ~ QNUM + TREATMENT + (1|ID), 
+                data = subset(dat.trt, Gender=="Male"), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.male)
+```
+
+When controlling for course grade, nothing changes
+
+```{r}
+m.female.grade <- glmer(QCORRECT ~ QNUM + TREATMENT + course.grade.frac + (1|ID), 
+                data = subset(dat.trt,Gender=="Female"), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.female.grade)
+```
+
+```{r}
+m.male.grade <- glmer(QCORRECT ~ QNUM + TREATMENT + course.grade.frac + (1|ID), 
+                data = subset(dat.trt,Gender=="Male"), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.male.grade)
+```
+
+### Looking at interaction term
+
+```{r}
+m.gender <- glmer(QCORRECT ~ QNUM + TREATMENT*Gender + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.gender)
+```
+
+
+### Control for overall exam score (yes, double counting)
+
+Treatment does not change significantly, but when controlling for final exam score the gender effect goes down significantly
+
+```{r}
+m.fgradeA <- glmer(QCORRECT ~ QNUM + TREATMENT + final.gradeA.fix + Gender + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.fgradeA)
+```
+
+```{r}
+m.fgrade <- glmer(QCORRECT ~ QNUM + TREATMENT + final.grade.fix + Gender + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.fgrade)
+```
+
+```{r}
+m.fgrade.int <- glmer(QCORRECT ~ QNUM + TREATMENT*Gender + final.grade.fix + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+summary(m.fgrade.int)
 ```
