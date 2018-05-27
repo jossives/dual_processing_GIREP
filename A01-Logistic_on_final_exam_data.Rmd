@@ -1,6 +1,9 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  word_document: default
+  html_notebook: default
+  pdf_document: default
 ---
 
 Author: Joss Ives, *updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*.
@@ -254,6 +257,10 @@ m.male <- glmer(QCORRECT ~ QNUM + TREATMENT + (1|ID),
                 data = subset(dat.trt, Gender=="Male"), 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
 summary(m.male)
+m<-m.male
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
 ```
 
 When controlling for course grade, nothing changes
@@ -279,10 +286,14 @@ m.gender <- glmer(QCORRECT ~ QNUM + TREATMENT*Gender + (1|ID),
                 data = dat.trt, 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
 summary(m.gender)
+m<-m.gender
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
 ```
 
 
-### Control for overall exam score (yes, double counting)
+### Control for overall exam score (yes, re-calcuated for each question to not include the specific question in the score)
 
 Treatment does not change significantly, but when controlling for final exam score the gender effect goes down significantly
 
@@ -305,4 +316,8 @@ m.fgrade.int <- glmer(QCORRECT ~ QNUM + TREATMENT*Gender + final.grade.fix + (1|
                 data = dat.trt, 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
 summary(m.fgrade.int)
+m<-m.fgrade.int
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
 ```
