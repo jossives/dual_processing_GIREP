@@ -12,7 +12,7 @@ This file combines midterm, final exam and diagnostic data into a single file. T
 ## Load libraries
 ```{r}
 #install.packages("dplyr")
-#library("dplyr")
+library("dplyr")
 ```
 
 
@@ -100,6 +100,9 @@ curDat <- select(datRawFinal, ID, FinalVersion,
                  f.B1, f.B2, f.B3, f.B4, f.Btotal38, f.Solo78,
                  f.A5.trt, f.A6.trt, f.A9.trt, f.A10.trt)
 colnames(curDat)[colnames(curDat)=="FinalVersion"] <- "f.version"
+# Change 19a and 19b to 19 and 20
+colnames(curDat)[colnames(curDat)=="f.A19a"] <- "f.A19"
+colnames(curDat)[colnames(curDat)=="f.A19b"] <- "f.A20"
 datFinal <- curDat
 names(datFinal)
 ```
