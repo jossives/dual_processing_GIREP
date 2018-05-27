@@ -12,7 +12,7 @@ This file combines midterm, final exam and diagnostic data into a single file. T
 ## Load libraries
 ```{r}
 #install.packages("dplyr")
-library("dplyr")
+#library("dplyr")
 ```
 
 
@@ -21,12 +21,12 @@ library("dplyr")
 Start by setting directories
 
 ```{r}
-StartDir <- getwd()
+startDir <- getwd()
 #SourceDir <- "W:/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
-RawDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P101 - 2018-01"
+rawDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P101 - 2018-01"
 #DerivedDir <- "W:/Shared/DP_Derived_Data"
 #DerivedDir <- "C:/Users/Joss/ownCloud/Shared/DP_Derived_Data"
-AnonDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
+anonDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
 ```
 
 Load raw data
@@ -35,30 +35,90 @@ Load raw data
 ### This wasn't working with one file
 #DataSources <- data.frame(Filename=c("Diagnostic - Raw - Anon Random.csv"), Tag=c("P101-2018-01"))
 #dat1801 <- read.csv(DataSources$Filename[1])
-DataSources <- data.frame(Filename=c(
+dataSources <- data.frame(Filename=c(
                                       "Classlist.csv", 
-                                      "Diagnostic - Raw - Not Anon.csv" 
+                                      "Diagnostic - Raw - Not Anon.csv",
+                                      "MT solo-gradesheet-graded_tab.csv",
+                                      "solo-gradesheet (final) graded_tab.csv"
                                     ),
-                            Tag=c("Classlist", "Diagnostic") )
+                            Tag=c("Classlist", "Diagnostic", "Midterm","Final") )
 
 
 #DatClass <- read.csv(paste0(RawDir,"/",DataSources$Filename[1]))
-DatClass <- read.csv(file.path(RawDir,DataSources$Filename[1]))
-DatDiagn <- read.csv(paste0(RawDir,"/",DataSources$Filename[2]))
+datRawClass <- read.csv(file.path(rawDir,dataSources$Filename[1]))
+datRawDiagn <- read.csv(file.path(rawDir,dataSources$Filename[2]))
+datRawMT <- read.csv(file.path(rawDir,dataSources$Filename[3]))
+datRawFinal <- read.csv(file.path(rawDir,dataSources$Filename[4]))
 ```
 
-## Make a new classlist data frame with only the desired columsn
+## Make a new classlist data frame with only the desired column
+
+```{r}
+names(datRawClass)
+```
+
+```{r}
+curDat <- select(datRawClass, ID, Gender,Percent.Grade)
+# Rename a Percent.Grade
+colnames(curDat)[colnames(curDat)=="Percent.Grade"] <- "Course.Grade"
+#namesClass <-names(datClass)
+#namesClass
+#NameRef1801 <- data.frame(NewNames,Names1801)
+datClass <- curDat
+names(datClass)
+```
+
+## Make a new diagnostic data frame with only the desired columns
+
+```{r}
+names(datRawDiagn)
+```
 
 
 ```{r}
-NamesClass <-names(DatClass)
-NamesClass
-#NameRef1801 <- data.frame(NewNames,Names1801)
+curDat <- select(datRawDiagn, ID, AnonID, Version, NCRT
+                 )
+colnames(curDat)[colnames(curDat)=="Version"] <- "d.version"
+datDiagn <- curDat
+names(datDiagn)
 ```
+
+
+## Make a new final exam data frame with only the desired columns
+
+```{r}
+names(datRawFinal)
+```
+
+
+```{r}
+curDat <- select(datRawFinal, ID, FinalVersion, 
+                 f.A1, f.A2, f.A3, f.A4, f.A5, 
+                 f.A6, f.A7, f.A8, f.A9, f.A10, 
+                 f.A11,f.A12,f.A13,f.A14,f.A15,
+                 f.A16,f.A17,f.A18,f.A19a,f.A19b, f.Atotal40,
+                 f.B1, f.B2, f.B3, f.B4, f.Btotal38, f.Solo78,
+                 f.A5.trt, f.A6.trt, f.A9.trt, f.A10.trt)
+colnames(curDat)[colnames(curDat)=="FinalVersion"] <- "f.version"
+datFinal <- curDat
+names(datFinal)
+```
+
+## Merge the data sets by ID and then make an anonymous version
+
+```{r}
+dpDat <- merge(datClass,datDiagn,by="ID")
+dpDat <- merge(dpDat,datFinal,by="ID")
+dpDat <- select(dpDat,-ID)
+names(dpDat)
+```
+
 
 Temporary cheat to see workflow. Let's just save this anonymized data set to the derived data folder
 
 ```{r}
-write.csv(dat1801, file.path(AnonDir,"test.csv"), row.names = FALSE)
+
+dpOut <- "dpDat.csv"
+write.csv(dpDat, file.path(anonDir,dpOut), row.names = FALSE)
 ```
 

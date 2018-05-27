@@ -173,7 +173,7 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
-<p>Produced by Joss Ives, <em>updated 2018 May 26, 18:09:01</em>. Based on data preparation documents by Patrick Dubois: <a href="https://github.com/pajodu/GERG/">GitHub</a></p>
+<p>Produced by Joss Ives, <em>updated 2018 May 26, 20:01:11</em>. Based on data preparation documents by Patrick Dubois: <a href="https://github.com/pajodu/GERG/">GitHub</a></p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.</p>
@@ -182,9 +182,9 @@ $(document).ready(function () {
 <h2>Load libraries</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2luc3RhbGwucGFja2FnZXMoXCJkcGx5clwiKVxubGlicmFyeShcImRwbHlyXCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2luc3RhbGwucGFja2FnZXMoXCJkcGx5clwiKVxuI2xpYnJhcnkoXCJkcGx5clwiKVxuYGBgIn0= -->
 <pre class="r"><code>#install.packages(&quot;dplyr&quot;)
-library(&quot;dplyr&quot;)</code></pre>
+#library(&quot;dplyr&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -194,42 +194,45 @@ library(&quot;dplyr&quot;)</code></pre>
 <p>Start by setting directories</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU3RhcnREaXIgPC0gZ2V0d2QoKVxuI1NvdXJjZURpciA8LSBcIlc6L1NoYXJlZF9SZWFkX09ubHkvRFBfQW5vbnltaXplZF9EYXRhL1AxMDEgLSAyMDE4LTAxXCJcblJhd0RpciA8LSBcIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMVwiXG4jRGVyaXZlZERpciA8LSBcIlc6L1NoYXJlZC9EUF9EZXJpdmVkX0RhdGFcIlxuI0Rlcml2ZWREaXIgPC0gXCJDOi9Vc2Vycy9Kb3NzL293bkNsb3VkL1NoYXJlZC9EUF9EZXJpdmVkX0RhdGFcIlxuQW5vbkRpciA8LSBcIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDFcIlxuYGBgIn0= -->
-<pre class="r"><code>StartDir &lt;- getwd()
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhcnREaXIgPC0gZ2V0d2QoKVxuI1NvdXJjZURpciA8LSBcIlc6L1NoYXJlZF9SZWFkX09ubHkvRFBfQW5vbnltaXplZF9EYXRhL1AxMDEgLSAyMDE4LTAxXCJcbnJhd0RpciA8LSBcIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMVwiXG4jRGVyaXZlZERpciA8LSBcIlc6L1NoYXJlZC9EUF9EZXJpdmVkX0RhdGFcIlxuI0Rlcml2ZWREaXIgPC0gXCJDOi9Vc2Vycy9Kb3NzL293bkNsb3VkL1NoYXJlZC9EUF9EZXJpdmVkX0RhdGFcIlxuYW5vbkRpciA8LSBcIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDFcIlxuYGBgIn0= -->
+<pre class="r"><code>startDir &lt;- getwd()
 #SourceDir &lt;- &quot;W:/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01&quot;
-RawDir &lt;- &quot;C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P101 - 2018-01&quot;
+rawDir &lt;- &quot;C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P101 - 2018-01&quot;
 #DerivedDir &lt;- &quot;W:/Shared/DP_Derived_Data&quot;
 #DerivedDir &lt;- &quot;C:/Users/Joss/ownCloud/Shared/DP_Derived_Data&quot;
-AnonDir &lt;- &quot;C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01&quot;</code></pre>
+anonDir &lt;- &quot;C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01&quot;</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Load raw data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMjIFRoaXMgd2Fzbid0IHdvcmtpbmcgd2l0aCBvbmUgZmlsZVxuI0RhdGFTb3VyY2VzIDwtIGRhdGEuZnJhbWUoRmlsZW5hbWU9YyhcIkRpYWdub3N0aWMgLSBSYXcgLSBBbm9uIFJhbmRvbS5jc3ZcIiksIFRhZz1jKFwiUDEwMS0yMDE4LTAxXCIpKVxuI2RhdDE4MDEgPC0gcmVhZC5jc3YoRGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pXG5EYXRhU291cmNlcyA8LSBkYXRhLmZyYW1lKEZpbGVuYW1lPWMoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiQ2xhc3NsaXN0LmNzdlwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJEaWFnbm9zdGljIC0gUmF3IC0gTm90IEFub24uY3N2XCIgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRhZz1jKFwiQ2xhc3NsaXN0XCIsIFwiRGlhZ25vc3RpY1wiKSApXG4jRGF0Q2xhc3MgPC0gcmVhZC5jc3YocGFzdGUwKFJhd0RpcixcIi9cIixEYXRhU291cmNlcyRGaWxlbmFtZVsxXSkpXG5EYXRDbGFzcyA8LSByZWFkLmNzdihmaWxlLnBhdGgoUmF3RGlyLERhdGFTb3VyY2VzJEZpbGVuYW1lWzFdKSlcbkRhdERpYWduIDwtIHJlYWQuY3N2KHBhc3RlMChSYXdEaXIsXCIvXCIsRGF0YVNvdXJjZXMkRmlsZW5hbWVbMl0pKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMjIFRoaXMgd2Fzbid0IHdvcmtpbmcgd2l0aCBvbmUgZmlsZVxuI0RhdGFTb3VyY2VzIDwtIGRhdGEuZnJhbWUoRmlsZW5hbWU9YyhcIkRpYWdub3N0aWMgLSBSYXcgLSBBbm9uIFJhbmRvbS5jc3ZcIiksIFRhZz1jKFwiUDEwMS0yMDE4LTAxXCIpKVxuI2RhdDE4MDEgPC0gcmVhZC5jc3YoRGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pXG5kYXRhU291cmNlcyA8LSBkYXRhLmZyYW1lKEZpbGVuYW1lPWMoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiQ2xhc3NsaXN0LmNzdlwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJEaWFnbm9zdGljIC0gUmF3IC0gTm90IEFub24uY3N2XCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWIuY3N2XCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwic29sby1ncmFkZXNoZWV0IChmaW5hbCkgZ3JhZGVkX3RhYi5jc3ZcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBUYWc9YyhcIkNsYXNzbGlzdFwiLCBcIkRpYWdub3N0aWNcIiwgXCJNaWR0ZXJtXCIsXCJGaW5hbFwiKSApXG4jRGF0Q2xhc3MgPC0gcmVhZC5jc3YocGFzdGUwKFJhd0RpcixcIi9cIixEYXRhU291cmNlcyRGaWxlbmFtZVsxXSkpXG5kYXRSYXdDbGFzcyA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzFdKSlcbmRhdFJhd0RpYWduIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIsZGF0YVNvdXJjZXMkRmlsZW5hbWVbMl0pKVxuZGF0UmF3TVQgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcixkYXRhU291cmNlcyRGaWxlbmFtZVszXSkpXG5kYXRSYXdGaW5hbCA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzRdKSlcbmBgYCJ9 -->
 <pre class="r"><code>### This wasn't working with one file
 #DataSources &lt;- data.frame(Filename=c(&quot;Diagnostic - Raw - Anon Random.csv&quot;), Tag=c(&quot;P101-2018-01&quot;))
 #dat1801 &lt;- read.csv(DataSources$Filename[1])
-DataSources &lt;- data.frame(Filename=c(
+dataSources &lt;- data.frame(Filename=c(
                                       &quot;Classlist.csv&quot;, 
-                                      &quot;Diagnostic - Raw - Not Anon.csv&quot; 
+                                      &quot;Diagnostic - Raw - Not Anon.csv&quot;,
+                                      &quot;MT solo-gradesheet-graded_tab.csv&quot;,
+                                      &quot;solo-gradesheet (final) graded_tab.csv&quot;
                                     ),
-                            Tag=c(&quot;Classlist&quot;, &quot;Diagnostic&quot;) )
+                            Tag=c(&quot;Classlist&quot;, &quot;Diagnostic&quot;, &quot;Midterm&quot;,&quot;Final&quot;) )
 #DatClass &lt;- read.csv(paste0(RawDir,&quot;/&quot;,DataSources$Filename[1]))
-DatClass &lt;- read.csv(file.path(RawDir,DataSources$Filename[1]))
-DatDiagn &lt;- read.csv(paste0(RawDir,&quot;/&quot;,DataSources$Filename[2]))</code></pre>
+datRawClass &lt;- read.csv(file.path(rawDir,dataSources$Filename[1]))
+datRawDiagn &lt;- read.csv(file.path(rawDir,dataSources$Filename[2]))
+datRawMT &lt;- read.csv(file.path(rawDir,dataSources$Filename[3]))
+datRawFinal &lt;- read.csv(file.path(rawDir,dataSources$Filename[4]))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="make-a-new-classlist-data-frame-with-only-the-desired-columsn" class="section level2">
-<h2>Make a new classlist data frame with only the desired columsn</h2>
+<div id="make-a-new-classlist-data-frame-with-only-the-desired-column" class="section level2">
+<h2>Make a new classlist data frame with only the desired column</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTmFtZXNDbGFzcyA8LW5hbWVzKERhdENsYXNzKVxuTmFtZXNDbGFzc1xuYGBgIn0= -->
-<pre class="r"><code>NamesClass &lt;-names(DatClass)
-NamesClass</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3Q2xhc3MpXG5gYGAifQ== -->
+<pre class="r"><code>names(datRawClass)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIlNlc3Npb25cIiAgICAgICAgICAgICAgICAgICAgICAgICBcIkNhbXB1c1wiICAgICAgICAgICAgICAgICAgICAgICAgICBcIklEXCIgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIFs0XSBcIlN1YmplY3RcIiAgICAgICAgICAgICAgICAgICAgICAgICBcIkNvdXJzZVwiICAgICAgICAgICAgICAgICAgICAgICAgICBcIlNlY3Rpb25cIiAgICAgICAgICAgICAgICAgICAgICAgIFxuIFs3XSBcIlByaW1hcnkuU2VjdGlvblwiICAgICAgICAgICAgICAgICBcIlNlY29uZGFyeS5TZWN0aW9uXCIgICAgICAgICAgICAgICBcIlRlcnRpYXJ5LlNlY3Rpb25cIiAgICAgICAgICAgICAgIFxuWzEwXSBcIlRlcm1cIiAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlN1cm5hbWVcIiAgICAgICAgICAgICAgICAgICAgICAgICBcIkdpdmVuLk5hbWVcIiAgICAgICAgICAgICAgICAgICAgIFxuWzEzXSBcIlByZWZlcnJlZC5OYW1lXCIgICAgICAgICAgICAgICAgICBcIkdlbmRlclwiICAgICAgICAgICAgICAgICAgICAgICAgICBcIlByb2dyYW1cIiAgICAgICAgICAgICAgICAgICAgICAgIFxuWzE2XSBcIlllYXJcIiAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlZlcnNpb25cIiAgICAgICAgICAgICAgICAgICAgICAgICBcIlBlcmNlbnQuR3JhZGVcIiAgICAgICAgICAgICAgICAgIFxuWzE5XSBcIkxldHRlci5HcmFkZVwiICAgICAgICAgICAgICAgICAgICBcIlN0YW5kaW5nXCIgICAgICAgICAgICAgICAgICAgICAgICBcIlN0YW5kaW5nLlJlYXNvblwiICAgICAgICAgICAgICAgIFxuWzIyXSBcIlN0YXR1c1wiICAgICAgICAgICAgICAgICAgICAgICAgICBcIkRFVC5Db21wbGV0aW9uLkRhdGVcIiAgICAgICAgICAgICBcIkdyYWRlLlN0YW5kaW5nLkxhc3QuTW9kaWZpZWQuQnlcIlxuIn0= -->
 <pre><code> [1] &quot;Session&quot;                         &quot;Campus&quot;                          &quot;ID&quot;                             
@@ -241,23 +244,144 @@ NamesClass</code></pre>
 [19] &quot;Letter.Grade&quot;                    &quot;Standing&quot;                        &quot;Standing.Reason&quot;                
 [22] &quot;Status&quot;                          &quot;DET.Completion.Date&quot;             &quot;Grade.Standing.Last.Modified.By&quot;</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI05hbWVSZWYxODAxIDwtIGRhdGEuZnJhbWUoTmV3TmFtZXMsTmFtZXMxODAxKVxuYGBgIn0= -->
-<pre class="r"><code>#NameRef1801 &lt;- data.frame(NewNames,Names1801)</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdDbGFzcywgSUQsIEdlbmRlcixQZXJjZW50LkdyYWRlKVxuIyBSZW5hbWUgYSBQZXJjZW50LkdyYWRlXG5jb2xuYW1lcyhjdXJEYXQpW2NvbG5hbWVzKGN1ckRhdCk9PVwiUGVyY2VudC5HcmFkZVwiXSA8LSBcIkNvdXJzZS5HcmFkZVwiXG4jbmFtZXNDbGFzcyA8LW5hbWVzKGRhdENsYXNzKVxuI25hbWVzQ2xhc3NcbiNOYW1lUmVmMTgwMSA8LSBkYXRhLmZyYW1lKE5ld05hbWVzLE5hbWVzMTgwMSlcbmRhdENsYXNzIDwtIGN1ckRhdFxubmFtZXMoZGF0Q2xhc3MpXG5gYGAifQ== -->
+<pre class="r"><code>curDat &lt;- select(datRawClass, ID, Gender,Percent.Grade)
+# Rename a Percent.Grade
+colnames(curDat)[colnames(curDat)==&quot;Percent.Grade&quot;] &lt;- &quot;Course.Grade&quot;
+#namesClass &lt;-names(datClass)
+#namesClass
+#NameRef1801 &lt;- data.frame(NewNames,Names1801)
+datClass &lt;- curDat
+names(datClass)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgICAgXCJHZW5kZXJcIiAgICAgICBcIkNvdXJzZS5HcmFkZVwiXG4ifQ== -->
+<pre><code>[1] &quot;ID&quot;           &quot;Gender&quot;       &quot;Course.Grade&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="make-a-new-diagnostic-data-frame-with-only-the-desired-columns" class="section level2">
+<h2>Make a new diagnostic data frame with only the desired columns</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3RGlhZ24pXG5gYGAifQ== -->
+<pre class="r"><code>names(datRawDiagn)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgICAgICBcIkFub25JRFwiICAgICAgICAgICAgICBcIlZlcnNpb25cIiAgICAgICAgICAgICBcIlExYXZiLmFuc3dcIiAgICAgICAgICBcIlExYnZjLmFuc3dcIiAgICAgICAgIFxuIFs2XSBcIlEybGFtYmRhLmFuc3dcIiAgICAgICBcIlEyZnJlcS5hbnN3XCIgICAgICAgICBcIlEzYW1wLmFuc3dcIiAgICAgICAgICBcIlEzZnJlcS5hbnN3XCIgICAgICAgICBcIlE0NTYxLmFuc3dcIiAgICAgICAgIFxuWzExXSBcIlE0NTYyLmFuc3dcIiAgICAgICAgICBcIlE0NTYzLmFuc3dcIiAgICAgICAgICBcIlE3ZnJlcS5hbnN3XCIgICAgICAgICBcIlE3bGFtYmRhLmFuc3dcIiAgICAgICBcIlE4ZGlmaC5hbnN3XCIgICAgICAgIFxuWzE2XSBcIlE4c2FtZWguYW5zd1wiICAgICAgICBcIlE4YWxsLmFuc3dcIiAgICAgICAgICBcIlE5eDEuYW5zd1wiICAgICAgICAgICBcIlE5eDIuYW5zd1wiICAgICAgICAgICBcIlE5djEuYW5zd1wiICAgICAgICAgIFxuWzIxXSBcIlE5djIuYW5zd1wiICAgICAgICAgICBcIlExMGZ1bmRhbWVudGFsLmFuc3dcIiBcIlExMHBvc3NpYmxlLmFuc3dcIiAgICBcIlExMWludGVuc2l0eS5hbnN3XCIgICBcIlExMWZyZXExLmFuc3dcIiAgICAgIFxuWzI2XSBcIlExMWZyZXEyLmFuc3dcIiAgICAgICBcIlExMi5hbnN3XCIgICAgICAgICAgICBcIlhcIiAgICAgICAgICAgICAgICAgICBcIk5DUlRcIiAgICAgICAgICAgICAgICBcIlguMVwiICAgICAgICAgICAgICAgIFxuWzMxXSBcIlExYXZiLnRydFwiICAgICAgICAgICBcIlExYnZjLnRydFwiICAgICAgICAgICBcIlEybGFtYmRhLnRydFwiICAgICAgICBcIlEyZnJlcS50cnRcIiAgICAgICAgICBcIlEzYW1wLnRydFwiICAgICAgICAgIFxuWzM2XSBcIlEzZnJlcS50cnRcIiAgICAgICAgICBcIlE3ZnJlcS50cnRcIiAgICAgICAgICBcIlE3bGFtYmRhLnRydFwiICAgICAgICBcIlE4ZGlmaC50cnRcIiAgICAgICAgICBcIlE4c2FtZWgudHJ0XCIgICAgICAgIFxuWzQxXSBcIlE4YWxsLnRydFwiICAgICAgICAgICBcIlE5eC50cnRcIiAgICAgICAgICAgICBcIlE5di50cnRcIiAgICAgICAgICAgICBcIlExMGZ1bmRhbWVudGFsLnRydFwiICBcIlExMHBvc3NpYmxlLnRydFwiICAgIFxuWzQ2XSBcIlExMWludGVuc2l0eS50cnRcIiAgICBcIlExMWZyZXEudHJ0XCIgICAgICAgICBcIlExMi50cnRcIiAgICAgICAgICAgICBcIlguMlwiICAgICAgICAgICAgICAgICBcIlExYXZiXCIgICAgICAgICAgICAgIFxuWzUxXSBcIlExYnZjXCIgICAgICAgICAgICAgICBcIlEybGFtYmRhXCIgICAgICAgICAgICBcIlEyZnJlcVwiICAgICAgICAgICAgICBcIlEzYW1wXCIgICAgICAgICAgICAgICBcIlEzZnJlcVwiICAgICAgICAgICAgIFxuWzU2XSBcIlE3ZnJlcVwiICAgICAgICAgICAgICBcIlE3bGFtYmRhXCIgICAgICAgICAgICBcIlE4ZGlmaFwiICAgICAgICAgICAgICBcIlE4c2FtZWhcIiAgICAgICAgICAgICBcIlE4YWxsXCIgICAgICAgICAgICAgIFxuWzYxXSBcIlE5eFwiICAgICAgICAgICAgICAgICBcIlE5dlwiICAgICAgICAgICAgICAgICBcIlExMGZ1bmRhbWVudGFsXCIgICAgICBcIlExMHBvc3NpYmxlXCIgICAgICAgICBcIlExMWludGVuc2l0eVwiICAgICAgIFxuWzY2XSBcIlExMWZyZXFcIiAgICAgICAgICAgICBcIlExMlwiICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code> [1] &quot;ID&quot;                  &quot;AnonID&quot;              &quot;Version&quot;             &quot;Q1avb.answ&quot;          &quot;Q1bvc.answ&quot;         
+ [6] &quot;Q2lambda.answ&quot;       &quot;Q2freq.answ&quot;         &quot;Q3amp.answ&quot;          &quot;Q3freq.answ&quot;         &quot;Q4561.answ&quot;         
+[11] &quot;Q4562.answ&quot;          &quot;Q4563.answ&quot;          &quot;Q7freq.answ&quot;         &quot;Q7lambda.answ&quot;       &quot;Q8difh.answ&quot;        
+[16] &quot;Q8sameh.answ&quot;        &quot;Q8all.answ&quot;          &quot;Q9x1.answ&quot;           &quot;Q9x2.answ&quot;           &quot;Q9v1.answ&quot;          
+[21] &quot;Q9v2.answ&quot;           &quot;Q10fundamental.answ&quot; &quot;Q10possible.answ&quot;    &quot;Q11intensity.answ&quot;   &quot;Q11freq1.answ&quot;      
+[26] &quot;Q11freq2.answ&quot;       &quot;Q12.answ&quot;            &quot;X&quot;                   &quot;NCRT&quot;                &quot;X.1&quot;                
+[31] &quot;Q1avb.trt&quot;           &quot;Q1bvc.trt&quot;           &quot;Q2lambda.trt&quot;        &quot;Q2freq.trt&quot;          &quot;Q3amp.trt&quot;          
+[36] &quot;Q3freq.trt&quot;          &quot;Q7freq.trt&quot;          &quot;Q7lambda.trt&quot;        &quot;Q8difh.trt&quot;          &quot;Q8sameh.trt&quot;        
+[41] &quot;Q8all.trt&quot;           &quot;Q9x.trt&quot;             &quot;Q9v.trt&quot;             &quot;Q10fundamental.trt&quot;  &quot;Q10possible.trt&quot;    
+[46] &quot;Q11intensity.trt&quot;    &quot;Q11freq.trt&quot;         &quot;Q12.trt&quot;             &quot;X.2&quot;                 &quot;Q1avb&quot;              
+[51] &quot;Q1bvc&quot;               &quot;Q2lambda&quot;            &quot;Q2freq&quot;              &quot;Q3amp&quot;               &quot;Q3freq&quot;             
+[56] &quot;Q7freq&quot;              &quot;Q7lambda&quot;            &quot;Q8difh&quot;              &quot;Q8sameh&quot;             &quot;Q8all&quot;              
+[61] &quot;Q9x&quot;                 &quot;Q9v&quot;                 &quot;Q10fundamental&quot;      &quot;Q10possible&quot;         &quot;Q11intensity&quot;       
+[66] &quot;Q11freq&quot;             &quot;Q12&quot;                </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdEaWFnbiwgSUQsIEFub25JRCwgVmVyc2lvbiwgTkNSVFxuICAgICAgICAgICAgICAgICApXG5jb2xuYW1lcyhjdXJEYXQpW2NvbG5hbWVzKGN1ckRhdCk9PVwiVmVyc2lvblwiXSA8LSBcImQudmVyc2lvblwiXG5kYXREaWFnbiA8LSBjdXJEYXRcbm5hbWVzKGRhdERpYWduKVxuYGBgIn0= -->
+<pre class="r"><code>curDat &lt;- select(datRawDiagn, ID, AnonID, Version, NCRT
+                 )
+colnames(curDat)[colnames(curDat)==&quot;Version&quot;] &lt;- &quot;d.version&quot;
+datDiagn &lt;- curDat
+names(datDiagn)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgXCJBbm9uSURcIiAgICBcImQudmVyc2lvblwiIFwiTkNSVFwiICAgICBcbiJ9 -->
+<pre><code>[1] &quot;ID&quot;        &quot;AnonID&quot;    &quot;d.version&quot; &quot;NCRT&quot;     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="make-a-new-final-exam-data-frame-with-only-the-desired-columns" class="section level2">
+<h2>Make a new final exam data frame with only the desired columns</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3RmluYWwpXG5gYGAifQ== -->
+<pre class="r"><code>names(datRawFinal)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgIFwiRmluYWxWZXJzaW9uXCIgICAgXCJmLkExLmFuc3dcIiAgICAgICBcImYuQTFcIiAgICAgICAgICAgIFwiZi5BMi5hbnN3XCIgICAgICAgXCJmLkEyXCIgICAgICAgICAgICBcImYuQTMuYW5zd1wiICAgICAgXG4gWzhdIFwiZi5BM1wiICAgICAgICAgICAgXCJmLkE0LmFuc3dcIiAgICAgICBcImYuQTRcIiAgICAgICAgICAgIFwiZi5BNS5hbnN3XCIgICAgICAgXCJmLkE1XCIgICAgICAgICAgICBcImYuQTUuc2NvcmUuRVlBXCIgIFwiZi5BNi5hbnN3XCIgICAgICBcblsxNV0gXCJmLkE2XCIgICAgICAgICAgICBcImYuQTYuc2NvcmUuRVlBXCIgIFwiZi5BNS5BNi5FWUFcIiAgICAgXCJmLkE3LmFuc3dcIiAgICAgICBcImYuQTdcIiAgICAgICAgICAgIFwiZi5BOC5hbnN3XCIgICAgICAgXCJmLkE4XCIgICAgICAgICAgIFxuWzIyXSBcImYuQTkuYW5zd1wiICAgICAgIFwiZi5BOVwiICAgICAgICAgICAgXCJmLkE5LnNjb3JlLkVZQVwiICBcImYuQTEwLmFuc3dcIiAgICAgIFwiZi5BMTBcIiAgICAgICAgICAgXCJmLkExMC5zY29yZS5FWUFcIiBcImYuQTkuQTEwLkVZQVwiICAgXG5bMjldIFwiZi5BMTEuYW5zd1wiICAgICAgXCJmLkExMVwiICAgICAgICAgICBcImYuQTEyLmFuc3dcIiAgICAgIFwiZi5BMTJcIiAgICAgICAgICAgXCJmLkExMy5hbnN3XCIgICAgICBcImYuQTEzXCIgICAgICAgICAgIFwiZi5BMTQuYW5zd1wiICAgICBcblszNl0gXCJmLkExNFwiICAgICAgICAgICBcImYuQTE1LmFuc3dcIiAgICAgIFwiZi5BMTVcIiAgICAgICAgICAgXCJmLkExNi5hbnN3XCIgICAgICBcImYuQTE2XCIgICAgICAgICAgIFwiZi5BMTcuYW5zd1wiICAgICAgXCJmLkExN1wiICAgICAgICAgIFxuWzQzXSBcImYuQTE4LmFuc3dcIiAgICAgIFwiZi5BMThcIiAgICAgICAgICAgXCJmLkExOWEuYW5zd1wiICAgICBcImYuQTE5YVwiICAgICAgICAgIFwiZi5BMTliLmFuc3dcIiAgICAgXCJmLkExOWJcIiAgICAgICAgICBcImYuQjFcIiAgICAgICAgICAgXG5bNTBdIFwiZi5CMlwiICAgICAgICAgICAgXCJmLkIzXCIgICAgICAgICAgICBcImYuQjRcIiAgICAgICAgICAgIFwiZi5BdG90YWw0MFwiICAgICAgXCJmLkJ0b3RhbDM4XCIgICAgICBcImYuU29sbzc4XCIgICAgICAgIFwiZi5FeGFtR3JhZGUxMDBcIiBcbls1N10gXCJmLkE1LnRydFwiICAgICAgICBcImYuQTYudHJ0XCIgICAgICAgIFwiZi5BOS50cnRcIiAgICAgICAgXCJmLkExMC50cnRcIiAgICAgIFxuIn0= -->
+<pre><code> [1] &quot;ID&quot;              &quot;FinalVersion&quot;    &quot;f.A1.answ&quot;       &quot;f.A1&quot;            &quot;f.A2.answ&quot;       &quot;f.A2&quot;            &quot;f.A3.answ&quot;      
+ [8] &quot;f.A3&quot;            &quot;f.A4.answ&quot;       &quot;f.A4&quot;            &quot;f.A5.answ&quot;       &quot;f.A5&quot;            &quot;f.A5.score.EYA&quot;  &quot;f.A6.answ&quot;      
+[15] &quot;f.A6&quot;            &quot;f.A6.score.EYA&quot;  &quot;f.A5.A6.EYA&quot;     &quot;f.A7.answ&quot;       &quot;f.A7&quot;            &quot;f.A8.answ&quot;       &quot;f.A8&quot;           
+[22] &quot;f.A9.answ&quot;       &quot;f.A9&quot;            &quot;f.A9.score.EYA&quot;  &quot;f.A10.answ&quot;      &quot;f.A10&quot;           &quot;f.A10.score.EYA&quot; &quot;f.A9.A10.EYA&quot;   
+[29] &quot;f.A11.answ&quot;      &quot;f.A11&quot;           &quot;f.A12.answ&quot;      &quot;f.A12&quot;           &quot;f.A13.answ&quot;      &quot;f.A13&quot;           &quot;f.A14.answ&quot;     
+[36] &quot;f.A14&quot;           &quot;f.A15.answ&quot;      &quot;f.A15&quot;           &quot;f.A16.answ&quot;      &quot;f.A16&quot;           &quot;f.A17.answ&quot;      &quot;f.A17&quot;          
+[43] &quot;f.A18.answ&quot;      &quot;f.A18&quot;           &quot;f.A19a.answ&quot;     &quot;f.A19a&quot;          &quot;f.A19b.answ&quot;     &quot;f.A19b&quot;          &quot;f.B1&quot;           
+[50] &quot;f.B2&quot;            &quot;f.B3&quot;            &quot;f.B4&quot;            &quot;f.Atotal40&quot;      &quot;f.Btotal38&quot;      &quot;f.Solo78&quot;        &quot;f.ExamGrade100&quot; 
+[57] &quot;f.A5.trt&quot;        &quot;f.A6.trt&quot;        &quot;f.A9.trt&quot;        &quot;f.A10.trt&quot;      </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdGaW5hbCwgSUQsIEZpbmFsVmVyc2lvbiwgXG4gICAgICAgICAgICAgICAgIGYuQTEsIGYuQTIsIGYuQTMsIGYuQTQsIGYuQTUsIFxuICAgICAgICAgICAgICAgICBmLkE2LCBmLkE3LCBmLkE4LCBmLkE5LCBmLkExMCwgXG4gICAgICAgICAgICAgICAgIGYuQTExLGYuQTEyLGYuQTEzLGYuQTE0LGYuQTE1LFxuICAgICAgICAgICAgICAgICBmLkExNixmLkExNyxmLkExOCxmLkExOWEsZi5BMTliLCBmLkF0b3RhbDQwLFxuICAgICAgICAgICAgICAgICBmLkIxLCBmLkIyLCBmLkIzLCBmLkI0LCBmLkJ0b3RhbDM4LCBmLlNvbG83OCxcbiAgICAgICAgICAgICAgICAgZi5BNS50cnQsIGYuQTYudHJ0LCBmLkE5LnRydCwgZi5BMTAudHJ0KVxuY29sbmFtZXMoY3VyRGF0KVtjb2xuYW1lcyhjdXJEYXQpPT1cIkZpbmFsVmVyc2lvblwiXSA8LSBcImYudmVyc2lvblwiXG5kYXRGaW5hbCA8LSBjdXJEYXRcbm5hbWVzKGRhdEZpbmFsKVxuYGBgIn0= -->
+<pre class="r"><code>curDat &lt;- select(datRawFinal, ID, FinalVersion, 
+                 f.A1, f.A2, f.A3, f.A4, f.A5, 
+                 f.A6, f.A7, f.A8, f.A9, f.A10, 
+                 f.A11,f.A12,f.A13,f.A14,f.A15,
+                 f.A16,f.A17,f.A18,f.A19a,f.A19b, f.Atotal40,
+                 f.B1, f.B2, f.B3, f.B4, f.Btotal38, f.Solo78,
+                 f.A5.trt, f.A6.trt, f.A9.trt, f.A10.trt)
+colnames(curDat)[colnames(curDat)==&quot;FinalVersion&quot;] &lt;- &quot;f.version&quot;
+datFinal &lt;- curDat
+names(datFinal)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICBcImYudmVyc2lvblwiICBcImYuQTFcIiAgICAgICBcImYuQTJcIiAgICAgICBcImYuQTNcIiAgICAgICBcImYuQTRcIiAgICAgICBcImYuQTVcIiAgICAgICBcImYuQTZcIiAgICAgICBcImYuQTdcIiAgICAgIFxuWzEwXSBcImYuQThcIiAgICAgICBcImYuQTlcIiAgICAgICBcImYuQTEwXCIgICAgICBcImYuQTExXCIgICAgICBcImYuQTEyXCIgICAgICBcImYuQTEzXCIgICAgICBcImYuQTE0XCIgICAgICBcImYuQTE1XCIgICAgICBcImYuQTE2XCIgICAgIFxuWzE5XSBcImYuQTE3XCIgICAgICBcImYuQTE4XCIgICAgICBcImYuQTE5YVwiICAgICBcImYuQTE5YlwiICAgICBcImYuQXRvdGFsNDBcIiBcImYuQjFcIiAgICAgICBcImYuQjJcIiAgICAgICBcImYuQjNcIiAgICAgICBcImYuQjRcIiAgICAgIFxuWzI4XSBcImYuQnRvdGFsMzhcIiBcImYuU29sbzc4XCIgICBcImYuQTUudHJ0XCIgICBcImYuQTYudHJ0XCIgICBcImYuQTkudHJ0XCIgICBcImYuQTEwLnRydFwiIFxuIn0= -->
+<pre><code> [1] &quot;ID&quot;         &quot;f.version&quot;  &quot;f.A1&quot;       &quot;f.A2&quot;       &quot;f.A3&quot;       &quot;f.A4&quot;       &quot;f.A5&quot;       &quot;f.A6&quot;       &quot;f.A7&quot;      
+[10] &quot;f.A8&quot;       &quot;f.A9&quot;       &quot;f.A10&quot;      &quot;f.A11&quot;      &quot;f.A12&quot;      &quot;f.A13&quot;      &quot;f.A14&quot;      &quot;f.A15&quot;      &quot;f.A16&quot;     
+[19] &quot;f.A17&quot;      &quot;f.A18&quot;      &quot;f.A19a&quot;     &quot;f.A19b&quot;     &quot;f.Atotal40&quot; &quot;f.B1&quot;       &quot;f.B2&quot;       &quot;f.B3&quot;       &quot;f.B4&quot;      
+[28] &quot;f.Btotal38&quot; &quot;f.Solo78&quot;   &quot;f.A5.trt&quot;   &quot;f.A6.trt&quot;   &quot;f.A9.trt&quot;   &quot;f.A10.trt&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="merge-the-data-sets-by-id-and-then-make-an-anonymous-version" class="section level2">
+<h2>Merge the data sets by ID and then make an anonymous version</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXQgPC0gbWVyZ2UoZGF0Q2xhc3MsZGF0RGlhZ24sYnk9XCJJRFwiKVxuZHBEYXQgPC0gbWVyZ2UoZHBEYXQsZGF0RmluYWwsYnk9XCJJRFwiKVxuZHBEYXQgPC0gc2VsZWN0KGRwRGF0LC1JRClcbm5hbWVzKGRwRGF0KVxuYGBgIn0= -->
+<pre class="r"><code>dpDat &lt;- merge(datClass,datDiagn,by=&quot;ID&quot;)
+dpDat &lt;- merge(dpDat,datFinal,by=&quot;ID&quot;)
+dpDat &lt;- select(dpDat,-ID)
+names(dpDat)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkdlbmRlclwiICAgICAgIFwiQ291cnNlLkdyYWRlXCIgXCJBbm9uSURcIiAgICAgICBcImQudmVyc2lvblwiICAgIFwiTkNSVFwiICAgICAgICAgXCJmLnZlcnNpb25cIiAgICBcImYuQTFcIiAgICAgICAgIFwiZi5BMlwiICAgICAgICBcbiBbOV0gXCJmLkEzXCIgICAgICAgICBcImYuQTRcIiAgICAgICAgIFwiZi5BNVwiICAgICAgICAgXCJmLkE2XCIgICAgICAgICBcImYuQTdcIiAgICAgICAgIFwiZi5BOFwiICAgICAgICAgXCJmLkE5XCIgICAgICAgICBcImYuQTEwXCIgICAgICAgXG5bMTddIFwiZi5BMTFcIiAgICAgICAgXCJmLkExMlwiICAgICAgICBcImYuQTEzXCIgICAgICAgIFwiZi5BMTRcIiAgICAgICAgXCJmLkExNVwiICAgICAgICBcImYuQTE2XCIgICAgICAgIFwiZi5BMTdcIiAgICAgICAgXCJmLkExOFwiICAgICAgIFxuWzI1XSBcImYuQTE5YVwiICAgICAgIFwiZi5BMTliXCIgICAgICAgXCJmLkF0b3RhbDQwXCIgICBcImYuQjFcIiAgICAgICAgIFwiZi5CMlwiICAgICAgICAgXCJmLkIzXCIgICAgICAgICBcImYuQjRcIiAgICAgICAgIFwiZi5CdG90YWwzOFwiICBcblszM10gXCJmLlNvbG83OFwiICAgICBcImYuQTUudHJ0XCIgICAgIFwiZi5BNi50cnRcIiAgICAgXCJmLkE5LnRydFwiICAgICBcImYuQTEwLnRydFwiICAgXG4ifQ== -->
+<pre><code> [1] &quot;Gender&quot;       &quot;Course.Grade&quot; &quot;AnonID&quot;       &quot;d.version&quot;    &quot;NCRT&quot;         &quot;f.version&quot;    &quot;f.A1&quot;         &quot;f.A2&quot;        
+ [9] &quot;f.A3&quot;         &quot;f.A4&quot;         &quot;f.A5&quot;         &quot;f.A6&quot;         &quot;f.A7&quot;         &quot;f.A8&quot;         &quot;f.A9&quot;         &quot;f.A10&quot;       
+[17] &quot;f.A11&quot;        &quot;f.A12&quot;        &quot;f.A13&quot;        &quot;f.A14&quot;        &quot;f.A15&quot;        &quot;f.A16&quot;        &quot;f.A17&quot;        &quot;f.A18&quot;       
+[25] &quot;f.A19a&quot;       &quot;f.A19b&quot;       &quot;f.Atotal40&quot;   &quot;f.B1&quot;         &quot;f.B2&quot;         &quot;f.B3&quot;         &quot;f.B4&quot;         &quot;f.Btotal38&quot;  
+[33] &quot;f.Solo78&quot;     &quot;f.A5.trt&quot;     &quot;f.A6.trt&quot;     &quot;f.A9.trt&quot;     &quot;f.A10.trt&quot;   </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Temporary cheat to see workflow. Let’s just save this anonymized data set to the derived data folder</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGUuY3N2KGRhdDE4MDEsIGZpbGUucGF0aChBbm9uRGlyLFwidGVzdC5jc3ZcIiksIHJvdy5uYW1lcyA9IEZBTFNFKVxuYGBgIn0= -->
-<pre class="r"><code>write.csv(dat1801, file.path(AnonDir,&quot;test.csv&quot;), row.names = FALSE)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBPdXQgPC0gXCJkcERhdC5jc3ZcIlxud3JpdGUuY3N2KGRhdERhdCwgZmlsZS5wYXRoKGFub25EaXIsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSlcbmBgYCJ9 -->
+<pre class="r"><code>dpOut &lt;- &quot;dpDat.csv&quot;
+write.csv(datDat, file.path(anonDir,dpOut), row.names = FALSE)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gaXMuZGF0YS5mcmFtZSh4KSA6IG9iamVjdCAnZGF0RGF0JyBub3QgZm91bmRcbiJ9 -->
+<pre><code>Error in is.data.frame(x) : object 'datDat' not found</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1YWwgcHJvY2Vzc2luZyBkYXRhIHByZXBhcmF0aW9uIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQotLS0NClByb2R1Y2VkIGJ5IEpvc3MgSXZlcywgKnVwZGF0ZWQgYHIgZm9ybWF0KFN5cy50aW1lKCksICIlWSAlQiAlZCwgJUg6JU06JVMiKWAqLiBCYXNlZCBvbiBkYXRhIHByZXBhcmF0aW9uIGRvY3VtZW50cyBieSBQYXRyaWNrIER1Ym9pczogW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL3Bham9kdS9HRVJHLykNCg0KIyMgT3ZlcnZpZXcNCg0KVGhpcyBmaWxlIGNvbWJpbmVzIG1pZHRlcm0sIGZpbmFsIGV4YW0gYW5kIGRpYWdub3N0aWMgZGF0YSBpbnRvIGEgc2luZ2xlIGZpbGUuIFRoaXMgZGF0YSBmb3JtYXQgbWF5IG5lZWQgdG8gYmUgZnVydGhlciBtb2RpZmllZCBmb3IgdGhlIGxvZ2lzdGljIGFuYWx5c2lzLg0KDQojIyBMb2FkIGxpYnJhcmllcw0KYGBge3J9DQojaW5zdGFsbC5wYWNrYWdlcygiZHBseXIiKQ0KbGlicmFyeSgiZHBseXIiKQ0KYGBgDQoNCg0KIyMgU2V0IGRpcmVjdG9yaWVzDQoNClN0YXJ0IGJ5IHNldHRpbmcgZGlyZWN0b3JpZXMNCg0KYGBge3J9DQpTdGFydERpciA8LSBnZXR3ZCgpDQojU291cmNlRGlyIDwtICJXOi9TaGFyZWRfUmVhZF9Pbmx5L0RQX0Fub255bWl6ZWRfRGF0YS9QMTAxIC0gMjAxOC0wMSINClJhd0RpciA8LSAiQzovVXNlcnMvSm9zcy9vd25DbG91ZC9TaGFyZWRfUmVhZF9Pbmx5L0RQX1Jhd19EYXRhL1AxMDEgLSAyMDE4LTAxIg0KI0Rlcml2ZWREaXIgPC0gIlc6L1NoYXJlZC9EUF9EZXJpdmVkX0RhdGEiDQojRGVyaXZlZERpciA8LSAiQzovVXNlcnMvSm9zcy9vd25DbG91ZC9TaGFyZWQvRFBfRGVyaXZlZF9EYXRhIg0KQW5vbkRpciA8LSAiQzovVXNlcnMvSm9zcy9vd25DbG91ZC9TaGFyZWRfUmVhZF9Pbmx5L0RQX0Fub255bWl6ZWRfRGF0YS9QMTAxIC0gMjAxOC0wMSINCmBgYA0KDQpMb2FkIHJhdyBkYXRhDQoNCmBgYHtyfQ0KIyMjIFRoaXMgd2Fzbid0IHdvcmtpbmcgd2l0aCBvbmUgZmlsZQ0KI0RhdGFTb3VyY2VzIDwtIGRhdGEuZnJhbWUoRmlsZW5hbWU9YygiRGlhZ25vc3RpYyAtIFJhdyAtIEFub24gUmFuZG9tLmNzdiIpLCBUYWc9YygiUDEwMS0yMDE4LTAxIikpDQojZGF0MTgwMSA8LSByZWFkLmNzdihEYXRhU291cmNlcyRGaWxlbmFtZVsxXSkNCkRhdGFTb3VyY2VzIDwtIGRhdGEuZnJhbWUoRmlsZW5hbWU9YygNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkNsYXNzbGlzdC5jc3YiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkRpYWdub3N0aWMgLSBSYXcgLSBOb3QgQW5vbi5jc3YiIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBUYWc9YygiQ2xhc3NsaXN0IiwgIkRpYWdub3N0aWMiKSApDQoNCg0KI0RhdENsYXNzIDwtIHJlYWQuY3N2KHBhc3RlMChSYXdEaXIsIi8iLERhdGFTb3VyY2VzJEZpbGVuYW1lWzFdKSkNCkRhdENsYXNzIDwtIHJlYWQuY3N2KGZpbGUucGF0aChSYXdEaXIsRGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pKQ0KRGF0RGlhZ24gPC0gcmVhZC5jc3YocGFzdGUwKFJhd0RpciwiLyIsRGF0YVNvdXJjZXMkRmlsZW5hbWVbMl0pKQ0KYGBgDQoNCiMjIE1ha2UgYSBuZXcgY2xhc3NsaXN0IGRhdGEgZnJhbWUgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtc24NCg0KDQpgYGB7cn0NCk5hbWVzQ2xhc3MgPC1uYW1lcyhEYXRDbGFzcykNCk5hbWVzQ2xhc3MNCiNOYW1lUmVmMTgwMSA8LSBkYXRhLmZyYW1lKE5ld05hbWVzLE5hbWVzMTgwMSkNCmBgYA0KDQpUZW1wb3JhcnkgY2hlYXQgdG8gc2VlIHdvcmtmbG93LiBMZXQncyBqdXN0IHNhdmUgdGhpcyBhbm9ueW1pemVkIGRhdGEgc2V0IHRvIHRoZSBkZXJpdmVkIGRhdGEgZm9sZGVyDQoNCmBgYHtyfQ0Kd3JpdGUuY3N2KGRhdDE4MDEsIGZpbGUucGF0aChBbm9uRGlyLCJ0ZXN0LmNzdiIpLCByb3cubmFtZXMgPSBGQUxTRSkNCmBgYA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1YWwgcHJvY2Vzc2luZyBkYXRhIHByZXBhcmF0aW9uIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQotLS0NClByb2R1Y2VkIGJ5IEpvc3MgSXZlcywgKnVwZGF0ZWQgYHIgZm9ybWF0KFN5cy50aW1lKCksICIlWSAlQiAlZCwgJUg6JU06JVMiKWAqLiBCYXNlZCBvbiBkYXRhIHByZXBhcmF0aW9uIGRvY3VtZW50cyBieSBQYXRyaWNrIER1Ym9pczogW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL3Bham9kdS9HRVJHLykNCg0KIyMgT3ZlcnZpZXcNCg0KVGhpcyBmaWxlIGNvbWJpbmVzIG1pZHRlcm0sIGZpbmFsIGV4YW0gYW5kIGRpYWdub3N0aWMgZGF0YSBpbnRvIGEgc2luZ2xlIGZpbGUuIFRoaXMgZGF0YSBmb3JtYXQgbWF5IG5lZWQgdG8gYmUgZnVydGhlciBtb2RpZmllZCBmb3IgdGhlIGxvZ2lzdGljIGFuYWx5c2lzLg0KDQojIyBMb2FkIGxpYnJhcmllcw0KYGBge3J9DQojaW5zdGFsbC5wYWNrYWdlcygiZHBseXIiKQ0KI2xpYnJhcnkoImRwbHlyIikNCmBgYA0KDQoNCiMjIFNldCBkaXJlY3Rvcmllcw0KDQpTdGFydCBieSBzZXR0aW5nIGRpcmVjdG9yaWVzDQoNCmBgYHtyfQ0Kc3RhcnREaXIgPC0gZ2V0d2QoKQ0KI1NvdXJjZURpciA8LSAiVzovU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDEiDQpyYXdEaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMSINCiNEZXJpdmVkRGlyIDwtICJXOi9TaGFyZWQvRFBfRGVyaXZlZF9EYXRhIg0KI0Rlcml2ZWREaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkL0RQX0Rlcml2ZWRfRGF0YSINCmFub25EaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDEiDQpgYGANCg0KTG9hZCByYXcgZGF0YQ0KDQpgYGB7cn0NCiMjIyBUaGlzIHdhc24ndCB3b3JraW5nIHdpdGggb25lIGZpbGUNCiNEYXRhU291cmNlcyA8LSBkYXRhLmZyYW1lKEZpbGVuYW1lPWMoIkRpYWdub3N0aWMgLSBSYXcgLSBBbm9uIFJhbmRvbS5jc3YiKSwgVGFnPWMoIlAxMDEtMjAxOC0wMSIpKQ0KI2RhdDE4MDEgPC0gcmVhZC5jc3YoRGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pDQpkYXRhU291cmNlcyA8LSBkYXRhLmZyYW1lKEZpbGVuYW1lPWMoDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJDbGFzc2xpc3QuY3N2IiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJEaWFnbm9zdGljIC0gUmF3IC0gTm90IEFub24uY3N2IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk1UIHNvbG8tZ3JhZGVzaGVldC1ncmFkZWRfdGFiLmNzdiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzb2xvLWdyYWRlc2hlZXQgKGZpbmFsKSBncmFkZWRfdGFiLmNzdiINCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgVGFnPWMoIkNsYXNzbGlzdCIsICJEaWFnbm9zdGljIiwgIk1pZHRlcm0iLCJGaW5hbCIpICkNCg0KDQojRGF0Q2xhc3MgPC0gcmVhZC5jc3YocGFzdGUwKFJhd0RpciwiLyIsRGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pKQ0KZGF0UmF3Q2xhc3MgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcixkYXRhU291cmNlcyRGaWxlbmFtZVsxXSkpDQpkYXRSYXdEaWFnbiA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzJdKSkNCmRhdFJhd01UIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIsZGF0YVNvdXJjZXMkRmlsZW5hbWVbM10pKQ0KZGF0UmF3RmluYWwgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcixkYXRhU291cmNlcyRGaWxlbmFtZVs0XSkpDQpgYGANCg0KIyMgTWFrZSBhIG5ldyBjbGFzc2xpc3QgZGF0YSBmcmFtZSB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1uDQoNCmBgYHtyfQ0KbmFtZXMoZGF0UmF3Q2xhc3MpDQpgYGANCg0KYGBge3J9DQpjdXJEYXQgPC0gc2VsZWN0KGRhdFJhd0NsYXNzLCBJRCwgR2VuZGVyLFBlcmNlbnQuR3JhZGUpDQojIFJlbmFtZSBhIFBlcmNlbnQuR3JhZGUNCmNvbG5hbWVzKGN1ckRhdClbY29sbmFtZXMoY3VyRGF0KT09IlBlcmNlbnQuR3JhZGUiXSA8LSAiQ291cnNlLkdyYWRlIg0KI25hbWVzQ2xhc3MgPC1uYW1lcyhkYXRDbGFzcykNCiNuYW1lc0NsYXNzDQojTmFtZVJlZjE4MDEgPC0gZGF0YS5mcmFtZShOZXdOYW1lcyxOYW1lczE4MDEpDQpkYXRDbGFzcyA8LSBjdXJEYXQNCm5hbWVzKGRhdENsYXNzKQ0KYGBgDQoNCiMjIE1ha2UgYSBuZXcgZGlhZ25vc3RpYyBkYXRhIGZyYW1lIHdpdGggb25seSB0aGUgZGVzaXJlZCBjb2x1bW5zDQoNCmBgYHtyfQ0KbmFtZXMoZGF0UmF3RGlhZ24pDQpgYGANCg0KDQpgYGB7cn0NCmN1ckRhdCA8LSBzZWxlY3QoZGF0UmF3RGlhZ24sIElELCBBbm9uSUQsIFZlcnNpb24sIE5DUlQNCiAgICAgICAgICAgICAgICAgKQ0KY29sbmFtZXMoY3VyRGF0KVtjb2xuYW1lcyhjdXJEYXQpPT0iVmVyc2lvbiJdIDwtICJkLnZlcnNpb24iDQpkYXREaWFnbiA8LSBjdXJEYXQNCm5hbWVzKGRhdERpYWduKQ0KYGBgDQoNCg0KIyMgTWFrZSBhIG5ldyBmaW5hbCBleGFtIGRhdGEgZnJhbWUgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdGaW5hbCkNCmBgYA0KDQoNCmBgYHtyfQ0KY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdGaW5hbCwgSUQsIEZpbmFsVmVyc2lvbiwgDQogICAgICAgICAgICAgICAgIGYuQTEsIGYuQTIsIGYuQTMsIGYuQTQsIGYuQTUsIA0KICAgICAgICAgICAgICAgICBmLkE2LCBmLkE3LCBmLkE4LCBmLkE5LCBmLkExMCwgDQogICAgICAgICAgICAgICAgIGYuQTExLGYuQTEyLGYuQTEzLGYuQTE0LGYuQTE1LA0KICAgICAgICAgICAgICAgICBmLkExNixmLkExNyxmLkExOCxmLkExOWEsZi5BMTliLCBmLkF0b3RhbDQwLA0KICAgICAgICAgICAgICAgICBmLkIxLCBmLkIyLCBmLkIzLCBmLkI0LCBmLkJ0b3RhbDM4LCBmLlNvbG83OCwNCiAgICAgICAgICAgICAgICAgZi5BNS50cnQsIGYuQTYudHJ0LCBmLkE5LnRydCwgZi5BMTAudHJ0KQ0KY29sbmFtZXMoY3VyRGF0KVtjb2xuYW1lcyhjdXJEYXQpPT0iRmluYWxWZXJzaW9uIl0gPC0gImYudmVyc2lvbiINCmRhdEZpbmFsIDwtIGN1ckRhdA0KbmFtZXMoZGF0RmluYWwpDQpgYGANCg0KIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXQgPC0gbWVyZ2UoZGF0Q2xhc3MsZGF0RGlhZ24sYnk9IklEIikNCmRwRGF0IDwtIG1lcmdlKGRwRGF0LGRhdEZpbmFsLGJ5PSJJRCIpDQpkcERhdCA8LSBzZWxlY3QoZHBEYXQsLUlEKQ0KbmFtZXMoZHBEYXQpDQpgYGANCg0KDQpUZW1wb3JhcnkgY2hlYXQgdG8gc2VlIHdvcmtmbG93LiBMZXQncyBqdXN0IHNhdmUgdGhpcyBhbm9ueW1pemVkIGRhdGEgc2V0IHRvIHRoZSBkZXJpdmVkIGRhdGEgZm9sZGVyDQoNCmBgYHtyfQ0KDQpkcE91dCA8LSAiZHBEYXQuY3N2Ig0Kd3JpdGUuY3N2KGRwRGF0LCBmaWxlLnBhdGgoYW5vbkRpcixkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg==</div>
 
 
 
