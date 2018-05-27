@@ -51,12 +51,18 @@ for index, row in df.iterrows():
         if row[question]>=1:
             qcorrect = 1
             list2.append([row['AnonID'], \
-                      iq,qcorrect, treatment \
-                      ])
+                      iq,qcorrect, treatment, \
+                      row['f.Atotal40'], row['f.Btotal38'], row['f.Solo78'], \
+                      row['Course.Grade'], row['d.version'], row['f.version'], \
+                      row['NCRT']
+                      ])               
         elif row[question]==0:
             qcorrect = 0
             list2.append([row['AnonID'], \
-                      iq,qcorrect, treatment \
+                      iq,qcorrect, treatment, \
+                      row['f.Atotal40'], row['f.Btotal38'], row['f.Solo78'], \
+                      row['Course.Grade'], row['d.version'], row['f.version'], \
+                      row['NCRT']
                       ])        
         else:
             qcorrect = ''
@@ -65,7 +71,9 @@ for index, row in df.iterrows():
 # convert list2 to an array
 array2 = np.array(list2)
 
-colnames = ['ID','QNUM','QCORRECT','TREATMENT']
+colnames = ['ID','QNUM','QCORRECT','TREATMENT','f.Atot40','f.Btot38','f.tot78', \
+    'course.grade', 'd.version','f.version','NCRT']
+
 # now make a dataframe out of it
 df2 = pd.DataFrame(array2,columns=colnames)
 
