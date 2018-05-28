@@ -54,7 +54,7 @@ for index, row in df.iterrows():
                       iq,qcorrect, treatment, \
                       row['f.Atotal40'], row['f.Btotal38'], row['f.Solo78'], \
                       row['Course.Grade'], row['d.version'], row['f.version'], \
-                      row['NCRT'], row['Gender']
+                      row['NCRT'], row['Gender'], row['EYAfinal']
                       ])               
         elif row[question]==0:
             qcorrect = 0
@@ -62,7 +62,7 @@ for index, row in df.iterrows():
                       iq,qcorrect, treatment, \
                       row['f.Atotal40'], row['f.Btotal38'], row['f.Solo78'], \
                       row['Course.Grade'], row['d.version'], row['f.version'], \
-                      row['NCRT'], row['Gender']
+                      row['NCRT'], row['Gender'], row['EYAfinal']
                       ])        
         else:
             qcorrect = ''
@@ -72,7 +72,7 @@ for index, row in df.iterrows():
 array2 = np.array(list2)
 
 colnames = ['ID','QNUM','QCORRECT','TREATMENT','f.Atot40','f.Btot38','f.tot78', \
-    'course.grade', 'd.version','f.version','NCRT','Gender']
+    'course.grade', 'd.version','f.version','NCRT','Gender','EYAfinal']
 
 # now make a dataframe out of it
 df2 = pd.DataFrame(array2,columns=colnames)
