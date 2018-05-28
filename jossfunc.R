@@ -42,7 +42,9 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
   datac$binomial.error <- sqrt(datac$mean * (1-datac$mean) / datac$N)
   
   # Rename the "mean" column    
-  datac <- rename(datac, c("mean" = measurevar))
+  # Removed for error reasons that I do not yet understand 
+  # "Error: All arguments to `rename()` must be named."
+  #datac <- rename(datac, c("mean" = measurevar))
   
   return(datac)
 }
