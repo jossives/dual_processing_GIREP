@@ -1,9 +1,7 @@
 ---
-title: "R Notebook"
+title: "A01-Logistic_on_final_exam_data"
 output:
-  word_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 Author: Joss Ives, *updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*.

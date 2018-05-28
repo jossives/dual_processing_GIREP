@@ -1,0 +1,13 @@
+---
+title: "A02-Initial_Report-P101_2018_Final_exam"
+author: "Joss Ives"
+date: "May 28, 2018"
+output: html_notebook
+---
+*updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
+
+```{r cars, echo=FALSE}
+### Why does this do anything?
+plot(cars)
+```
+
