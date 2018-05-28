@@ -98,7 +98,7 @@ curDat <- select(datRawFinal, ID, FinalVersion,
                  f.A11,f.A12,f.A13,f.A14,f.A15,
                  f.A16,f.A17,f.A18,f.A19a,f.A19b, f.Atotal40,
                  f.B1, f.B2, f.B3, f.B4, f.Btotal38, f.Solo78,
-                 f.A5.trt, f.A6.trt, f.A9.trt, f.A10.trt)
+                 f.A5.trt, f.A6.trt, f.A9.trt, f.A10.trt,EYAfinal)
 colnames(curDat)[colnames(curDat)=="FinalVersion"] <- "f.version"
 # Change 19a and 19b to 19 and 20
 colnames(curDat)[colnames(curDat)=="f.A19a"] <- "f.A19"
