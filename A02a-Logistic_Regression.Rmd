@@ -1,0 +1,257 @@
+---
+title: "A02a-Initial_Report-P101_2018_Final_exam-Appendix-Logistic_Regression"
+author: "Joss Ives"
+date: "May 29, 2018"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+---
+*updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
+
+# Overview
+This appendix focuses on logstic regressions analyses, which take a longer time to run so it is convenient for them to be in their own place.
+
+# Setup
+
+```{r echo=FALSE}
+#
+# Setup - This section is not written to the output document
+#
+```
+
+```{r echo=FALSE}
+# Load libraries
+suppressWarnings(library(lme4))
+require(lme4)
+suppressWarnings(library(ggplot2))
+require(ggplot2)
+source("jossfunc.R")
+```
+
+```{r echo=FALSE}
+# Load data
+dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat.csv")
+```
+### Add additional calculated values
+```{r echo=FALSE}
+dat.raw$course.grade.frac <- dat.raw$course.grade/100.
+dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
+dat.raw$final.grade.LMH <- as.integer(
+  cut(dat.raw$f.tot78, quantile(dat.raw$f.tot78, probs=0:3/3), include.lowest=TRUE)
+  )
+dat.raw$final.grade.fix <- (dat.raw$f.tot78-2.*dat.raw$QCORRECT)/76.
+dat.raw$final.gradeA.fix <- (dat.raw$f.Atot40-2.*dat.raw$QCORRECT)/38.
+dat.raw$f.tot100 <- dat.raw$f.tot78/.78
+```
+The following is a summary of the variables present in the data file. The final 4 were caculated in this notebook. "Fix" refers to removing from the overall score on the test, the score of the specific question.
+```{r}
+names(dat.raw)
+```
+
+```{r echo = FALSE}
+### Set categorical variables
+dat.raw$ID        <- factor(dat.raw$ID)
+dat.raw$QNUM      <- factor(dat.raw$QNUM)
+dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$f.version <- factor(dat.raw$f.version)
+
+```
+
+```{r echo=FALSE}
+### Make some data subsets
+
+# Keep only those data points where TREATMENT was set
+dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
+
+# Remove students that didn't receive full participation credit for both EYA questions
+dat.all.EYA <- subset(dat.all, EYAfinal==1)
+
+# Look only at the 4 questions that had TREATMENT
+dat.trt <- subset(dat.all.EYA, QNUM==5 | QNUM==6 | QNUM==9 | QNUM==10)
+```
+
+# Regressions
+
+First, the logistic regression will be run, controlling for question number. Then additional predictors will be tested one at a time,
+
+## _Base level regression_
+
+### Simple logistic regression: TREATMENT
+
+We will treat the question numbers as random effects. This seems to be reasonable since we want to generalize beyond these specific question to questions of this type: https://www.ma.utexas.edu/users/mks/statmistakes/fixedvsrandom.html
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+## _TREATMENT + other_
+
+### TREATMENT + Gender
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + Gender + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### TREATMENT + Test Version
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + f.version + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### TREATMENT + Number of CRT questions correct
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + NCRT + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### TREATMENT + Median split on CRT performance
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + CRT.medsplit + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### TREATMENT + Overall course grade
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + course.grade.frac + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+
+### TREATMENT + Final Exam Grade Tertile
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + final.grade.LMH + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### TREATMENT + Final Exam Grade (corrected for intervention question scores)
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + final.grade.fix + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### TREATMENT + Final Exam Part A Grade (corrected for intervention question scores)
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + final.gradeA.fix + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+## _TREATMENT + predictors that improved the model_
+
+### TREATMENT + Gender + Final Exam Grade + NCRT
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + Gender + final.grade.fix + NCRT + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+## _Different ways of looking at the gender effect_
+
+### First is to look at TREATMENT x Gender
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT*Gender + final.grade.fix + NCRT + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### Second is to run the regressions on the two groups individually
+
+Female-only data
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + final.grade.fix + NCRT + (1|ID), 
+                data = subset(dat.trt, Gender=="Female"), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+Male-only data
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + final.grade.fix + NCRT + (1|ID), 
+                data = subset(dat.trt, Gender=="Male"), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+
+
