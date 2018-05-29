@@ -39,6 +39,7 @@ dat.raw$final.grade.LMH <- as.integer(
   )
 dat.raw$final.grade.fix <- (dat.raw$f.tot78-2.*dat.raw$QCORRECT)/76.
 dat.raw$final.gradeA.fix <- (dat.raw$f.Atot40-2.*dat.raw$QCORRECT)/38.
+dat.raw$f.tot100 <- dat.raw$f.tot78/.78
 ```
 The following is a summary of the variables present in the data file. The final 4 were caculated in this notebook. "Fix" refers to removing from the overall score on the test, the score of the specific question.
 ```{r}
@@ -50,6 +51,7 @@ names(dat.raw)
 dat.raw$ID        <- factor(dat.raw$ID)
 dat.raw$QNUM      <- factor(dat.raw$QNUM)
 dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$f.version <- factor(dat.raw$f.version)
 
 ```
 
@@ -59,7 +61,7 @@ dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
 # Keep only those data points where TREATMENT was set
 dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
 
-# Look only at the 4 questions that had TREATMENT
+# Remove students that didn't receive full participation credit for both EYA questions
 dat.all.EYA <- subset(dat.all, EYAfinal==1)
 
 # Look only at the 4 questions that had TREATMENT
@@ -80,22 +82,89 @@ limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error
 
 ```
 
-
+Note that Final Exam V1 had questions 5 & 9 as treatment and V2 had questions 6 & 10 as treatment. Thus both of the questions where we are seeing a difference are from the same version. We need to confirm that these two populations are not performing differently overall. This is likely doone most effectively by controlling for version, gender and other differences within the logistic regression. There are too many confounding factors to be able to see through them using bar charts.
 ```{r echo=FALSE}
 
 ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
-  labs(x = "Question number", y = "Fraction correct") +
+  labs(x = "Question number", y = "Fraction of EYA questions correct") +
   scale_fill_discrete(labels=c("Control","Treatment")) +
   theme_bw() + 
   theme(axis.text = element_text(face = "bold")) + 
   #theme(legend.position="none")
   scale_y_continuous(limits = c(0,1)) +
-  guides(fill=guide_legend(title=NULL)) +
-  ggtitle("Performance by question")
+  ggtitle("Error bars are binomial errors") + 
+  guides(fill=guide_legend(title=NULL))
+  
+```
+Looking at performance on the EYA questions by gender
+```{r echo=FALSE}
+
+corr.by.question <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","Gender")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.by.question, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Gender", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+  
 ```
 
+Looking at final exam performance by gender, by test version. The effect looks the opposite of what we would expect from the Test 2 intervention questions being the more effective ones. Females benefit more from the intervention. However, their score on V2 as compared to V1 is worse than the males, not better.
+
+**Revised:** The effect of the intervention is approximately 5% per question on questions that are worth approximately 5% of the test, which is 0.25% of the overall test grade. We would not see this effect.
+```{r echo=FALSE}
+
+corr.by.question <- summarySE(
+  subset(dat.trt,QNUM==5), # Each test score appears 4 times, so this it reduces it to 1 time
+  measurevar="f.tot100", groupvars=c("Gender","f.version")
+  )
+limits <- aes(ymax = f.tot100 + se, ymin = f.tot100 - se)
+
+ggplot(corr.by.question, aes(x=Gender, y=f.tot100, fill=f.version)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Gender", y = "Final Exam Grade (%)") +
+  #scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,100)) +
+  ggtitle("Error bars are standard error") +
+  guides(fill=guide_legend(title="Test Version"))
+  
+```
+
+
+```{r echo=FALSE}
+
+s.fLMH <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("final.grade.LMH","TREATMENT")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(s.fLMH, aes(x=final.grade.LMH, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Final Exam Score (Tertile)", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  #theme(legend.position="none")
+  #scale_x_discrete(labels=c("Low","Medium","High")) +
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+
+```
 
 ### Fisher's Exact for overall question set
 ```{r}
@@ -111,6 +180,14 @@ ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
 cat("Cohen's d\n ", cohens.d.from.odds.simple(result$estimate[[1]]),"\n")
 
 ```
+
+Look at the fraction of males vs females taking each version of the test. Could this explain anything?
+
+```{r}
+
+```
+
+
 
 ### Simple logistic regression
 ```{r}
@@ -132,4 +209,19 @@ colnames(odds.table) <- c("Odds Ratio")
 rownames(odds.table) <- c("Fisher's Exact Test","Logistic Regression")
 as.table(odds.table)
 ```
+
+
+
+```{r}
+s.ncrt <- summarySE(dat.trt, measurevar="QCORRECT",
+                              groupvars=c("NCRT","TREATMENT"), .drop=FALSE)
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+#options(repr.plot.width=5, repr.plot.height=3)
+
+ggplot(s.ncrt, aes(x=NCRT, y=QCORRECT, fill=TREATMENT)) + 
+    geom_bar(stat="identity", position=dodge) + 
+    geom_errorbar(limits, position=dodge, width=0.5)
+```
+
+
 
