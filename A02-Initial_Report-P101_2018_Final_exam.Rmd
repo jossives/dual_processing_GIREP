@@ -68,6 +68,12 @@ dat.all.EYA <- subset(dat.all, EYAfinal==1)
 dat.trt <- subset(dat.all.EYA, QNUM==5 | QNUM==6 | QNUM==9 | QNUM==10)
 ```
 
+### Set some globably variables
+```{r echo = FALSE}
+dodge=position_dodge(width=0.9)
+```
+
+
 # Data description
 
 ### How well was each question answered?
