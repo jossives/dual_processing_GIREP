@@ -6,7 +6,7 @@
 ##   na.rm: a boolean that indicates whether to ignore NA's
 ##   conf.interval: the percent range of the confidence interval (default is 95%)
 summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
-                      conf.interval=.95, .drop=TRUE) {
+                      conf.interval=.95, .drop=TRUE, calcBE=TRUE) {
   require(plyr)
   
   # New version of length which can handle NA's: if na.rm==T, don't count them
@@ -39,7 +39,7 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
   datac$ci <- datac$se * ciMult
   
   # Calculate binomial error, for use if data is binomial or binary
-  datac$binomial.error <- sqrt(datac$mean * (1-datac$mean) / datac$N)
+  if (calcBE) datac$binomial.error <- sqrt(datac$mean * (1-datac$mean) / datac$N)
   
   # Rename the "mean" column    
   # Removed for error reasons that I do not yet understand 
@@ -48,6 +48,7 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
   
   return(datac)
 }
+
 
 ## fisher.table
 fisher.table <- function (cell.1.1, cell.1.2, cell.2.1, cell.2.2){

@@ -72,6 +72,7 @@ dat.trt <- subset(dat.all.EYA, QNUM==5 | QNUM==6 | QNUM==9 | QNUM==10)
 
 ### How well was each question answered?
 
+Note that Final Exam V1 had questions 5 & 9 as treatment and V2 had questions 6 & 10 as treatment. Thus both of the questions where we are seeing a difference are from the same version. We need to confirm that these two populations are not performing differently overall. This is likely doone most effectively by controlling for version, gender and other differences within the logistic regression. There are too many confounding factors to be able to see through them using bar charts.
 
 ```{r echo=FALSE}
 (corr.by.question <- summarySE(
@@ -82,7 +83,6 @@ limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error
 
 ```
 
-Note that Final Exam V1 had questions 5 & 9 as treatment and V2 had questions 6 & 10 as treatment. Thus both of the questions where we are seeing a difference are from the same version. We need to confirm that these two populations are not performing differently overall. This is likely doone most effectively by controlling for version, gender and other differences within the logistic regression. There are too many confounding factors to be able to see through them using bar charts.
 ```{r echo=FALSE}
 
 ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
@@ -101,12 +101,12 @@ ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
 Looking at performance on the EYA questions by gender
 ```{r echo=FALSE}
 
-corr.by.question <- summarySE(
+corr.by.gender <- summarySE(
   dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","Gender")
   )
 limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
 
-ggplot(corr.by.question, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
+ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   labs(x = "Gender", y = "Fraction of EYA questions correct") +
@@ -123,15 +123,16 @@ ggplot(corr.by.question, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
 Looking at final exam performance by gender, by test version. The effect looks the opposite of what we would expect from the Test 2 intervention questions being the more effective ones. Females benefit more from the intervention. However, their score on V2 as compared to V1 is worse than the males, not better.
 
 **Revised:** The effect of the intervention is approximately 5% per question on questions that are worth approximately 5% of the test, which is 0.25% of the overall test grade. We would not see this effect.
+
 ```{r echo=FALSE}
 
-corr.by.question <- summarySE(
-  subset(dat.trt,QNUM==5), # Each test score appears 4 times, so this it reduces it to 1 time
-  measurevar="f.tot100", groupvars=c("Gender","f.version")
+final.by.gender <- summarySE(
+  subset(dat.trt,QNUM==5 & f.tot100>-0.1), # Each test score appears 4 times, so this it reduces it to 1 time
+  measurevar="f.tot100", groupvars=c("Gender","f.version"), calcBE=FALSE
   )
 limits <- aes(ymax = f.tot100 + se, ymin = f.tot100 - se)
 
-ggplot(corr.by.question, aes(x=Gender, y=f.tot100, fill=f.version)) +
+ggplot(final.by.gender, aes(x=Gender, y=f.tot100, fill=f.version)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   labs(x = "Gender", y = "Final Exam Grade (%)") +
@@ -145,7 +146,7 @@ ggplot(corr.by.question, aes(x=Gender, y=f.tot100, fill=f.version)) +
   
 ```
 
-
+**Todo:* Figure out how to rename the bins
 ```{r echo=FALSE}
 
 s.fLMH <- summarySE(
@@ -165,6 +166,36 @@ ggplot(s.fLMH, aes(x=final.grade.LMH, y=QCORRECT, fill=TREATMENT)) +
   guides(fill=guide_legend(title=NULL))
 
 ```
+
+### Gender fractions taking each version of the test
+
+```{r}
+fv1 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Female" & dat.trt$f.version==1])
+fv2 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Female" & dat.trt$f.version==2])
+mv1 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Male" & dat.trt$f.version==1])
+mv2 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Male" & dat.trt$f.version==2])
+ffv1 <- fv1/(fv1+mv1)
+ffv2 <- fv2/(fv2+mv2)
+fmv1 <- mv1/(fv1+mv1)
+fmv2 <- mv2/(fv2+mv2)
+#fisher.table(fv1, fv2, mv1, mv2)
+
+# create a dataset
+version=c(rep("V1" , 2) , rep("V2" , 2))
+gender=rep(c("Female" , "Male" ), 2)
+value=c(ffv1, fmv1, ffv2, fmv2)
+error=c(0,sqrt((ffv1*fmv1)/(fv1+mv1)),0,sqrt((ffv2*fmv2)/(fv2+mv2)))
+data=data.frame(version, gender,value, error)
+limits <- aes(ymax = value+error,
+              ymin = value-error)
+# Stacked Percent
+ggplot(data, aes(fill=gender, y=value, x=version)) + 
+#    geom_bar( stat="identity", position="fill")
+    geom_bar( stat="identity") +
+    geom_errorbar(limits, width=0.25)
+
+```
+
 
 ### Fisher's Exact for overall question set
 ```{r}
