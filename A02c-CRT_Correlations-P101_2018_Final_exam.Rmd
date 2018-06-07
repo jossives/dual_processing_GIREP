@@ -1,0 +1,264 @@
+---
+title: "A02g CRT Correlations (P101 Final exam - Jan, 2018)"
+author: "Joss Ives"
+date: "June 7, 2018"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
+
+# Overview
+This is a companion report for "A02 Initial Explain Your Answee Report (P101 Final exam - Jan, 2018)". In this report, correlations between the treatment and gender are examined in more detail. It has the same setup section as A02
+
+# Setup
+
+```{r echo=FALSE}
+# Load libraries
+library(plyr)
+library(lme4)
+library(ggplot2)
+library(PerformanceAnalytics)
+library(dplyr)
+source("jossfunc.R")
+```
+
+```{r echo=FALSE}
+# Load data
+dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat.csv")
+```
+### Add additional calculated values
+```{r echo=FALSE}
+dat.raw$course.grade.frac <- dat.raw$course.grade/100.
+dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
+dat.raw$final.grade.LMH <- as.integer(
+  cut(dat.raw$f.tot78, quantile(dat.raw$f.tot78, probs=0:3/3), include.lowest=TRUE)
+  )
+dat.raw$final.grade.fix <- (dat.raw$f.tot78-2.*dat.raw$QCORRECT)/76.
+dat.raw$final.gradeA.fix <- (dat.raw$f.Atot40-2.*dat.raw$QCORRECT)/38.
+dat.raw$f.tot100 <- dat.raw$f.tot78/.78
+# Relevel
+dat.raw$CONTROL <- 1-dat.raw$TREATMENT
+dat.raw$CRT.medsplit.rev <- 1-dat.raw$CRT.medsplit
+dat.raw$GRELEVEL <- factor(dat.raw$Gender, levels=c("Male","Female"))
+```
+The following is a summary of the variables present in the data file. The final 4 were caculated in this notebook. "Fix" refers to removing from the overall score on the test, the score of the specific question.
+```{r}
+names(dat.raw)
+```
+
+```{r echo = FALSE}
+### Set categorical variables
+dat.raw$ID        <- factor(dat.raw$ID)
+dat.raw$QNUM      <- factor(dat.raw$QNUM)
+dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$CONTROL <- factor(dat.raw$CONTROL)
+dat.raw$f.version <- factor(dat.raw$f.version)
+
+```
+
+```{r echo=FALSE}
+### Make some data subsets
+
+# Keep only those data points where TREATMENT was set
+dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
+
+# Remove students that didn't receive full participation credit for both EYA questions
+dat.all.EYA <- subset(dat.all, EYAfinal==1)
+
+# Look only at the 4 questions that had TREATMENT
+dat.trt <- subset(dat.all.EYA, QNUM==5 | QNUM==6 | QNUM==9 | QNUM==10)
+
+```
+
+
+```{r echo = FALSE}
+### Set some global variables
+dodge=position_dodge(width=0.9)
+```
+
+# Treatment x CRT.medsplit
+
+In this section we compare making data subset for each level of the CRT median split with using the TREATMENT x CRT.medsplit interaction terms
+
+### Run the regressions on the two groups individually
+
+Low CRT data first
+```{r echo=FALSE}
+m.crtL.data <- glmer(QCORRECT ~ TREATMENT + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, CRT.medsplit==0), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.crtL.data
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+tf11 <- round(exp(tab[[2]]),3)
+tf12 <- round(exp(tab[[5]]),3)
+tf13 <- round(exp(tab[[8]]),3)
+```
+
+High CRT data
+```{r echo=FALSE}
+m.crtH.data  <- glmer(QCORRECT ~ TREATMENT + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, CRT.medsplit==1), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.crtH.data
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+# Grab values for reporting table
+tf21 <- round(exp(tab[[2]]),3)
+tf22 <- round(exp(tab[[5]]),3)
+tf23 <- round(exp(tab[[8]]),3)
+
+```
+
+CRT effect for control condition only, controlling for question difficulty and test perfromance
+```{r echo=FALSE}
+m.control.data <- glmer(QCORRECT ~ CRT.medsplit + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, TREATMENT==0), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.control.data
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+tf31 <- round(exp(tab[[2]]),3)
+tf32 <- round(exp(tab[[5]]),3)
+tf33 <- round(exp(tab[[8]]),3)
+```
+
+CRT effect for treatment condition only, controlling for question difficulty and test performance
+```{r echo=FALSE}
+m.treatment.data <- glmer(QCORRECT ~ CRT.medsplit + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, TREATMENT==1), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.treatment.data
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+tf41 <- round(exp(tab[[2]]),3)
+tf42 <- round(exp(tab[[5]]),3)
+tf43 <- round(exp(tab[[8]]),3)
+```
+
+### Run the regressions on the entire data set with TREATMENT x CRT.medsplit interaction term
+
+First run with low CRT and TREATMENT=Control as the base levels
+```{r echo=FALSE}
+m.gi.L.c <- glmer(QCORRECT ~ TREATMENT*CRT.medsplit + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.gi.L.c
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+tf14 <- round(exp(tab[[2]]),3)
+tf15 <- round(exp(tab[[7]]),3)
+tf16 <- round(exp(tab[[12]]),3)
+tf34 <- round(exp(tab[[3]]),3)
+tf35 <- round(exp(tab[[8]]),3)
+tf36 <- round(exp(tab[[13]]),3)
+```
+
+Then run with high CRT and TREATMENT=Control as the base levels
+```{r echo=FALSE}
+
+
+m.gi.H.c <- glmer(QCORRECT ~ TREATMENT*CRT.medsplit.rev + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.gi.H.c
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+tf24 <- round(exp(tab[[2]]),3)
+tf25 <- round(exp(tab[[7]]),3)
+tf26 <- round(exp(tab[[12]]),3)
+```
+
+
+Then run with high CRT and TREATMENT=Treatment as the base levels
+```{r echo=FALSE}
+
+
+m.gi.L.t <- glmer(QCORRECT ~ CONTROL*CRT.medsplit.rev + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.gi.L.t
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+And then for completion run with Low CRT and TREATMENT=Treatment as the base levels
+```{r echo=FALSE}
+
+
+m.gi.L.t <- glmer(QCORRECT ~ CONTROL*CRT.medsplit + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.gi.L.t
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+tf44 <- round(exp(tab[[3]]),3)
+tf45 <- round(exp(tab[[8]]),3)
+tf46 <- round(exp(tab[[13]]),3)
+```
+
+### Summary of results
+
+_Format table in markdown instead of R for fun_
+
+None of the cross terms were statistically significant
+
+| ODDS RATIOS [95%CI] | Data Subset           | Interaction Term  |
+| ------------- |------------|-----|
+| Treatment (low CRT) | `r tf11` [`r tf12`, `r tf13`] | `r tf14` [`r tf15`, `r tf16`] |
+| Treatment (high CRT) | `r tf21`&ast; [`r tf22`, `r tf23`]  |`r tf24`&ast; [`r tf25`, `r tf26`] |
+| CRT split (Control) | `r tf31`&ast;&ast;&ast; [`r tf32`, `r tf33`]      | `r tf34`&ast;&ast;&ast; [`r tf35`, `r tf36`] |
+| CRT split (Treatment) | `r tf41`&ast;&ast;&ast; [`r tf42`, `r tf43`]      | `r tf44`&ast;&ast;&ast; [`r tf45`, `r tf46`] |
+
+
+# Some quick checks with NCRT instead of CRT.medsplit
+
+```{r echo=FALSE}
+m.control.data <- glmer(QCORRECT ~ TREATMENT*NCRT + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m<-m.control.data
+print(summary(m))
+#
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+

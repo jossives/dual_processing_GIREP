@@ -34,6 +34,9 @@ Interesting findings:
 
 Establishes the analyses to perform with the other (P100, etc) data sets in order to look at the effect of treatment. It establishes that final exam grade and course grade are good predictors to control for in order to improve the model. Even after controlling for performance, gender matters. How this (and correlations with CRT score) are going to be analyzed will be pursued in A02g (gender) and A02c (CRT)
 
-#### A02g Gender correlations
+* A02g Gender correlations - Establishes how we will look for the gender correleations in subsequent data sets
+* A02c NCRT correlations - Establishes how we look at NCRT correlations. In this case we see treatment effect on high CRT scores, but not low
+* A02gn Gender correlations with NCRT split as an additional predictor - Nothing significant changes from A02g
+* A02g2 Gender correlations with course grade - swapping in course grade instead of final exam grade. No significant differences as expected
+* A02gxn Interaction term moved to Gender&ast;CRT.medsplit
 
-Establishes how we will look for the gender correleations in subsequent data sets
