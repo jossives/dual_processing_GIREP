@@ -38,5 +38,4 @@ Establishes the analyses to perform with the other (P100, etc) data sets in orde
 * A02c NCRT correlations - Establishes how we look at NCRT correlations. In this case we see treatment effect on high CRT scores, but not low
 * A02gn Gender correlations with NCRT split as an additional predictor - Nothing significant changes from A02g
 * A02g2 Gender correlations with course grade - swapping in course grade instead of final exam grade. No significant differences as expected
-* A02gxn Interaction term moved to Gender&ast;CRT.medsplit
 
