@@ -1,18 +1,11 @@
 ---
 title: "A02 Initial Explain Your Answee Report (P101 Final exam - Jan, 2018)"
 author: "Joss Ives"
-date: "June 7, 2018"
+date: "May 28, 2018"
 output:
-  html_document:
-    keep_md: yes
-  pdf_document: default
   word_document: default
+  html_document: default
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 *updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
 
 # Overview
@@ -21,13 +14,22 @@ This report discusses the initial analysis of the W2017T2 data from the Physics 
 # Setup
 
 ```{r echo=FALSE}
+#
+# Setup - This section is not written to the output document
+#
+```
+
+```{r echo=FALSE}
 # Load libraries
+source("jossfunc.R")
 library(plyr)
 library(lme4)
 library(ggplot2)
 library(PerformanceAnalytics)
 library(dplyr)
 source("jossfunc.R")
+
+
 ```
 
 ```{r echo=FALSE}
@@ -103,19 +105,19 @@ dodge=position_dodge(width=0.9)
 #print(summary(m))
 ```
 
+
 ### How well was each question answered?
 
 Note that Final Exam V1 had questions 5 & 9 as treatment and V2 had questions 6 & 10 as treatment. Thus both of the questions where we are seeing a difference are from the same version. We need to confirm that these two populations are not performing differently overall. This is likely done most effectively by controlling for version, gender and other differences within the logistic regression. There are too many confounding factors to be able to see through them using bar charts.
 
 ```{r echo=FALSE}
 corr.by.question <- summarySE(
-  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM")
+  data=dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM"),
   )
 
 limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
 corr.by.question
 ```
-
 
 ```{r echo=FALSE}
 
@@ -305,8 +307,8 @@ r.df
 ### A quick summary of odds ratios so far
 ```{r}
 odds.table <- matrix(c(
-  f.result$estimate[[1]],
-  cohens.d.from.odds.simple(f.result$estimate[[1]]),
+  result$estimate[[1]],
+  cohens.d.from.odds.simple(result$estimate[[1]]),
   exp(tab[[2]]),
   cohens.d.from.odds.simple(exp(tab[[2]]))
 ),ncol=2,byrow=TRUE)
@@ -473,3 +475,4 @@ Adding NCRT would improve the model further, but we do not always have access to
 ```{r}
 r.df
 ```
+

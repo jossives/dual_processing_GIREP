@@ -81,7 +81,7 @@ First, the logistic regression will be run, controlling for question number. The
 
 We will treat the question numbers as random effects. This seems to be reasonable since we want to generalize beyond these specific question to questions of this type: https://www.ma.utexas.edu/users/mks/statmistakes/fixedvsrandom.html
 ```{r echo=FALSE}
-m <- glmer(QCORRECT ~ (1|QNUM) + TREATMENT + (1|ID), 
+m <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
                 data = dat.trt, 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
 print(summary(m))

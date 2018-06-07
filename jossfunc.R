@@ -44,7 +44,7 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
   # Rename the "mean" column    
   # Removed for error reasons that I do not yet understand 
   # "Error: All arguments to `rename()` must be named."
-  datac <- rename(datac, c("mean" = measurevar))
+  datac <- plyr::rename(datac, c("mean" = measurevar))
   
   return(datac)
 }
