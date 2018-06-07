@@ -30,6 +30,10 @@ Interesting findings:
 1. We can also look at it with a TREATMENTxGender interaction term and see the same thing. The treatment is significant for females 1.33** (1.08, 1.65) (almost identical to before), and the odds ratio associated with male vs female is 2.33.
 1. Controlling for final exam score (outside of the question in question) make almost no change to the treatment odds for females: 1.32** (1.07, 1.63). However, it makes a significant impact on the gender odds ratio with male vs female going down to 1.74.
 
-### A02 Initial Explain Your Answee Report (P101 Final exam - Jan, 2018)
+### A02 Initial Explain Your Answer Report (P101 Final exam - Jan, 2018)
 
 Establishes the analyses to perform with the other (P100, etc) data sets in order to look at the effect of treatment. It establishes that final exam grade and course grade are good predictors to control for in order to improve the model. Even after controlling for performance, gender matters. How this (and correlations with CRT score) are going to be analyzed will be pursued in A02g (gender) and A02c (CRT)
+
+#### A02g Gender correlations
+
+Establishes how we will look for the gender correleations in subsequent data sets
