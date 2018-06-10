@@ -1,0 +1,87 @@
+---
+title: "Dual processing data preparation"
+output:
+  html_notebook: default
+---
+Produced by Joss Ives, *updated `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*. Based on data preparation documents by Patrick Dubois: [GitHub](https://github.com/pajodu/GERG/)
+
+## Overview
+
+This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.
+
+## Load libraries
+```{r}
+#install.packages("dplyr")
+library("dplyr")
+```
+
+
+## Set directories
+
+Start by setting directories
+
+```{r}
+startDir <- getwd()
+rawDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P100 - 2017-09"
+anonDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P100 - 2017-09"
+```
+
+Load raw data
+
+```{r}
+dataSources <- data.frame(Filename=c(
+                                      "P100-Sept_2017-Final_AnonID.csv", # Gender info
+                                      "P100-final-gradesheet-EYA-mod.csv" # Final exam results
+                                    ),
+                            Tag=c("Classlist", "Final") )
+
+datRawClass <- read.csv(file.path(rawDir,dataSources$Filename[1]))
+datRawFinal <- read.csv(file.path(rawDir,dataSources$Filename[2]))
+```
+
+## Make a new classlist data frame with only the desired column
+
+```{r}
+names(datRawClass)
+```
+
+```{r}
+curDat <- select(datRawClass, ID, AnonID, Gender)
+datClass <- curDat
+names(datClass)
+```
+
+## Make a new final exam data frame with only the desired columns
+
+```{r}
+names(datRawFinal)
+```
+
+
+```{r}
+curDat <- select(datRawFinal, ID, 
+                 A5.f0, A6.f0, A13.f0, A14.f0, 
+                 SoloTotal74.f0, ExamGrade100.f0,
+                 A5.trt.f0, A6.trt.f0, A13.trt.f0, A14.trt.f0,
+                 EYAinclude.f0, version.f0)
+datFinal <- curDat
+names(datFinal)
+```
+
+## Merge the data sets by ID and then make an anonymous version
+
+```{r}
+dpDat <- merge(datClass,datFinal,by="ID")
+dpDat <- select(dpDat,-ID)
+names(dpDat)
+```
+
+
+Temporary cheat to see workflow. Let's just save this anonymized data set to the derived data folder
+
+```{r}
+
+dpOut <- "dpDat.csv"
+write.csv(dpDat, file.path(anonDir,dpOut), row.names = FALSE)
+```
+
