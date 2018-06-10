@@ -1666,7 +1666,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("dual_processing_raw_data_prep_V2.Rmd");
+  window.initializeSourceEmbed("P01-dual_processing_raw_data_prep_V2.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
@@ -1696,7 +1696,7 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
-<p>Produced by Joss Ives, <em>updated 2018 June 10, 15:02:58</em>. Based on data preparation documents by Patrick Dubois: <a href="https://github.com/pajodu/GERG/">GitHub</a></p>
+<p>Produced by Joss Ives, <em>updated 2018 June 10, 16:55:12</em>. Based on data preparation documents by Patrick Dubois: <a href="https://github.com/pajodu/GERG/">GitHub</a></p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.</p>
@@ -1730,13 +1730,13 @@ genderDir &lt;- &quot;C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data&quot;<
 <p>Load raw data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YVNvdXJjZXMgPC0gZGF0YS5mcmFtZShGaWxlbmFtZT1jKFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlAxMFgtQW5vbl9hbmRfR2VuZGVyLmNzdlwiLCAjR2VuZGVyIGFuZCBhbm9uIElEIGluZm9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJQMTAwLW1pZHRlcm0tZ3JhZGVzaGVldC1FWUEuY3N2XCIsICMgUDEwMCBNaWR0ZXJtXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiUDEwMC1maW5hbC1ncmFkZXNoZWV0LUVZQS1tb2QuY3N2XCIsICMgUDEwMCBGaW5hbCBleGFtIHJlc3VsdHNcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJEaWFnbm9zdGljIC0gUmF3IC0gTm90IEFub24uY3N2XCIsICMgUDEwMSBkaWFnbm9zdGljXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWIuY3N2XCIsICNQMTAxIE1pZHRlcm1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJzb2xvLWdyYWRlc2hlZXQgKGZpbmFsKSBncmFkZWRfdGFiLmNzdlwiICMgUDEwMSBGaW5hbFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBUYWc9YyhcIkNsYXNzbGlzdFwiLCBcIlAxMDBNVFwiLCBcIlAxMDBmaW5hbFwiLCBcIlAxMDFkaWFnbm9zdGljXCIsIFwiUDEwMU1UXCIsIFwiUDEwMWZpbmFsXCIpIClcbmRhdFJhd0NsYXNzIDwtIHJlYWQuY3N2KGZpbGUucGF0aChnZW5kZXJEaXIsZGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pKVxuZGF0UmF3TVQxMDAgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMCxkYXRhU291cmNlcyRGaWxlbmFtZVsyXSkpXG5kYXRSYXdGaW5hbDEwMCA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAwLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzNdKSlcbmRhdFJhd0RpYWdub3N0aWMgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMSxkYXRhU291cmNlcyRGaWxlbmFtZVs0XSkpXG5kYXRSYXdNVDEwMSA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAxLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzVdKSlcbmRhdFJhd0ZpbmFsMTAxIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDEsZGF0YVNvdXJjZXMkRmlsZW5hbWVbNl0pKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YVNvdXJjZXMgPC0gZGF0YS5mcmFtZShGaWxlbmFtZT1jKFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlAxMFgtQW5vbl9hbmRfR2VuZGVyLmNzdlwiLCAjR2VuZGVyIGFuZCBhbm9uIElEIGluZm9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJQMTAwLW1pZHRlcm0tZ3JhZGVzaGVldC1FWUEuY3N2XCIsICMgUDEwMCBNaWR0ZXJtXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiUDEwMC1maW5hbC1ncmFkZXNoZWV0LUVZQS1tb2QuY3N2XCIsICMgUDEwMCBGaW5hbCBleGFtIHJlc3VsdHNcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJEaWFnbm9zdGljIC0gUmF3IC0gTm90IEFub24uY3N2XCIsICMgUDEwMSBkaWFnbm9zdGljXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWItRVlBLmNzdlwiLCAjUDEwMSBNaWR0ZXJtXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwic29sby1ncmFkZXNoZWV0IChmaW5hbCkgZ3JhZGVkX3RhYi5jc3ZcIiAjIFAxMDEgRmluYWxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgVGFnPWMoXCJDbGFzc2xpc3RcIiwgXCJQMTAwTVRcIiwgXCJQMTAwZmluYWxcIiwgXCJQMTAxZGlhZ25vc3RpY1wiLCBcIlAxMDFNVFwiLCBcIlAxMDFmaW5hbFwiKSApXG5kYXRSYXdDbGFzcyA8LSByZWFkLmNzdihmaWxlLnBhdGgoZ2VuZGVyRGlyLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzFdKSlcbmRhdFJhd01UMTAwIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDAsZGF0YVNvdXJjZXMkRmlsZW5hbWVbMl0pKVxuZGF0UmF3RmluYWwxMDAgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMCxkYXRhU291cmNlcyRGaWxlbmFtZVszXSkpXG5kYXRSYXdEaWFnbm9zdGljIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDEsZGF0YVNvdXJjZXMkRmlsZW5hbWVbNF0pKVxuZGF0UmF3TVQxMDEgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMSxkYXRhU291cmNlcyRGaWxlbmFtZVs1XSkpXG5kYXRSYXdGaW5hbDEwMSA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAxLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzZdKSlcbmBgYCJ9 -->
 <pre class="r"><code>dataSources &lt;- data.frame(Filename=c(
                                       &quot;P10X-Anon_and_Gender.csv&quot;, #Gender and anon ID info
                                       &quot;P100-midterm-gradesheet-EYA.csv&quot;, # P100 Midterm
                                       &quot;P100-final-gradesheet-EYA-mod.csv&quot;, # P100 Final exam results
                                       &quot;Diagnostic - Raw - Not Anon.csv&quot;, # P101 diagnostic
-                                      &quot;MT solo-gradesheet-graded_tab.csv&quot;, #P101 Midterm
+                                      &quot;MT solo-gradesheet-graded_tab-EYA.csv&quot;, #P101 Midterm
                                       &quot;solo-gradesheet (final) graded_tab.csv&quot; # P101 Final
                                     ),
                             Tag=c(&quot;Classlist&quot;, &quot;P100MT&quot;, &quot;P100final&quot;, &quot;P101diagnostic&quot;, &quot;P101MT&quot;, &quot;P101final&quot;) )
@@ -1781,27 +1781,33 @@ names(curDatClass)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3TVQxMDApXG5gYGAifQ== -->
 <pre class="r"><code>names(datRawMT100)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgIFwiU2VjdGlvblwiICAgICAgXCJWZXJzaW9uXCIgICAgICBcIkExYVwiICAgICAgICAgIFwiQTFhLnNjb3JlXCIgICAgXCJBMWJcIiAgICAgICAgICBcIkExYi5zY29yZVwiICAgXG4gWzhdIFwiQTJcIiAgICAgICAgICAgXCJBMi5zY29yZVwiICAgICBcIkEzXCIgICAgICAgICAgIFwiQTMuTUNcIiAgICAgICAgXCJBMy5zY29yZVwiICAgICBcIkEzLjQuRVlBXCIgICAgIFwiQTRcIiAgICAgICAgICBcblsxNV0gXCJBNC5NQ1wiICAgICAgICBcIkE0LnNjb3JlXCIgICAgIFwiQTVcIiAgICAgICAgICAgXCJBNS5zY29yZVwiICAgICBcIkE2XCIgICAgICAgICAgIFwiQTYuc2NvcmVcIiAgICAgXCJBN1wiICAgICAgICAgIFxuWzIyXSBcIkE3Lk1DXCIgICAgICAgIFwiQTcuc2NvcmVcIiAgICAgXCJBNy44LkVZQVwiICAgICBcIkE4XCIgICAgICAgICAgIFwiQTguTUNcIiAgICAgICAgXCJBOC5zY29yZVwiICAgICBcIkE5XCIgICAgICAgICAgXG5bMjldIFwiQTkuc2NvcmVcIiAgICAgXCJCMVwiICAgICAgICAgICBcIkIyXCIgICAgICAgICAgIFwiQXRvdGFsMjBcIiAgICAgXCJBdG90YWwxNlwiICAgICBcIlNvbG9Ub3RhbDM2XCIgIFwiRXhhbUdyYWRlMTAwXCJcblszNl0gXCJBMy50cnRcIiAgICAgICBcIkE0LnRydFwiICAgICAgIFwiQTcudHJ0XCIgICAgICAgXCJBOC50cnRcIiAgICAgICBcIkVZQWluY2x1ZGVcIiAgXG4ifQ== -->
-<pre><code> [1] &quot;ID&quot;           &quot;Section&quot;      &quot;Version&quot;      &quot;A1a&quot;          &quot;A1a.score&quot;    &quot;A1b&quot;          &quot;A1b.score&quot;   
- [8] &quot;A2&quot;           &quot;A2.score&quot;     &quot;A3&quot;           &quot;A3.MC&quot;        &quot;A3.score&quot;     &quot;A3.4.EYA&quot;     &quot;A4&quot;          
-[15] &quot;A4.MC&quot;        &quot;A4.score&quot;     &quot;A5&quot;           &quot;A5.score&quot;     &quot;A6&quot;           &quot;A6.score&quot;     &quot;A7&quot;          
-[22] &quot;A7.MC&quot;        &quot;A7.score&quot;     &quot;A7.8.EYA&quot;     &quot;A8&quot;           &quot;A8.MC&quot;        &quot;A8.score&quot;     &quot;A9&quot;          
-[29] &quot;A9.score&quot;     &quot;B1&quot;           &quot;B2&quot;           &quot;Atotal20&quot;     &quot;Atotal16&quot;     &quot;SoloTotal36&quot;  &quot;ExamGrade100&quot;
-[36] &quot;A3.trt&quot;       &quot;A4.trt&quot;       &quot;A7.trt&quot;       &quot;A8.trt&quot;       &quot;EYAinclude&quot;  </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgIFwiU2VjdGlvblwiICAgICAgXCJWZXJzaW9uXCIgICAgICBcIkExYVwiICAgICAgICAgIFwiQTFhLnNjb3JlXCIgICAgXCJBMWJcIiAgICAgICAgIFxuIFs3XSBcIkExYi5zY29yZVwiICAgIFwiQTJcIiAgICAgICAgICAgXCJBMi5zY29yZVwiICAgICBcIkEzXCIgICAgICAgICAgIFwiQTMuTUNcIiAgICAgICAgXCJBMy5zY29yZVwiICAgIFxuWzEzXSBcIkEzLjQuRVlBXCIgICAgIFwiQTRcIiAgICAgICAgICAgXCJBNC5NQ1wiICAgICAgICBcIkE0LnNjb3JlXCIgICAgIFwiQTVcIiAgICAgICAgICAgXCJBNS5zY29yZVwiICAgIFxuWzE5XSBcIkE2XCIgICAgICAgICAgIFwiQTYuc2NvcmVcIiAgICAgXCJBN1wiICAgICAgICAgICBcIkE3Lk1DXCIgICAgICAgIFwiQTcuc2NvcmVcIiAgICAgXCJBNy44LkVZQVwiICAgIFxuWzI1XSBcIkE4XCIgICAgICAgICAgIFwiQTguTUNcIiAgICAgICAgXCJBOC5zY29yZVwiICAgICBcIkE5XCIgICAgICAgICAgIFwiQTkuc2NvcmVcIiAgICAgXCJCMVwiICAgICAgICAgIFxuWzMxXSBcIkIyXCIgICAgICAgICAgIFwiQXRvdGFsMjBcIiAgICAgXCJBdG90YWwxNlwiICAgICBcIlNvbG9Ub3RhbDM2XCIgIFwiRXhhbUdyYWRlMTAwXCIgXCJBMy50cnRcIiAgICAgIFxuWzM3XSBcIkE0LnRydFwiICAgICAgIFwiQTcudHJ0XCIgICAgICAgXCJBOC50cnRcIiAgICAgICBcIkVZQWluY2x1ZGVcIiAgXG4ifQ== -->
+<pre><code> [1] &quot;ID&quot;           &quot;Section&quot;      &quot;Version&quot;      &quot;A1a&quot;          &quot;A1a.score&quot;    &quot;A1b&quot;         
+ [7] &quot;A1b.score&quot;    &quot;A2&quot;           &quot;A2.score&quot;     &quot;A3&quot;           &quot;A3.MC&quot;        &quot;A3.score&quot;    
+[13] &quot;A3.4.EYA&quot;     &quot;A4&quot;           &quot;A4.MC&quot;        &quot;A4.score&quot;     &quot;A5&quot;           &quot;A5.score&quot;    
+[19] &quot;A6&quot;           &quot;A6.score&quot;     &quot;A7&quot;           &quot;A7.MC&quot;        &quot;A7.score&quot;     &quot;A7.8.EYA&quot;    
+[25] &quot;A8&quot;           &quot;A8.MC&quot;        &quot;A8.score&quot;     &quot;A9&quot;           &quot;A9.score&quot;     &quot;B1&quot;          
+[31] &quot;B2&quot;           &quot;Atotal20&quot;     &quot;Atotal16&quot;     &quot;SoloTotal36&quot;  &quot;ExamGrade100&quot; &quot;A3.trt&quot;      
+[37] &quot;A4.trt&quot;       &quot;A7.trt&quot;       &quot;A8.trt&quot;       &quot;EYAinclude&quot;  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDAgPC0gc2VsZWN0KGRhdFJhd01UMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTMuc2NvcmUsIEE0LnNjb3JlLCBBNy5zY29yZSwgQTguc2NvcmUsXG4gICAgICAgICAgICAgICAgICAgICAgQTMudHJ0LCBBNC50cnQsIEE3LnRydCwgQTgudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDM2LCBFWUFpbmNsdWRlKVxubmFtZXMoY3VyRGF0TVQxMDApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDAgPC0gc2VsZWN0KGRhdFJhd01UMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTMuc2NvcmUsIEE0LnNjb3JlLCBBNy5zY29yZSwgQTguc2NvcmUsXG4gICAgICAgICAgICAgICAgICAgICAgQTMudHJ0LCBBNC50cnQsIEE3LnRydCwgQTgudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDM2LCBFWUFpbmNsdWRlKVxuIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVyc1xuY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09XCJBMy5zY29yZVwiXSA8LSBcIkEzXCJcbmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PVwiQTQuc2NvcmVcIl0gPC0gXCJBNFwiXG5jb2xuYW1lcyhjdXJEYXRNVDEwMClbY29sbmFtZXMoY3VyRGF0TVQxMDApPT1cIkE3LnNjb3JlXCJdIDwtIFwiQTdcIlxuY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09XCJBOC5zY29yZVwiXSA8LSBcIkE4XCJcbm5hbWVzKGN1ckRhdE1UMTAwKVxuYGBgIn0= -->
 <pre class="r"><code>curDatMT100 &lt;- select(datRawMT100, ID, 
                       A3.score, A4.score, A7.score, A8.score,
                       A3.trt, A4.trt, A7.trt, A8.trt,
                       SoloTotal36, EYAinclude)
+# Rename question numbers
+colnames(curDatMT100)[colnames(curDatMT100)==&quot;A3.score&quot;] &lt;- &quot;A3&quot;
+colnames(curDatMT100)[colnames(curDatMT100)==&quot;A4.score&quot;] &lt;- &quot;A4&quot;
+colnames(curDatMT100)[colnames(curDatMT100)==&quot;A7.score&quot;] &lt;- &quot;A7&quot;
+colnames(curDatMT100)[colnames(curDatMT100)==&quot;A8.score&quot;] &lt;- &quot;A8&quot;
 names(curDatMT100)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBMy5zY29yZVwiICAgIFwiQTQuc2NvcmVcIiAgICBcIkE3LnNjb3JlXCIgICAgXCJBOC5zY29yZVwiICAgIFwiQTMudHJ0XCIgICAgICBcIkE0LnRydFwiICAgICBcbiBbOF0gXCJBNy50cnRcIiAgICAgIFwiQTgudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDM2XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
-<pre><code> [1] &quot;ID&quot;          &quot;A3.score&quot;    &quot;A4.score&quot;    &quot;A7.score&quot;    &quot;A8.score&quot;    &quot;A3.trt&quot;      &quot;A4.trt&quot;     
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBM1wiICAgICAgICAgIFwiQTRcIiAgICAgICAgICBcIkE3XCIgICAgICAgICAgXCJBOFwiICAgICAgICAgIFwiQTMudHJ0XCIgICAgICBcIkE0LnRydFwiICAgICBcbiBbOF0gXCJBNy50cnRcIiAgICAgIFwiQTgudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDM2XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
+<pre><code> [1] &quot;ID&quot;          &quot;A3&quot;          &quot;A4&quot;          &quot;A7&quot;          &quot;A8&quot;          &quot;A3.trt&quot;      &quot;A4.trt&quot;     
  [8] &quot;A7.trt&quot;      &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot; </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -1810,18 +1816,20 @@ names(curDatMT100)</code></pre>
 <h3>Merge the data sets by ID and then make an anonymous version</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG4jZHBEYXRQMTAwbWlkdGVybSA8LSBzZWxlY3QoZHBEYXRQMTAwbWlkdGVybSwtSUQpXG5uYW1lcyhkcERhdFAxMDBtaWR0ZXJtKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG5kcERhdFAxMDBtaWR0ZXJtIDwtIHNlbGVjdChkcERhdFAxMDBtaWR0ZXJtLC1JRClcbm5hbWVzKGRwRGF0UDEwMG1pZHRlcm0pXG5gYGAifQ== -->
 <pre class="r"><code>dpDatP100midterm &lt;- merge(curDatMT100,curDatClass,by=&quot;ID&quot;)
-#dpDatP100midterm &lt;- select(dpDatP100midterm,-ID)
+dpDatP100midterm &lt;- select(dpDatP100midterm,-ID)
 names(dpDatP100midterm)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBMy5zY29yZVwiICAgIFwiQTQuc2NvcmVcIiAgICBcIkE3LnNjb3JlXCIgICAgXCJBOC5zY29yZVwiICAgIFwiQTMudHJ0XCIgICAgICBcIkE0LnRydFwiICAgICBcbiBbOF0gXCJBNy50cnRcIiAgICAgIFwiQTgudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDM2XCIgXCJFWUFpbmNsdWRlXCIgIFwiQW5vbklEXCIgICAgICBcIkdlbmRlclwiICAgICBcbiJ9 -->
-<pre><code> [1] &quot;ID&quot;          &quot;A3.score&quot;    &quot;A4.score&quot;    &quot;A7.score&quot;    &quot;A8.score&quot;    &quot;A3.trt&quot;      &quot;A4.trt&quot;     
- [8] &quot;A7.trt&quot;      &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkEzXCIgICAgICAgICAgXCJBNFwiICAgICAgICAgIFwiQTdcIiAgICAgICAgICBcIkE4XCIgICAgICAgICAgXCJBMy50cnRcIiAgICAgIFwiQTQudHJ0XCIgICAgICBcIkE3LnRydFwiICAgICBcbiBbOF0gXCJBOC50cnRcIiAgICAgIFwiU29sb1RvdGFsMzZcIiBcIkVZQWluY2x1ZGVcIiAgXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<pre><code> [1] &quot;A3&quot;          &quot;A4&quot;          &quot;A7&quot;          &quot;A8&quot;          &quot;A3.trt&quot;      &quot;A4.trt&quot;      &quot;A7.trt&quot;     
+ [8] &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Save file to anonymized folder</p>
+</div>
+<div id="save-file-to-anonymized-folder" class="section level3">
+<h3>Save file to anonymized folder</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBPdXQgPC0gXCJkcERhdFAxMDBtaWR0ZXJtLmNzdlwiXG53cml0ZS5jc3YoZHBEYXRQMTAwbWlkdGVybSwgZmlsZS5wYXRoKGFub25EaXIxMDAsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSlcbmBgYCJ9 -->
@@ -1830,111 +1838,208 @@ write.csv(dpDatP100midterm, file.path(anonDir100,dpOut), row.names = FALSE)</cod
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Make a new classlist data frame with only the desired column</p>
+</div>
+</div>
+<div id="make-a-final100-df-with-only-the-desired-columns" class="section level2">
+<h2>Make a Final100 df with only the desired columns</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3Q2xhc3MpXG5gYGAifQ== -->
-<pre class="r"><code>names(datRawClass)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3RmluYWwxMDApXG5gYGAifQ== -->
+<pre class="r"><code>names(datRawFinal100)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkFub25JRFwiICAgICAgIFwiTGFzdC5OYW1lXCIgICAgXCJGaXJzdC5OYW1lXCIgICBcIklEXCIgICAgICAgICAgIFwiR1JPVVBJRFwiICAgICAgXCJTT0xPSURcIiAgICAgIFxuIFs3XSBcIk5HUk9VUFwiICAgICAgIFwiR2VuZGVyXCIgICAgICAgXCJTT0xPU0NPUkVcIiAgICBcIlNPTE9TQ09SRUEzMlwiIFwiU09MT1NDT1JFQjQyXCIgXCJHUk9VUFNDT1JFXCIgIFxuWzEzXSBcIlMxXCIgICAgICAgICAgIFwiUzJcIiAgICAgICAgICAgXCJTM1wiICAgICAgICAgICBcIlM0XCIgICAgICAgICAgIFwiUzVcIiAgICAgICAgICAgXCJTNlwiICAgICAgICAgIFxuWzE5XSBcIlM3XCIgICAgICAgICAgIFwiUzhcIiAgICAgICAgICAgXCJTOVwiICAgICAgICAgICBcIlMxMFwiICAgICAgICAgIFwiUzExXCIgICAgICAgICAgXCJTMTJcIiAgICAgICAgIFxuWzI1XSBcIlMxM1wiICAgICAgICAgIFwiUzE0XCIgICAgICAgICAgXCJTMTVcIiAgICAgICAgICBcIlMxNlwiICAgICAgICAgIFwiRzFwdHNcIiAgICAgICAgXCJHMnB0c1wiICAgICAgIFxuWzMxXSBcIkczcHRzXCIgICAgICAgIFwiRzRwdHNcIiAgICAgICAgXCJHNXB0c1wiICAgICAgICBcIkc2cHRzXCIgICAgICAgIFwiRzdwdHNcIiAgICAgICAgXCJHOHB0c1wiICAgICAgIFxuWzM3XSBcIkc5cHRzXCIgICAgICAgIFwiRzEwcHRzXCIgICAgICAgXCJHMTFwdHNcIiAgICAgICBcIkcxMnB0c1wiICAgICAgIFwiRzEzcHRzXCIgICAgICAgXCJHMTRwdHNcIiAgICAgIFxuWzQzXSBcIkcxNXB0c1wiICAgICAgIFwiRzE2cHRzXCIgICAgICBcbiJ9 -->
-<pre><code> [1] &quot;AnonID&quot;       &quot;Last.Name&quot;    &quot;First.Name&quot;   &quot;ID&quot;           &quot;GROUPID&quot;      &quot;SOLOID&quot;      
- [7] &quot;NGROUP&quot;       &quot;Gender&quot;       &quot;SOLOSCORE&quot;    &quot;SOLOSCOREA32&quot; &quot;SOLOSCOREB42&quot; &quot;GROUPSCORE&quot;  
-[13] &quot;S1&quot;           &quot;S2&quot;           &quot;S3&quot;           &quot;S4&quot;           &quot;S5&quot;           &quot;S6&quot;          
-[19] &quot;S7&quot;           &quot;S8&quot;           &quot;S9&quot;           &quot;S10&quot;          &quot;S11&quot;          &quot;S12&quot;         
-[25] &quot;S13&quot;          &quot;S14&quot;          &quot;S15&quot;          &quot;S16&quot;          &quot;G1pts&quot;        &quot;G2pts&quot;       
-[31] &quot;G3pts&quot;        &quot;G4pts&quot;        &quot;G5pts&quot;        &quot;G6pts&quot;        &quot;G7pts&quot;        &quot;G8pts&quot;       
-[37] &quot;G9pts&quot;        &quot;G10pts&quot;       &quot;G11pts&quot;       &quot;G12pts&quot;       &quot;G13pts&quot;       &quot;G14pts&quot;      
-[43] &quot;G15pts&quot;       &quot;G16pts&quot;      </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgICBcInNlY3Rpb24uZjBcIiAgICAgICBcIlZlcnNpb25cIiAgICAgICAgICBcIkExYS5hbnN3ZXIuZjBcIiAgICBcIkExYS5mMFwiICAgICAgICAgIFxuIFs2XSBcIkExYi5hbnN3ZXIuZjBcIiAgICBcIkExYi5mMFwiICAgICAgICAgICBcIkEyLmFuc3dlci5mMFwiICAgICBcIkEyLmYwXCIgICAgICAgICAgICBcIkEzLmFuc3dlci5mMFwiICAgIFxuWzExXSBcIkEzLmYwXCIgICAgICAgICAgICBcIkE0LmFuc3dlci5mMFwiICAgICBcIkE0LmYwXCIgICAgICAgICAgICBcIkE1LmFuc3dlci5mMFwiICAgICBcIkE1XCIgICAgICAgICAgICAgIFxuWzE2XSBcIkE1LnJlYWxzY29yZS5mMFwiICBcIkE2LmFuc3dlci5mMFwiICAgICBcIkE2XCIgICAgICAgICAgICAgICBcIkE2LmFuc3dlci5mMC4xXCIgICBcIkE1LkE2LkVZQS5mMFwiICAgIFxuWzIxXSBcIkE3LmFuc3dlci5mMFwiICAgICBcIkE3LmYwXCIgICAgICAgICAgICBcIkE4LmFuc3dlci5mMFwiICAgICBcIkE4LmYwXCIgICAgICAgICAgICBcIkE5LmFuc3dlci5mMFwiICAgIFxuWzI2XSBcIkE5LmYwXCIgICAgICAgICAgICBcIkExMC5hbnN3ZXIuZjBcIiAgICBcIkExMC5mMFwiICAgICAgICAgICBcIkExMS5hbnN3ZXIuZjBcIiAgICBcIkExMS5mMFwiICAgICAgICAgIFxuWzMxXSBcIkExMi5hbnN3ZXIuZjBcIiAgICBcIkExMi5mMFwiICAgICAgICAgICBcIkExMy5hbnN3ZXIuZjBcIiAgICBcIkExM1wiICAgICAgICAgICAgICBcIkExMy5yZWFsc2NvcmUuZjBcIlxuWzM2XSBcIkExNC5hbnN3ZXIuZjBcIiAgICBcIkExNFwiICAgICAgICAgICAgICBcIkExNC5yZWFsc2NvcmUuZjBcIiBcIkExNC5BMTMuRVlBLmYwXCIgICBcIkExNS5hbnN3ZXIuZjBcIiAgIFxuWzQxXSBcIkExNS5mMFwiICAgICAgICAgICBcIkIxLmYwXCIgICAgICAgICAgICBcIkIyLmYwXCIgICAgICAgICAgICBcIkIzLmYwXCIgICAgICAgICAgICBcIkI0LmYwXCIgICAgICAgICAgIFxuWzQ2XSBcIkI1LmYwXCIgICAgICAgICAgICBcIkF0b3RhbDMyXCIgICAgICAgICBcIkJ0b3RhbDQyXCIgICAgICAgICBcIlNvbG9Ub3RhbDc0XCIgICAgICBcIkV4YW1HcmFkZTEwMFwiICAgIFxuWzUxXSBcIkE1LnRydFwiICAgICAgICAgICBcIkE2LnRydFwiICAgICAgICAgICBcIkExMy50cnRcIiAgICAgICAgICBcIkExNC50cnRcIiAgICAgICAgICBcIkVZQWluY2x1ZGVcIiAgICAgIFxuIn0= -->
+<pre><code> [1] &quot;ID&quot;               &quot;section.f0&quot;       &quot;Version&quot;          &quot;A1a.answer.f0&quot;    &quot;A1a.f0&quot;          
+ [6] &quot;A1b.answer.f0&quot;    &quot;A1b.f0&quot;           &quot;A2.answer.f0&quot;     &quot;A2.f0&quot;            &quot;A3.answer.f0&quot;    
+[11] &quot;A3.f0&quot;            &quot;A4.answer.f0&quot;     &quot;A4.f0&quot;            &quot;A5.answer.f0&quot;     &quot;A5&quot;              
+[16] &quot;A5.realscore.f0&quot;  &quot;A6.answer.f0&quot;     &quot;A6&quot;               &quot;A6.answer.f0.1&quot;   &quot;A5.A6.EYA.f0&quot;    
+[21] &quot;A7.answer.f0&quot;     &quot;A7.f0&quot;            &quot;A8.answer.f0&quot;     &quot;A8.f0&quot;            &quot;A9.answer.f0&quot;    
+[26] &quot;A9.f0&quot;            &quot;A10.answer.f0&quot;    &quot;A10.f0&quot;           &quot;A11.answer.f0&quot;    &quot;A11.f0&quot;          
+[31] &quot;A12.answer.f0&quot;    &quot;A12.f0&quot;           &quot;A13.answer.f0&quot;    &quot;A13&quot;              &quot;A13.realscore.f0&quot;
+[36] &quot;A14.answer.f0&quot;    &quot;A14&quot;              &quot;A14.realscore.f0&quot; &quot;A14.A13.EYA.f0&quot;   &quot;A15.answer.f0&quot;   
+[41] &quot;A15.f0&quot;           &quot;B1.f0&quot;            &quot;B2.f0&quot;            &quot;B3.f0&quot;            &quot;B4.f0&quot;           
+[46] &quot;B5.f0&quot;            &quot;Atotal32&quot;         &quot;Btotal42&quot;         &quot;SoloTotal74&quot;      &quot;ExamGrade100&quot;    
+[51] &quot;A5.trt&quot;           &quot;A6.trt&quot;           &quot;A13.trt&quot;          &quot;A14.trt&quot;          &quot;EYAinclude&quot;      </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdDbGFzcywgSUQsIEFub25JRCwgR2VuZGVyKVxuZGF0Q2xhc3MgPC0gY3VyRGF0XG5uYW1lcyhkYXRDbGFzcylcbmBgYCJ9 -->
-<pre class="r"><code>curDat &lt;- select(datRawClass, ID, AnonID, Gender)
-datClass &lt;- curDat
-names(datClass)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RmluYWwxMDAgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBMTMsIEExNCxcbiAgICAgICAgICAgICAgICAgICAgICBBNS50cnQsIEE2LnRydCwgQTEzLnRydCwgQTE0LnRydCxcbiAgICAgICAgICAgICAgICAgICAgICBTb2xvVG90YWw3NCwgRVlBaW5jbHVkZSlcbm5hbWVzKGN1ckRhdEZpbmFsMTAwKVxuYGBgIn0= -->
+<pre class="r"><code>curDatFinal100 &lt;- select(datRawFinal100, ID, 
+                      A5, A6, A13, A14,
+                      A5.trt, A6.trt, A13.trt, A14.trt,
+                      SoloTotal74, EYAinclude)
+names(curDatFinal100)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgXCJBbm9uSURcIiBcIkdlbmRlclwiXG4ifQ== -->
-<pre><code>[1] &quot;ID&quot;     &quot;AnonID&quot; &quot;Gender&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBNVwiICAgICAgICAgIFwiQTZcIiAgICAgICAgICBcIkExM1wiICAgICAgICAgXCJBMTRcIiAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICBcbiBbOF0gXCJBMTMudHJ0XCIgICAgIFwiQTE0LnRydFwiICAgICBcIlNvbG9Ub3RhbDc0XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
+<pre><code> [1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A13&quot;         &quot;A14&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;     
+ [8] &quot;A13.trt&quot;     &quot;A14.trt&quot;     &quot;SoloTotal74&quot; &quot;EYAinclude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="merge-the-data-sets-by-id-and-then-make-an-anonymous-version-1" class="section level3">
+<h3>Merge the data sets by ID and then make an anonymous version</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDAsY3VyRGF0Q2xhc3MsYnk9XCJJRFwiKVxuZHBEYXRQMTAwZmluYWwgPC0gc2VsZWN0KGRwRGF0UDEwMGZpbmFsLC1JRClcbm5hbWVzKGRwRGF0UDEwMGZpbmFsKVxuYGBgIn0= -->
+<pre class="r"><code>dpDatP100final &lt;- merge(curDatFinal100,curDatClass,by=&quot;ID&quot;)
+dpDatP100final &lt;- select(dpDatP100final,-ID)
+names(dpDatP100final)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTEzXCIgICAgICAgICBcIkExNFwiICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIkExMy50cnRcIiAgICBcbiBbOF0gXCJBMTQudHJ0XCIgICAgIFwiU29sb1RvdGFsNzRcIiBcIkVZQWluY2x1ZGVcIiAgXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<pre><code> [1] &quot;A5&quot;          &quot;A6&quot;          &quot;A13&quot;         &quot;A14&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;A13.trt&quot;    
+ [8] &quot;A14.trt&quot;     &quot;SoloTotal74&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-</div>
-<div id="make-a-new-final-exam-data-frame-with-only-the-desired-columns" class="section level2">
-<h2>Make a new final exam data frame with only the desired columns</h2>
+<div id="save-file-to-anonymized-folder-1" class="section level3">
+<h3>Save file to anonymized folder</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3RmluYWwpXG5gYGAifQ== -->
-<pre class="r"><code>names(datRawFinal)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBPdXQgPC0gXCJkcERhdFAxMDBmaW5hbC5jc3ZcIlxud3JpdGUuY3N2KGRwRGF0UDEwMGZpbmFsLCBmaWxlLnBhdGgoYW5vbkRpcjEwMCxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKVxuYGBgIn0= -->
+<pre class="r"><code>dpOut &lt;- &quot;dpDatP100final.csv&quot;
+write.csv(dpDatP100final, file.path(anonDir100,dpOut), row.names = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgICBcInNlY3Rpb24uZjBcIiAgICAgICBcInZlcnNpb24uZjBcIiAgICAgICBcIkExYS5hbnN3ZXIuZjBcIiAgIFxuIFs1XSBcIkExYS5mMFwiICAgICAgICAgICBcIkExYi5hbnN3ZXIuZjBcIiAgICBcIkExYi5mMFwiICAgICAgICAgICBcIkEyLmFuc3dlci5mMFwiICAgIFxuIFs5XSBcIkEyLmYwXCIgICAgICAgICAgICBcIkEzLmFuc3dlci5mMFwiICAgICBcIkEzLmYwXCIgICAgICAgICAgICBcIkE0LmFuc3dlci5mMFwiICAgIFxuWzEzXSBcIkE0LmYwXCIgICAgICAgICAgICBcIkE1LmFuc3dlci5mMFwiICAgICBcIkE1LmYwXCIgICAgICAgICAgICBcIkE1LnJlYWxzY29yZS5mMFwiIFxuWzE3XSBcIkE2LmFuc3dlci5mMFwiICAgICBcIkE2LmYwXCIgICAgICAgICAgICBcIkE2LmFuc3dlci5mMC4xXCIgICBcIkE1LkE2LkVZQS5mMFwiICAgIFxuWzIxXSBcIkE3LmFuc3dlci5mMFwiICAgICBcIkE3LmYwXCIgICAgICAgICAgICBcIkE4LmFuc3dlci5mMFwiICAgICBcIkE4LmYwXCIgICAgICAgICAgIFxuWzI1XSBcIkE5LmFuc3dlci5mMFwiICAgICBcIkE5LmYwXCIgICAgICAgICAgICBcIkExMC5hbnN3ZXIuZjBcIiAgICBcIkExMC5mMFwiICAgICAgICAgIFxuWzI5XSBcIkExMS5hbnN3ZXIuZjBcIiAgICBcIkExMS5mMFwiICAgICAgICAgICBcIkExMi5hbnN3ZXIuZjBcIiAgICBcIkExMi5mMFwiICAgICAgICAgIFxuWzMzXSBcIkExMy5hbnN3ZXIuZjBcIiAgICBcIkExMy5mMFwiICAgICAgICAgICBcIkExMy5yZWFsc2NvcmUuZjBcIiBcIkExNC5hbnN3ZXIuZjBcIiAgIFxuWzM3XSBcIkExNC5mMFwiICAgICAgICAgICBcIkExNC5yZWFsc2NvcmUuZjBcIiBcIkExNC5BMTMuRVlBLmYwXCIgICBcIkExNS5hbnN3ZXIuZjBcIiAgIFxuWzQxXSBcIkExNS5mMFwiICAgICAgICAgICBcIkIxLmYwXCIgICAgICAgICAgICBcIkIyLmYwXCIgICAgICAgICAgICBcIkIzLmYwXCIgICAgICAgICAgIFxuWzQ1XSBcIkI0LmYwXCIgICAgICAgICAgICBcIkI1LmYwXCIgICAgICAgICAgICBcIkF0b3RhbDMyLmYwXCIgICAgICBcIkJ0b3RhbDQyLmYwXCIgICAgIFxuWzQ5XSBcIlNvbG9Ub3RhbDc0LmYwXCIgICBcIkV4YW1HcmFkZTEwMC5mMFwiICBcIkE1LnRydC5mMFwiICAgICAgICBcIkE2LnRydC5mMFwiICAgICAgIFxuWzUzXSBcIkExMy50cnQuZjBcIiAgICAgICBcIkExNC50cnQuZjBcIiAgICAgICBcIkVZQWluY2x1ZGUuZjBcIiAgIFxuIn0= -->
-<pre><code> [1] &quot;ID&quot;               &quot;section.f0&quot;       &quot;version.f0&quot;       &quot;A1a.answer.f0&quot;   
- [5] &quot;A1a.f0&quot;           &quot;A1b.answer.f0&quot;    &quot;A1b.f0&quot;           &quot;A2.answer.f0&quot;    
- [9] &quot;A2.f0&quot;            &quot;A3.answer.f0&quot;     &quot;A3.f0&quot;            &quot;A4.answer.f0&quot;    
-[13] &quot;A4.f0&quot;            &quot;A5.answer.f0&quot;     &quot;A5.f0&quot;            &quot;A5.realscore.f0&quot; 
-[17] &quot;A6.answer.f0&quot;     &quot;A6.f0&quot;            &quot;A6.answer.f0.1&quot;   &quot;A5.A6.EYA.f0&quot;    
-[21] &quot;A7.answer.f0&quot;     &quot;A7.f0&quot;            &quot;A8.answer.f0&quot;     &quot;A8.f0&quot;           
-[25] &quot;A9.answer.f0&quot;     &quot;A9.f0&quot;            &quot;A10.answer.f0&quot;    &quot;A10.f0&quot;          
-[29] &quot;A11.answer.f0&quot;    &quot;A11.f0&quot;           &quot;A12.answer.f0&quot;    &quot;A12.f0&quot;          
-[33] &quot;A13.answer.f0&quot;    &quot;A13.f0&quot;           &quot;A13.realscore.f0&quot; &quot;A14.answer.f0&quot;   
-[37] &quot;A14.f0&quot;           &quot;A14.realscore.f0&quot; &quot;A14.A13.EYA.f0&quot;   &quot;A15.answer.f0&quot;   
-[41] &quot;A15.f0&quot;           &quot;B1.f0&quot;            &quot;B2.f0&quot;            &quot;B3.f0&quot;           
-[45] &quot;B4.f0&quot;            &quot;B5.f0&quot;            &quot;Atotal32.f0&quot;      &quot;Btotal42.f0&quot;     
-[49] &quot;SoloTotal74.f0&quot;   &quot;ExamGrade100.f0&quot;  &quot;A5.trt.f0&quot;        &quot;A6.trt.f0&quot;       
-[53] &quot;A13.trt.f0&quot;       &quot;A14.trt.f0&quot;       &quot;EYAinclude.f0&quot;   </code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdGaW5hbCwgSUQsIFxuICAgICAgICAgICAgICAgICBBNS5mMCwgQTYuZjAsIEExMy5mMCwgQTE0LmYwLCBcbiAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzQuZjAsIEV4YW1HcmFkZTEwMC5mMCxcbiAgICAgICAgICAgICAgICAgQTUudHJ0LmYwLCBBNi50cnQuZjAsIEExMy50cnQuZjAsIEExNC50cnQuZjAsXG4gICAgICAgICAgICAgICAgIEVZQWluY2x1ZGUuZjAsIHZlcnNpb24uZjApXG5kYXRGaW5hbCA8LSBjdXJEYXRcbm5hbWVzKGRhdEZpbmFsKVxuYGBgIn0= -->
-<pre class="r"><code>curDat &lt;- select(datRawFinal, ID, 
-                 A5.f0, A6.f0, A13.f0, A14.f0, 
-                 SoloTotal74.f0, ExamGrade100.f0,
-                 A5.trt.f0, A6.trt.f0, A13.trt.f0, A14.trt.f0,
-                 EYAinclude.f0, version.f0)
-datFinal &lt;- curDat
-names(datFinal)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgIFwiQTUuZjBcIiAgICAgICAgICAgXCJBNi5mMFwiICAgICAgICAgICBcIkExMy5mMFwiICAgICAgICAgIFwiQTE0LmYwXCIgICAgICAgICBcbiBbNl0gXCJTb2xvVG90YWw3NC5mMFwiICBcIkV4YW1HcmFkZTEwMC5mMFwiIFwiQTUudHJ0LmYwXCIgICAgICAgXCJBNi50cnQuZjBcIiAgICAgICBcIkExMy50cnQuZjBcIiAgICAgXG5bMTFdIFwiQTE0LnRydC5mMFwiICAgICAgXCJFWUFpbmNsdWRlLmYwXCIgICBcInZlcnNpb24uZjBcIiAgICAgXG4ifQ== -->
-<pre><code> [1] &quot;ID&quot;              &quot;A5.f0&quot;           &quot;A6.f0&quot;           &quot;A13.f0&quot;          &quot;A14.f0&quot;         
- [6] &quot;SoloTotal74.f0&quot;  &quot;ExamGrade100.f0&quot; &quot;A5.trt.f0&quot;       &quot;A6.trt.f0&quot;       &quot;A13.trt.f0&quot;     
-[11] &quot;A14.trt.f0&quot;      &quot;EYAinclude.f0&quot;   &quot;version.f0&quot;     </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="merge-the-data-sets-by-id-and-then-make-an-anonymous-version-1" class="section level2">
-<h2>Merge the data sets by ID and then make an anonymous version</h2>
+</div>
+<div id="make-a-mt101-df-with-only-the-desired-columns" class="section level2">
+<h2>Make a MT101 df with only the desired columns</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXQgPC0gbWVyZ2UoZGF0Q2xhc3MsZGF0RmluYWwsYnk9XCJJRFwiKVxuZHBEYXQgPC0gc2VsZWN0KGRwRGF0LC1JRClcbm5hbWVzKGRwRGF0KVxuYGBgIn0= -->
-<pre class="r"><code>dpDat &lt;- merge(datClass,datFinal,by=&quot;ID&quot;)
-dpDat &lt;- select(dpDat,-ID)
-names(dpDat)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3TVQxMDEpXG5gYGAifQ== -->
+<pre class="r"><code>names(datRawMT101)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkFub25JRFwiICAgICAgICAgIFwiR2VuZGVyXCIgICAgICAgICAgXCJBNS5mMFwiICAgICAgICAgICBcIkE2LmYwXCIgICAgICAgICAgIFwiQTEzLmYwXCIgICAgICAgICBcbiBbNl0gXCJBMTQuZjBcIiAgICAgICAgICBcIlNvbG9Ub3RhbDc0LmYwXCIgIFwiRXhhbUdyYWRlMTAwLmYwXCIgXCJBNS50cnQuZjBcIiAgICAgICBcIkE2LnRydC5mMFwiICAgICAgXG5bMTFdIFwiQTEzLnRydC5mMFwiICAgICAgXCJBMTQudHJ0LmYwXCIgICAgICBcIkVZQWluY2x1ZGUuZjBcIiAgIFwidmVyc2lvbi5mMFwiICAgICBcbiJ9 -->
-<pre><code> [1] &quot;AnonID&quot;          &quot;Gender&quot;          &quot;A5.f0&quot;           &quot;A6.f0&quot;           &quot;A13.f0&quot;         
- [6] &quot;A14.f0&quot;          &quot;SoloTotal74.f0&quot;  &quot;ExamGrade100.f0&quot; &quot;A5.trt.f0&quot;       &quot;A6.trt.f0&quot;      
-[11] &quot;A13.trt.f0&quot;      &quot;A14.trt.f0&quot;      &quot;EYAinclude.f0&quot;   &quot;version.f0&quot;     </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgXCJDYW52YXMuc2VjdGlvblwiIFwiU3R1ZGVudC5udW1iZXJcIiBcIlNlY3Rpb25cIiAgICAgICAgXCJWZXJzaW9uXCIgICAgICAgXG4gWzZdIFwiQTEuYVwiICAgICAgICAgICBcIkExLmEuc2NvcmVcIiAgICAgXCJBMS5iXCIgICAgICAgICAgIFwiQTEuYi5zY29yZVwiICAgICBcIkExLmNcIiAgICAgICAgICBcblsxMV0gXCJBMS5jLnNjb3JlXCIgICAgIFwiQTJcIiAgICAgICAgICAgICBcIkEyLnNjb3JlXCIgICAgICAgXCJBMy5hXCIgICAgICAgICAgIFwiQTMuYS5zY29yZVwiICAgIFxuWzE2XSBcIkEzLmJcIiAgICAgICAgICAgXCJBMy5iLnNjb3JlXCIgICAgIFwiQTRcIiAgICAgICAgICAgICBcIkE0LnNjb3JlXCIgICAgICAgXCJBNVwiICAgICAgICAgICAgXG5bMjFdIFwiQTUuc2NvcmVcIiAgICAgICBcIkE1LnNjb3JlLkVZQVwiICAgXCJBNlwiICAgICAgICAgICAgIFwiQTYuc2NvcmVcIiAgICAgICBcIkE2LnNjb3JlLkVZQVwiICBcblsyNl0gXCJFWUFcIiAgICAgICAgICAgIFwiQTdcIiAgICAgICAgICAgICBcIkE3LnNjb3JlXCIgICAgICAgXCJBOFwiICAgICAgICAgICAgIFwiQTguc2NvcmVcIiAgICAgIFxuWzMxXSBcIkE5XCIgICAgICAgICAgICAgXCJBOS5zY29yZVwiICAgICAgIFwiQTEwXCIgICAgICAgICAgICBcIkExMC5zY29yZVwiICAgICAgXCJCMVwiICAgICAgICAgICAgXG5bMzZdIFwiQjJcIiAgICAgICAgICAgICBcIkF0b3RhbDI0XCIgICAgICAgXCJCdG90YWwxOVwiICAgICAgIFwiU29sb1RvdGFsNDNcIiAgICBcIkV4YW1HcmFkZTEwMFwiICBcbls0MV0gXCJBNS50cnRcIiAgICAgICAgIFwiQTYudHJ0XCIgICAgICAgICBcIkVZQWluY2x1ZGVcIiAgICBcbiJ9 -->
+<pre><code> [1] &quot;ID&quot;             &quot;Canvas.section&quot; &quot;Student.number&quot; &quot;Section&quot;        &quot;Version&quot;       
+ [6] &quot;A1.a&quot;           &quot;A1.a.score&quot;     &quot;A1.b&quot;           &quot;A1.b.score&quot;     &quot;A1.c&quot;          
+[11] &quot;A1.c.score&quot;     &quot;A2&quot;             &quot;A2.score&quot;       &quot;A3.a&quot;           &quot;A3.a.score&quot;    
+[16] &quot;A3.b&quot;           &quot;A3.b.score&quot;     &quot;A4&quot;             &quot;A4.score&quot;       &quot;A5&quot;            
+[21] &quot;A5.score&quot;       &quot;A5.score.EYA&quot;   &quot;A6&quot;             &quot;A6.score&quot;       &quot;A6.score.EYA&quot;  
+[26] &quot;EYA&quot;            &quot;A7&quot;             &quot;A7.score&quot;       &quot;A8&quot;             &quot;A8.score&quot;      
+[31] &quot;A9&quot;             &quot;A9.score&quot;       &quot;A10&quot;            &quot;A10.score&quot;      &quot;B1&quot;            
+[36] &quot;B2&quot;             &quot;Atotal24&quot;       &quot;Btotal19&quot;       &quot;SoloTotal43&quot;    &quot;ExamGrade100&quot;  
+[41] &quot;A5.trt&quot;         &quot;A6.trt&quot;         &quot;EYAinclude&quot;    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Temporary cheat to see workflow. Let’s just save this anonymized data set to the derived data folder</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBPdXQgPC0gXCJkcERhdC5jc3ZcIlxud3JpdGUuY3N2KGRwRGF0LCBmaWxlLnBhdGgoYW5vbkRpcixkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKVxuYGBgIn0= -->
-<pre class="r"><code>dpOut &lt;- &quot;dpDat.csv&quot;
-write.csv(dpDat, file.path(anonDir,dpOut), row.names = FALSE)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDEgPC0gc2VsZWN0KGRhdFJhd01UMTAxLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUuc2NvcmUsIEE2LnNjb3JlLFxuICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDQzLCBFWUFpbmNsdWRlKVxuIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVyc1xuY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09XCJBNS5zY29yZVwiXSA8LSBcIkE1XCJcbmNvbG5hbWVzKGN1ckRhdE1UMTAxKVtjb2xuYW1lcyhjdXJEYXRNVDEwMSk9PVwiQTYuc2NvcmVcIl0gPC0gXCJBNlwiXG5uYW1lcyhjdXJEYXRNVDEwMSlcbmBgYCJ9 -->
+<pre class="r"><code>curDatMT101 &lt;- select(datRawMT101, ID, 
+                      A5.score, A6.score,
+                      A5.trt, A6.trt,
+                      SoloTotal43, EYAinclude)
+# Rename question numbers
+colnames(curDatMT101)[colnames(curDatMT101)==&quot;A5.score&quot;] &lt;- &quot;A5&quot;
+colnames(curDatMT101)[colnames(curDatMT101)==&quot;A6.score&quot;] &lt;- &quot;A6&quot;
+names(curDatMT101)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgICBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICAgXCJTb2xvVG90YWw0M1wiIFwiRVlBaW5jbHVkZVwiIFxuIn0= -->
+<pre><code>[1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;SoloTotal43&quot; &quot;EYAinclude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="merge-the-data-sets-by-id-and-then-make-an-anonymous-version-2" class="section level3">
+<h3>Merge the data sets by ID and then make an anonymous version</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAxbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMSxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG5kcERhdFAxMDFtaWR0ZXJtIDwtIHNlbGVjdChkcERhdFAxMDFtaWR0ZXJtLC1JRClcbm5hbWVzKGRwRGF0UDEwMW1pZHRlcm0pXG5gYGAifQ== -->
+<pre class="r"><code>dpDatP101midterm &lt;- merge(curDatMT101,curDatClass,by=&quot;ID&quot;)
+dpDatP101midterm &lt;- select(dpDatP101midterm,-ID)
+names(dpDatP101midterm)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQTVcIiAgICAgICAgICBcIkE2XCIgICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDQzXCIgXCJFWUFpbmNsdWRlXCIgIFwiQW5vbklEXCIgICAgIFxuWzhdIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<pre><code>[1] &quot;A5&quot;          &quot;A6&quot;          &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;SoloTotal43&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;     
+[8] &quot;Gender&quot;     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="save-file-to-anonymized-folder-2" class="section level3">
+<h3>Save file to anonymized folder</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBPdXQgPC0gXCJkcERhdFAxMDFtaWR0ZXJtLmNzdlwiXG53cml0ZS5jc3YoZHBEYXRQMTAxbWlkdGVybSwgZmlsZS5wYXRoKGFub25EaXIxMDEsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSlcbmBgYCJ9 -->
+<pre class="r"><code>dpOut &lt;- &quot;dpDatP101midterm.csv&quot;
+write.csv(dpDatP101midterm, file.path(anonDir101,dpOut), row.names = FALSE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="make-a-final101-df-with-only-the-desired-columns" class="section level2">
+<h2>Make a Final101 df with only the desired columns</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3RmluYWwxMDEpXG5gYGAifQ== -->
+<pre class="r"><code>names(datRawFinal101)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgIFwiRmluYWxWZXJzaW9uXCIgICAgXCJmLkExLmFuc3dcIiAgICAgICBcImYuQTFcIiAgICAgICAgICAgIFwiZi5BMi5hbnN3XCIgICAgICBcbiBbNl0gXCJmLkEyXCIgICAgICAgICAgICBcImYuQTMuYW5zd1wiICAgICAgIFwiZi5BM1wiICAgICAgICAgICAgXCJmLkE0LmFuc3dcIiAgICAgICBcImYuQTRcIiAgICAgICAgICAgXG5bMTFdIFwiZi5BNS5hbnN3XCIgICAgICAgXCJBNVwiICAgICAgICAgICAgICBcImYuQTUuc2NvcmUuRVlBXCIgIFwiZi5BNi5hbnN3XCIgICAgICAgXCJBNlwiICAgICAgICAgICAgIFxuWzE2XSBcImYuQTYuc2NvcmUuRVlBXCIgIFwiZi5BNS5BNi5FWUFcIiAgICAgXCJmLkE3LmFuc3dcIiAgICAgICBcImYuQTdcIiAgICAgICAgICAgIFwiZi5BOC5hbnN3XCIgICAgICBcblsyMV0gXCJmLkE4XCIgICAgICAgICAgICBcImYuQTkuYW5zd1wiICAgICAgIFwiQTlcIiAgICAgICAgICAgICAgXCJmLkE5LnNjb3JlLkVZQVwiICBcImYuQTEwLmFuc3dcIiAgICAgXG5bMjZdIFwiQTEwXCIgICAgICAgICAgICAgXCJmLkExMC5zY29yZS5FWUFcIiBcImYuQTkuQTEwLkVZQVwiICAgIFwiZi5BMTEuYW5zd1wiICAgICAgXCJmLkExMVwiICAgICAgICAgIFxuWzMxXSBcImYuQTEyLmFuc3dcIiAgICAgIFwiZi5BMTJcIiAgICAgICAgICAgXCJmLkExMy5hbnN3XCIgICAgICBcImYuQTEzXCIgICAgICAgICAgIFwiZi5BMTQuYW5zd1wiICAgICBcblszNl0gXCJmLkExNFwiICAgICAgICAgICBcImYuQTE1LmFuc3dcIiAgICAgIFwiZi5BMTVcIiAgICAgICAgICAgXCJmLkExNi5hbnN3XCIgICAgICBcImYuQTE2XCIgICAgICAgICAgXG5bNDFdIFwiZi5BMTcuYW5zd1wiICAgICAgXCJmLkExN1wiICAgICAgICAgICBcImYuQTE4LmFuc3dcIiAgICAgIFwiZi5BMThcIiAgICAgICAgICAgXCJmLkExOWEuYW5zd1wiICAgIFxuWzQ2XSBcImYuQTE5YVwiICAgICAgICAgIFwiZi5BMTliLmFuc3dcIiAgICAgXCJmLkExOWJcIiAgICAgICAgICBcImYuQjFcIiAgICAgICAgICAgIFwiZi5CMlwiICAgICAgICAgICBcbls1MV0gXCJmLkIzXCIgICAgICAgICAgICBcImYuQjRcIiAgICAgICAgICAgIFwiQXRvdGFsNDBcIiAgICAgICAgXCJCdG90YWwzOFwiICAgICAgICBcIlNvbG9Ub3RhbDc4XCIgICAgXG5bNTZdIFwiRXhhbUdyYWRlMTAwXCIgICAgXCJBNS50cnRcIiAgICAgICAgICBcIkE2LnRydFwiICAgICAgICAgIFwiQTkudHJ0XCIgICAgICAgICAgXCJBMTAudHJ0XCIgICAgICAgIFxuWzYxXSBcIkVZQWluY2x1ZGVcIiAgICAgXG4ifQ== -->
+<pre><code> [1] &quot;ID&quot;              &quot;FinalVersion&quot;    &quot;f.A1.answ&quot;       &quot;f.A1&quot;            &quot;f.A2.answ&quot;      
+ [6] &quot;f.A2&quot;            &quot;f.A3.answ&quot;       &quot;f.A3&quot;            &quot;f.A4.answ&quot;       &quot;f.A4&quot;           
+[11] &quot;f.A5.answ&quot;       &quot;A5&quot;              &quot;f.A5.score.EYA&quot;  &quot;f.A6.answ&quot;       &quot;A6&quot;             
+[16] &quot;f.A6.score.EYA&quot;  &quot;f.A5.A6.EYA&quot;     &quot;f.A7.answ&quot;       &quot;f.A7&quot;            &quot;f.A8.answ&quot;      
+[21] &quot;f.A8&quot;            &quot;f.A9.answ&quot;       &quot;A9&quot;              &quot;f.A9.score.EYA&quot;  &quot;f.A10.answ&quot;     
+[26] &quot;A10&quot;             &quot;f.A10.score.EYA&quot; &quot;f.A9.A10.EYA&quot;    &quot;f.A11.answ&quot;      &quot;f.A11&quot;          
+[31] &quot;f.A12.answ&quot;      &quot;f.A12&quot;           &quot;f.A13.answ&quot;      &quot;f.A13&quot;           &quot;f.A14.answ&quot;     
+[36] &quot;f.A14&quot;           &quot;f.A15.answ&quot;      &quot;f.A15&quot;           &quot;f.A16.answ&quot;      &quot;f.A16&quot;          
+[41] &quot;f.A17.answ&quot;      &quot;f.A17&quot;           &quot;f.A18.answ&quot;      &quot;f.A18&quot;           &quot;f.A19a.answ&quot;    
+[46] &quot;f.A19a&quot;          &quot;f.A19b.answ&quot;     &quot;f.A19b&quot;          &quot;f.B1&quot;            &quot;f.B2&quot;           
+[51] &quot;f.B3&quot;            &quot;f.B4&quot;            &quot;Atotal40&quot;        &quot;Btotal38&quot;        &quot;SoloTotal78&quot;    
+[56] &quot;ExamGrade100&quot;    &quot;A5.trt&quot;          &quot;A6.trt&quot;          &quot;A9.trt&quot;          &quot;A10.trt&quot;        
+[61] &quot;EYAinclude&quot;     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RmluYWwxMDEgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAxLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBOSwgQTEwLFxuICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBOS50cnQsIEExMC50cnQsXG4gICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzgsIEVZQWluY2x1ZGUpXG5uYW1lcyhjdXJEYXRGaW5hbDEwMSlcbmBgYCJ9 -->
+<pre class="r"><code>curDatFinal101 &lt;- select(datRawFinal101, ID, 
+                      A5, A6, A9, A10,
+                      A5.trt, A6.trt, A9.trt, A10.trt,
+                      SoloTotal78, EYAinclude)
+names(curDatFinal101)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBNVwiICAgICAgICAgIFwiQTZcIiAgICAgICAgICBcIkE5XCIgICAgICAgICAgXCJBMTBcIiAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICBcbiBbOF0gXCJBOS50cnRcIiAgICAgIFwiQTEwLnRydFwiICAgICBcIlNvbG9Ub3RhbDc4XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
+<pre><code> [1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A9&quot;          &quot;A10&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;     
+ [8] &quot;A9.trt&quot;      &quot;A10.trt&quot;     &quot;SoloTotal78&quot; &quot;EYAinclude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="merge-the-data-sets-by-id-and-then-make-an-anonymous-version-3" class="section level3">
+<h3>Merge the data sets by ID and then make an anonymous version</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAxZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDEsY3VyRGF0Q2xhc3MsYnk9XCJJRFwiKVxuZHBEYXRQMTAxZmluYWwgPC0gc2VsZWN0KGRwRGF0UDEwMWZpbmFsLC1JRClcbm5hbWVzKGRwRGF0UDEwMWZpbmFsKVxuYGBgIn0= -->
+<pre class="r"><code>dpDatP101final &lt;- merge(curDatFinal101,curDatClass,by=&quot;ID&quot;)
+dpDatP101final &lt;- select(dpDatP101final,-ID)
+names(dpDatP101final)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTlcIiAgICAgICAgICBcIkExMFwiICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIkE5LnRydFwiICAgICBcbiBbOF0gXCJBMTAudHJ0XCIgICAgIFwiU29sb1RvdGFsNzhcIiBcIkVZQWluY2x1ZGVcIiAgXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<pre><code> [1] &quot;A5&quot;          &quot;A6&quot;          &quot;A9&quot;          &quot;A10&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;A9.trt&quot;     
+ [8] &quot;A10.trt&quot;     &quot;SoloTotal78&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="save-file-to-anonymized-folder-3" class="section level3">
+<h3>Save file to anonymized folder</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBPdXQgPC0gXCJkcERhdFAxMDFmaW5hbC5jc3ZcIlxud3JpdGUuY3N2KGRwRGF0UDEwMWZpbmFsLCBmaWxlLnBhdGgoYW5vbkRpcjEwMSxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKVxuYGBgIn0= -->
+<pre class="r"><code>dpOut &lt;- &quot;dpDatP101final.csv&quot;
+write.csv(dpDatP101final, file.path(anonDir101,dpOut), row.names = FALSE)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1YWwgcHJvY2Vzc2luZyBkYXRhIHByZXBhcmF0aW9uIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQotLS0NClByb2R1Y2VkIGJ5IEpvc3MgSXZlcywgKnVwZGF0ZWQgYHIgZm9ybWF0KFN5cy50aW1lKCksICIlWSAlQiAlZCwgJUg6JU06JVMiKWAqLiBCYXNlZCBvbiBkYXRhIHByZXBhcmF0aW9uIGRvY3VtZW50cyBieSBQYXRyaWNrIER1Ym9pczogW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL3Bham9kdS9HRVJHLykNCg0KIyMgT3ZlcnZpZXcNCg0KVGhpcyBmaWxlIGNvbWJpbmVzIG1pZHRlcm0sIGZpbmFsIGV4YW0gYW5kIGRpYWdub3N0aWMgZGF0YSBpbnRvIGEgc2luZ2xlIGZpbGUuIFRoaXMgZGF0YSBmb3JtYXQgbWF5IG5lZWQgdG8gYmUgZnVydGhlciBtb2RpZmllZCBmb3IgdGhlIGxvZ2lzdGljIGFuYWx5c2lzLg0KDQojIyBMb2FkIGxpYnJhcmllcw0KYGBge3J9DQojaW5zdGFsbC5wYWNrYWdlcygiZHBseXIiKQ0KbGlicmFyeSgiZHBseXIiKQ0KYGBgDQoNCg0KIyMgU2V0IGRpcmVjdG9yaWVzDQoNClN0YXJ0IGJ5IHNldHRpbmcgZGlyZWN0b3JpZXMNCg0KYGBge3J9DQpzdGFydERpciA8LSBnZXR3ZCgpDQpyYXdEaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAwIC0gMjAxNy0wOSINCmFub25EaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMCAtIDIwMTctMDkiDQpyYXdEaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMSINCmFub25EaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDEiDQpnZW5kZXJEaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YSINCmBgYA0KDQpMb2FkIHJhdyBkYXRhDQoNCmBgYHtyfQ0KZGF0YVNvdXJjZXMgPC0gZGF0YS5mcmFtZShGaWxlbmFtZT1jKA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiUDEwWC1Bbm9uX2FuZF9HZW5kZXIuY3N2IiwgI0dlbmRlciBhbmQgYW5vbiBJRCBpbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJQMTAwLW1pZHRlcm0tZ3JhZGVzaGVldC1FWUEuY3N2IiwgIyBQMTAwIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlAxMDAtZmluYWwtZ3JhZGVzaGVldC1FWUEtbW9kLmNzdiIsICMgUDEwMCBGaW5hbCBleGFtIHJlc3VsdHMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkRpYWdub3N0aWMgLSBSYXcgLSBOb3QgQW5vbi5jc3YiLCAjIFAxMDEgZGlhZ25vc3RpYw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWIuY3N2IiwgI1AxMDEgTWlkdGVybQ0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAic29sby1ncmFkZXNoZWV0IChmaW5hbCkgZ3JhZGVkX3RhYi5jc3YiICMgUDEwMSBGaW5hbA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBUYWc9YygiQ2xhc3NsaXN0IiwgIlAxMDBNVCIsICJQMTAwZmluYWwiLCAiUDEwMWRpYWdub3N0aWMiLCAiUDEwMU1UIiwgIlAxMDFmaW5hbCIpICkNCg0KZGF0UmF3Q2xhc3MgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKGdlbmRlckRpcixkYXRhU291cmNlcyRGaWxlbmFtZVsxXSkpDQpkYXRSYXdNVDEwMCA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAwLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzJdKSkNCmRhdFJhd0ZpbmFsMTAwIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDAsZGF0YVNvdXJjZXMkRmlsZW5hbWVbM10pKQ0KZGF0UmF3RGlhZ25vc3RpYyA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAxLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzRdKSkNCmRhdFJhd01UMTAxIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDEsZGF0YVNvdXJjZXMkRmlsZW5hbWVbNV0pKQ0KZGF0UmF3RmluYWwxMDEgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMSxkYXRhU291cmNlcyRGaWxlbmFtZVs2XSkpDQpgYGANCg0KIyMgTWFrZSBhIGNsYXNzbGlzdCBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd0NsYXNzKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0Q2xhc3MgPC0gc2VsZWN0KGRhdFJhd0NsYXNzLCBJRCwgQW5vbklELCBHZW5kZXIpIA0KbmFtZXMoY3VyRGF0Q2xhc3MpDQpgYGANCg0KIyMgTWFrZSBhIE1UMTAwIGRmIHdpdGggb25seSB0aGUgZGVzaXJlZCBjb2x1bW5zDQoNCmBgYHtyfQ0KbmFtZXMoZGF0UmF3TVQxMDApDQpgYGANCg0KYGBge3J9DQpjdXJEYXRNVDEwMCA8LSBzZWxlY3QoZGF0UmF3TVQxMDAsIElELCANCiAgICAgICAgICAgICAgICAgICAgICBBMy5zY29yZSwgQTQuc2NvcmUsIEE3LnNjb3JlLCBBOC5zY29yZSwNCiAgICAgICAgICAgICAgICAgICAgICBBMy50cnQsIEE0LnRydCwgQTcudHJ0LCBBOC50cnQsDQogICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsMzYsIEVZQWluY2x1ZGUpDQpuYW1lcyhjdXJEYXRNVDEwMCkNCmBgYA0KDQojIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT0iSUQiKQ0KI2RwRGF0UDEwMG1pZHRlcm0gPC0gc2VsZWN0KGRwRGF0UDEwMG1pZHRlcm0sLUlEKQ0KbmFtZXMoZHBEYXRQMTAwbWlkdGVybSkNCmBgYA0KDQpTYXZlIGZpbGUgdG8gYW5vbnltaXplZCBmb2xkZXINCg0KYGBge3J9DQoNCmRwT3V0IDwtICJkcERhdFAxMDBtaWR0ZXJtLmNzdiINCndyaXRlLmNzdihkcERhdFAxMDBtaWR0ZXJtLCBmaWxlLnBhdGgoYW5vbkRpcjEwMCxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KDQoNCg0KDQoNCg0KIE1ha2UgYSBuZXcgY2xhc3NsaXN0IGRhdGEgZnJhbWUgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbg0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd0NsYXNzKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0IDwtIHNlbGVjdChkYXRSYXdDbGFzcywgSUQsIEFub25JRCwgR2VuZGVyKQ0KZGF0Q2xhc3MgPC0gY3VyRGF0DQpuYW1lcyhkYXRDbGFzcykNCmBgYA0KDQojIyBNYWtlIGEgbmV3IGZpbmFsIGV4YW0gZGF0YSBmcmFtZSB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd0ZpbmFsKQ0KYGBgDQoNCg0KYGBge3J9DQpjdXJEYXQgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsLCBJRCwgDQogICAgICAgICAgICAgICAgIEE1LmYwLCBBNi5mMCwgQTEzLmYwLCBBMTQuZjAsIA0KICAgICAgICAgICAgICAgICBTb2xvVG90YWw3NC5mMCwgRXhhbUdyYWRlMTAwLmYwLA0KICAgICAgICAgICAgICAgICBBNS50cnQuZjAsIEE2LnRydC5mMCwgQTEzLnRydC5mMCwgQTE0LnRydC5mMCwNCiAgICAgICAgICAgICAgICAgRVlBaW5jbHVkZS5mMCwgdmVyc2lvbi5mMCkNCmRhdEZpbmFsIDwtIGN1ckRhdA0KbmFtZXMoZGF0RmluYWwpDQpgYGANCg0KIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXQgPC0gbWVyZ2UoZGF0Q2xhc3MsZGF0RmluYWwsYnk9IklEIikNCmRwRGF0IDwtIHNlbGVjdChkcERhdCwtSUQpDQpuYW1lcyhkcERhdCkNCmBgYA0KDQoNClRlbXBvcmFyeSBjaGVhdCB0byBzZWUgd29ya2Zsb3cuIExldCdzIGp1c3Qgc2F2ZSB0aGlzIGFub255bWl6ZWQgZGF0YSBzZXQgdG8gdGhlIGRlcml2ZWQgZGF0YSBmb2xkZXINCg0KYGBge3J9DQoNCmRwT3V0IDwtICJkcERhdC5jc3YiDQp3cml0ZS5jc3YoZHBEYXQsIGZpbGUucGF0aChhbm9uRGlyLGRwT3V0KSwgcm93Lm5hbWVzID0gRkFMU0UpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1YWwgcHJvY2Vzc2luZyBkYXRhIHByZXBhcmF0aW9uIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQotLS0NClByb2R1Y2VkIGJ5IEpvc3MgSXZlcywgKnVwZGF0ZWQgYHIgZm9ybWF0KFN5cy50aW1lKCksICIlWSAlQiAlZCwgJUg6JU06JVMiKWAqLiBCYXNlZCBvbiBkYXRhIHByZXBhcmF0aW9uIGRvY3VtZW50cyBieSBQYXRyaWNrIER1Ym9pczogW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL3Bham9kdS9HRVJHLykNCg0KIyMgT3ZlcnZpZXcNCg0KVGhpcyBmaWxlIGNvbWJpbmVzIG1pZHRlcm0sIGZpbmFsIGV4YW0gYW5kIGRpYWdub3N0aWMgZGF0YSBpbnRvIGEgc2luZ2xlIGZpbGUuIFRoaXMgZGF0YSBmb3JtYXQgbWF5IG5lZWQgdG8gYmUgZnVydGhlciBtb2RpZmllZCBmb3IgdGhlIGxvZ2lzdGljIGFuYWx5c2lzLg0KDQojIyBMb2FkIGxpYnJhcmllcw0KYGBge3J9DQojaW5zdGFsbC5wYWNrYWdlcygiZHBseXIiKQ0KbGlicmFyeSgiZHBseXIiKQ0KYGBgDQoNCg0KIyMgU2V0IGRpcmVjdG9yaWVzDQoNClN0YXJ0IGJ5IHNldHRpbmcgZGlyZWN0b3JpZXMNCg0KYGBge3J9DQpzdGFydERpciA8LSBnZXR3ZCgpDQpyYXdEaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAwIC0gMjAxNy0wOSINCmFub25EaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMCAtIDIwMTctMDkiDQpyYXdEaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMSINCmFub25EaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDEiDQpnZW5kZXJEaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YSINCmBgYA0KDQpMb2FkIHJhdyBkYXRhDQoNCmBgYHtyfQ0KZGF0YVNvdXJjZXMgPC0gZGF0YS5mcmFtZShGaWxlbmFtZT1jKA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiUDEwWC1Bbm9uX2FuZF9HZW5kZXIuY3N2IiwgI0dlbmRlciBhbmQgYW5vbiBJRCBpbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJQMTAwLW1pZHRlcm0tZ3JhZGVzaGVldC1FWUEuY3N2IiwgIyBQMTAwIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlAxMDAtZmluYWwtZ3JhZGVzaGVldC1FWUEtbW9kLmNzdiIsICMgUDEwMCBGaW5hbCBleGFtIHJlc3VsdHMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkRpYWdub3N0aWMgLSBSYXcgLSBOb3QgQW5vbi5jc3YiLCAjIFAxMDEgZGlhZ25vc3RpYw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWItRVlBLmNzdiIsICNQMTAxIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInNvbG8tZ3JhZGVzaGVldCAoZmluYWwpIGdyYWRlZF90YWIuY3N2IiAjIFAxMDEgRmluYWwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgVGFnPWMoIkNsYXNzbGlzdCIsICJQMTAwTVQiLCAiUDEwMGZpbmFsIiwgIlAxMDFkaWFnbm9zdGljIiwgIlAxMDFNVCIsICJQMTAxZmluYWwiKSApDQoNCmRhdFJhd0NsYXNzIDwtIHJlYWQuY3N2KGZpbGUucGF0aChnZW5kZXJEaXIsZGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pKQ0KZGF0UmF3TVQxMDAgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMCxkYXRhU291cmNlcyRGaWxlbmFtZVsyXSkpDQpkYXRSYXdGaW5hbDEwMCA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAwLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzNdKSkNCmRhdFJhd0RpYWdub3N0aWMgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMSxkYXRhU291cmNlcyRGaWxlbmFtZVs0XSkpDQpkYXRSYXdNVDEwMSA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAxLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzVdKSkNCmRhdFJhd0ZpbmFsMTAxIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDEsZGF0YVNvdXJjZXMkRmlsZW5hbWVbNl0pKQ0KYGBgDQoNCiMjIE1ha2UgYSBjbGFzc2xpc3QgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdDbGFzcykNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdENsYXNzIDwtIHNlbGVjdChkYXRSYXdDbGFzcywgSUQsIEFub25JRCwgR2VuZGVyKSANCm5hbWVzKGN1ckRhdENsYXNzKQ0KYGBgDQoNCiMjIE1ha2UgYSBNVDEwMCBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd01UMTAwKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0TVQxMDAgPC0gc2VsZWN0KGRhdFJhd01UMTAwLCBJRCwgDQogICAgICAgICAgICAgICAgICAgICAgQTMuc2NvcmUsIEE0LnNjb3JlLCBBNy5zY29yZSwgQTguc2NvcmUsDQogICAgICAgICAgICAgICAgICAgICAgQTMudHJ0LCBBNC50cnQsIEE3LnRydCwgQTgudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDM2LCBFWUFpbmNsdWRlKQ0KIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVycw0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkEzLnNjb3JlIl0gPC0gIkEzIg0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkE0LnNjb3JlIl0gPC0gIkE0Ig0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkE3LnNjb3JlIl0gPC0gIkE3Ig0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkE4LnNjb3JlIl0gPC0gIkE4Ig0KDQpuYW1lcyhjdXJEYXRNVDEwMCkNCmBgYA0KDQojIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT0iSUQiKQ0KZHBEYXRQMTAwbWlkdGVybSA8LSBzZWxlY3QoZHBEYXRQMTAwbWlkdGVybSwtSUQpDQpuYW1lcyhkcERhdFAxMDBtaWR0ZXJtKQ0KYGBgDQoNCiMjIyBTYXZlIGZpbGUgdG8gYW5vbnltaXplZCBmb2xkZXINCg0KYGBge3J9DQoNCmRwT3V0IDwtICJkcERhdFAxMDBtaWR0ZXJtLmNzdiINCndyaXRlLmNzdihkcERhdFAxMDBtaWR0ZXJtLCBmaWxlLnBhdGgoYW5vbkRpcjEwMCxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KIyMgTWFrZSBhIEZpbmFsMTAwIGRmIHdpdGggb25seSB0aGUgZGVzaXJlZCBjb2x1bW5zDQoNCmBgYHtyfQ0KbmFtZXMoZGF0UmF3RmluYWwxMDApDQpgYGANCg0KYGBge3J9DQpjdXJEYXRGaW5hbDEwMCA8LSBzZWxlY3QoZGF0UmF3RmluYWwxMDAsIElELCANCiAgICAgICAgICAgICAgICAgICAgICBBNSwgQTYsIEExMywgQTE0LA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBMTMudHJ0LCBBMTQudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDc0LCBFWUFpbmNsdWRlKQ0KbmFtZXMoY3VyRGF0RmluYWwxMDApDQpgYGANCg0KIyMjIE1lcmdlIHRoZSBkYXRhIHNldHMgYnkgSUQgYW5kIHRoZW4gbWFrZSBhbiBhbm9ueW1vdXMgdmVyc2lvbg0KDQpgYGB7cn0NCmRwRGF0UDEwMGZpbmFsIDwtIG1lcmdlKGN1ckRhdEZpbmFsMTAwLGN1ckRhdENsYXNzLGJ5PSJJRCIpDQpkcERhdFAxMDBmaW5hbCA8LSBzZWxlY3QoZHBEYXRQMTAwZmluYWwsLUlEKQ0KbmFtZXMoZHBEYXRQMTAwZmluYWwpDQpgYGANCg0KIyMjIFNhdmUgZmlsZSB0byBhbm9ueW1pemVkIGZvbGRlcg0KDQpgYGB7cn0NCg0KZHBPdXQgPC0gImRwRGF0UDEwMGZpbmFsLmNzdiINCndyaXRlLmNzdihkcERhdFAxMDBmaW5hbCwgZmlsZS5wYXRoKGFub25EaXIxMDAsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSkNCmBgYA0KDQoNCiMjIE1ha2UgYSBNVDEwMSBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd01UMTAxKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0TVQxMDEgPC0gc2VsZWN0KGRhdFJhd01UMTAxLCBJRCwgDQogICAgICAgICAgICAgICAgICAgICAgQTUuc2NvcmUsIEE2LnNjb3JlLA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDQzLCBFWUFpbmNsdWRlKQ0KIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVycw0KY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09IkE1LnNjb3JlIl0gPC0gIkE1Ig0KY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09IkE2LnNjb3JlIl0gPC0gIkE2Ig0KbmFtZXMoY3VyRGF0TVQxMDEpDQpgYGANCg0KIyMjIE1lcmdlIHRoZSBkYXRhIHNldHMgYnkgSUQgYW5kIHRoZW4gbWFrZSBhbiBhbm9ueW1vdXMgdmVyc2lvbg0KDQpgYGB7cn0NCmRwRGF0UDEwMW1pZHRlcm0gPC0gbWVyZ2UoY3VyRGF0TVQxMDEsY3VyRGF0Q2xhc3MsYnk9IklEIikNCmRwRGF0UDEwMW1pZHRlcm0gPC0gc2VsZWN0KGRwRGF0UDEwMW1pZHRlcm0sLUlEKQ0KbmFtZXMoZHBEYXRQMTAxbWlkdGVybSkNCmBgYA0KDQojIyMgU2F2ZSBmaWxlIHRvIGFub255bWl6ZWQgZm9sZGVyDQoNCmBgYHtyfQ0KDQpkcE91dCA8LSAiZHBEYXRQMTAxbWlkdGVybS5jc3YiDQp3cml0ZS5jc3YoZHBEYXRQMTAxbWlkdGVybSwgZmlsZS5wYXRoKGFub25EaXIxMDEsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSkNCmBgYA0KDQoNCiMjIE1ha2UgYSBGaW5hbDEwMSBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd0ZpbmFsMTAxKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0RmluYWwxMDEgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAxLCBJRCwgDQogICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBOSwgQTEwLA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBOS50cnQsIEExMC50cnQsDQogICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzgsIEVZQWluY2x1ZGUpDQpuYW1lcyhjdXJEYXRGaW5hbDEwMSkNCmBgYA0KDQojIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXRQMTAxZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDEsY3VyRGF0Q2xhc3MsYnk9IklEIikNCmRwRGF0UDEwMWZpbmFsIDwtIHNlbGVjdChkcERhdFAxMDFmaW5hbCwtSUQpDQpuYW1lcyhkcERhdFAxMDFmaW5hbCkNCmBgYA0KDQojIyMgU2F2ZSBmaWxlIHRvIGFub255bWl6ZWQgZm9sZGVyDQoNCmBgYHtyfQ0KDQpkcE91dCA8LSAiZHBEYXRQMTAxZmluYWwuY3N2Ig0Kd3JpdGUuY3N2KGRwRGF0UDEwMWZpbmFsLCBmaWxlLnBhdGgoYW5vbkRpcjEwMSxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KDQoNCg0KDQoNCg0K</div>
 
 
 

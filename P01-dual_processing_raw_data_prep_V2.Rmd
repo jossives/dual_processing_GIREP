@@ -37,7 +37,7 @@ dataSources <- data.frame(Filename=c(
                                       "P100-midterm-gradesheet-EYA.csv", # P100 Midterm
                                       "P100-final-gradesheet-EYA-mod.csv", # P100 Final exam results
                                       "Diagnostic - Raw - Not Anon.csv", # P101 diagnostic
-                                      "MT solo-gradesheet-graded_tab.csv", #P101 Midterm
+                                      "MT solo-gradesheet-graded_tab-EYA.csv", #P101 Midterm
                                       "solo-gradesheet (final) graded_tab.csv" # P101 Final
                                     ),
                             Tag=c("Classlist", "P100MT", "P100final", "P101diagnostic", "P101MT", "P101final") )
@@ -72,6 +72,12 @@ curDatMT100 <- select(datRawMT100, ID,
                       A3.score, A4.score, A7.score, A8.score,
                       A3.trt, A4.trt, A7.trt, A8.trt,
                       SoloTotal36, EYAinclude)
+# Rename question numbers
+colnames(curDatMT100)[colnames(curDatMT100)=="A3.score"] <- "A3"
+colnames(curDatMT100)[colnames(curDatMT100)=="A4.score"] <- "A4"
+colnames(curDatMT100)[colnames(curDatMT100)=="A7.score"] <- "A7"
+colnames(curDatMT100)[colnames(curDatMT100)=="A8.score"] <- "A8"
+
 names(curDatMT100)
 ```
 
@@ -79,11 +85,11 @@ names(curDatMT100)
 
 ```{r}
 dpDatP100midterm <- merge(curDatMT100,curDatClass,by="ID")
-#dpDatP100midterm <- select(dpDatP100midterm,-ID)
+dpDatP100midterm <- select(dpDatP100midterm,-ID)
 names(dpDatP100midterm)
 ```
 
-Save file to anonymized folder
+### Save file to anonymized folder
 
 ```{r}
 
@@ -92,55 +98,105 @@ write.csv(dpDatP100midterm, file.path(anonDir100,dpOut), row.names = FALSE)
 ```
 
 
-
-
-
-
-
-
- Make a new classlist data frame with only the desired column
+## Make a Final100 df with only the desired columns
 
 ```{r}
-names(datRawClass)
+names(datRawFinal100)
 ```
 
 ```{r}
-curDat <- select(datRawClass, ID, AnonID, Gender)
-datClass <- curDat
-names(datClass)
+curDatFinal100 <- select(datRawFinal100, ID, 
+                      A5, A6, A13, A14,
+                      A5.trt, A6.trt, A13.trt, A14.trt,
+                      SoloTotal74, EYAinclude)
+names(curDatFinal100)
 ```
 
-## Make a new final exam data frame with only the desired columns
+### Merge the data sets by ID and then make an anonymous version
 
 ```{r}
-names(datRawFinal)
+dpDatP100final <- merge(curDatFinal100,curDatClass,by="ID")
+dpDatP100final <- select(dpDatP100final,-ID)
+names(dpDatP100final)
 ```
 
-
-```{r}
-curDat <- select(datRawFinal, ID, 
-                 A5.f0, A6.f0, A13.f0, A14.f0, 
-                 SoloTotal74.f0, ExamGrade100.f0,
-                 A5.trt.f0, A6.trt.f0, A13.trt.f0, A14.trt.f0,
-                 EYAinclude.f0, version.f0)
-datFinal <- curDat
-names(datFinal)
-```
-
-## Merge the data sets by ID and then make an anonymous version
-
-```{r}
-dpDat <- merge(datClass,datFinal,by="ID")
-dpDat <- select(dpDat,-ID)
-names(dpDat)
-```
-
-
-Temporary cheat to see workflow. Let's just save this anonymized data set to the derived data folder
+### Save file to anonymized folder
 
 ```{r}
 
-dpOut <- "dpDat.csv"
-write.csv(dpDat, file.path(anonDir,dpOut), row.names = FALSE)
+dpOut <- "dpDatP100final.csv"
+write.csv(dpDatP100final, file.path(anonDir100,dpOut), row.names = FALSE)
 ```
+
+
+## Make a MT101 df with only the desired columns
+
+```{r}
+names(datRawMT101)
+```
+
+```{r}
+curDatMT101 <- select(datRawMT101, ID, 
+                      A5.score, A6.score,
+                      A5.trt, A6.trt,
+                      SoloTotal43, EYAinclude)
+# Rename question numbers
+colnames(curDatMT101)[colnames(curDatMT101)=="A5.score"] <- "A5"
+colnames(curDatMT101)[colnames(curDatMT101)=="A6.score"] <- "A6"
+names(curDatMT101)
+```
+
+### Merge the data sets by ID and then make an anonymous version
+
+```{r}
+dpDatP101midterm <- merge(curDatMT101,curDatClass,by="ID")
+dpDatP101midterm <- select(dpDatP101midterm,-ID)
+names(dpDatP101midterm)
+```
+
+### Save file to anonymized folder
+
+```{r}
+
+dpOut <- "dpDatP101midterm.csv"
+write.csv(dpDatP101midterm, file.path(anonDir101,dpOut), row.names = FALSE)
+```
+
+
+## Make a Final101 df with only the desired columns
+
+```{r}
+names(datRawFinal101)
+```
+
+```{r}
+curDatFinal101 <- select(datRawFinal101, ID, 
+                      A5, A6, A9, A10,
+                      A5.trt, A6.trt, A9.trt, A10.trt,
+                      SoloTotal78, EYAinclude)
+names(curDatFinal101)
+```
+
+### Merge the data sets by ID and then make an anonymous version
+
+```{r}
+dpDatP101final <- merge(curDatFinal101,curDatClass,by="ID")
+dpDatP101final <- select(dpDatP101final,-ID)
+names(dpDatP101final)
+```
+
+### Save file to anonymized folder
+
+```{r}
+
+dpOut <- "dpDatP101final.csv"
+write.csv(dpDatP101final, file.path(anonDir101,dpOut), row.names = FALSE)
+```
+
+
+
+
+
+
+
 

@@ -9,6 +9,20 @@ This project has two purposes.
 1. __dual_processing_raw_data_prep.Rmd__: The raw data, stored on OwnCloud are combined and anonymized.
 1. __python/convert_to_logistic_regression_gradebook.py__: Pandas is used to create the logistic regression input data file. Because I can already do it quickly using Pandas, I used it to convert the anonymized gradebook to one that is appropriate for running logistic regressions and the like
 
+# Data Prep
+
+### P01
+
+Process each file to the point that it is ready to be converted to logistic regression format (in Python)
+
+### P02 
+
+One (or more) file(s) to convert data to logistic regression format
+
+### P03
+
+Some final data prep, to calculate for example corrected exam averages, z scores, etc so that these do not have to be redone in every analysis file
+
 # Analyses
 
 ### Todo
@@ -45,5 +59,6 @@ No effect for this data set
 ### A04 Combining four tests (P100/101 from 2017-2018)
 
 In preparing this data set, I can see that we want to have all four tests processed individually, including how they are loaded into the Axx analysis scripts. However, they will be combined into a single data file within the script
+
 
 
