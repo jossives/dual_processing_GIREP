@@ -1,0 +1,146 @@
+---
+title: "Dual processing data preparation"
+output:
+  html_notebook: default
+---
+Produced by Joss Ives, *updated `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*. Based on data preparation documents by Patrick Dubois: [GitHub](https://github.com/pajodu/GERG/)
+
+## Overview
+
+This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.
+
+## Load libraries
+```{r}
+#install.packages("dplyr")
+library("dplyr")
+```
+
+
+## Set directories
+
+Start by setting directories
+
+```{r}
+startDir <- getwd()
+rawDir100 <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P100 - 2017-09"
+anonDir100 <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P100 - 2017-09"
+rawDir101 <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data/P101 - 2018-01"
+anonDir101 <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Anonymized_Data/P101 - 2018-01"
+genderDir <- "C:/Users/Joss/ownCloud/Shared_Read_Only/DP_Raw_Data"
+```
+
+Load raw data
+
+```{r}
+dataSources <- data.frame(Filename=c(
+                                      "P10X-Anon_and_Gender.csv", #Gender and anon ID info
+                                      "P100-midterm-gradesheet-EYA.csv", # P100 Midterm
+                                      "P100-final-gradesheet-EYA-mod.csv", # P100 Final exam results
+                                      "Diagnostic - Raw - Not Anon.csv", # P101 diagnostic
+                                      "MT solo-gradesheet-graded_tab.csv", #P101 Midterm
+                                      "solo-gradesheet (final) graded_tab.csv" # P101 Final
+                                    ),
+                            Tag=c("Classlist", "P100MT", "P100final", "P101diagnostic", "P101MT", "P101final") )
+
+datRawClass <- read.csv(file.path(genderDir,dataSources$Filename[1]))
+datRawMT100 <- read.csv(file.path(rawDir100,dataSources$Filename[2]))
+datRawFinal100 <- read.csv(file.path(rawDir100,dataSources$Filename[3]))
+datRawDiagnostic <- read.csv(file.path(rawDir101,dataSources$Filename[4]))
+datRawMT101 <- read.csv(file.path(rawDir101,dataSources$Filename[5]))
+datRawFinal101 <- read.csv(file.path(rawDir101,dataSources$Filename[6]))
+```
+
+## Make a classlist df with only the desired columns
+
+```{r}
+names(datRawClass)
+```
+
+```{r}
+curDatClass <- select(datRawClass, ID, AnonID, Gender) 
+names(curDatClass)
+```
+
+## Make a MT100 df with only the desired columns
+
+```{r}
+names(datRawMT100)
+```
+
+```{r}
+curDatMT100 <- select(datRawMT100, ID, 
+                      A3.score, A4.score, A7.score, A8.score,
+                      A3.trt, A4.trt, A7.trt, A8.trt,
+                      SoloTotal36, EYAinclude)
+names(curDatMT100)
+```
+
+### Merge the data sets by ID and then make an anonymous version
+
+```{r}
+dpDatP100midterm <- merge(curDatMT100,curDatClass,by="ID")
+#dpDatP100midterm <- select(dpDatP100midterm,-ID)
+names(dpDatP100midterm)
+```
+
+Save file to anonymized folder
+
+```{r}
+
+dpOut <- "dpDatP100midterm.csv"
+write.csv(dpDatP100midterm, file.path(anonDir100,dpOut), row.names = FALSE)
+```
+
+
+
+
+
+
+
+
+ Make a new classlist data frame with only the desired column
+
+```{r}
+names(datRawClass)
+```
+
+```{r}
+curDat <- select(datRawClass, ID, AnonID, Gender)
+datClass <- curDat
+names(datClass)
+```
+
+## Make a new final exam data frame with only the desired columns
+
+```{r}
+names(datRawFinal)
+```
+
+
+```{r}
+curDat <- select(datRawFinal, ID, 
+                 A5.f0, A6.f0, A13.f0, A14.f0, 
+                 SoloTotal74.f0, ExamGrade100.f0,
+                 A5.trt.f0, A6.trt.f0, A13.trt.f0, A14.trt.f0,
+                 EYAinclude.f0, version.f0)
+datFinal <- curDat
+names(datFinal)
+```
+
+## Merge the data sets by ID and then make an anonymous version
+
+```{r}
+dpDat <- merge(datClass,datFinal,by="ID")
+dpDat <- select(dpDat,-ID)
+names(dpDat)
+```
+
+
+Temporary cheat to see workflow. Let's just save this anonymized data set to the derived data folder
+
+```{r}
+
+dpOut <- "dpDat.csv"
+write.csv(dpDat, file.path(anonDir,dpOut), row.names = FALSE)
+```
+

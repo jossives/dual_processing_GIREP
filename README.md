@@ -12,7 +12,6 @@ This project has two purposes.
 # Analyses
 
 ### Todo
-1. Produce a report based on A01. Discuss odds ratio + effect size, lack of correlations with CRT, and the fact there seems to be a significant gender effect with the intervention. This report should also have some clearly stated research questions based on these initial findings. Should also do a bit more data description in terms of how the gender and final exam grade breakdowns were associated with each question.
 1. Bring in the other EYA data (P101 MT, Fall P100 MT & Final, older courses). Need to consider how to deal with students where we have 4 measurements (P100 students that took P101)
 1. Figure out how best to combine these data into a single result (meta-analysis stylee is likely)
 
@@ -38,4 +37,13 @@ Establishes the analyses to perform with the other (P100, etc) data sets in orde
 * A02c NCRT correlations - Establishes how we look at NCRT correlations. In this case we see treatment effect on high CRT scores, but not low
 * A02gn Gender correlations with NCRT split as an additional predictor - Nothing significant changes from A02g
 * A02g2 Gender correlations with course grade - swapping in course grade instead of final exam grade. No significant differences as expected
+
+### A03 Repeating the A02 analysis with the P100 Sept, 2017 Final Exam
+
+No effect for this data set
+
+### A04 Combining four tests (P100/101 from 2017-2018)
+
+In preparing this data set, I can see that we want to have all four tests processed individually, including how they are loaded into the Axx analysis scripts. However, they will be combined into a single data file within the script
+
 
