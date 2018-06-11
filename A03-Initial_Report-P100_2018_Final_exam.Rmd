@@ -1,12 +1,12 @@
 ---
-title: "A02 Initial Explain Your Answee Report (P101 Final exam - Jan, 2018)"
+title: "A03 Explain Your Answer Report (P100 Final exam - Sep, 2017)"
 author: "Joss Ives"
 date: "June 7, 2018"
 output:
-  word_document: default
-  pdf_document: default
   html_document:
     keep_md: yes
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 *updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
 
 # Overview
-This report discusses the initial analysis of the W2017T2 data from the Physics 101 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
+This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
 
 # Setup
 
@@ -32,20 +32,20 @@ source("jossfunc.R")
 
 ```{r echo=FALSE}
 # Load data
-dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat.csv")
+dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat_P100.csv")
 ```
 ### Add additional calculated values
 ```{r echo=FALSE}
-dat.raw$course.grade.frac <- dat.raw$course.grade/100.
-dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
+#dat.raw$course.grade.frac <- dat.raw$course.grade/100.
+#dat.raw$course.grade.frac <- dat.raw$course.grade.frac <- dat.raw$course.grade/100.
 dat.raw$final.grade.LMH <- as.integer(
-  cut(dat.raw$f.tot78, quantile(dat.raw$f.tot78, probs=0:3/3), include.lowest=TRUE)
+  cut(dat.raw$SoloTotal74.f0, quantile(dat.raw$SoloTotal74.f0, probs=0:3/3), include.lowest=TRUE)
   )
-dat.raw$final.grade.fix <- (dat.raw$f.tot78-2.*dat.raw$QCORRECT)/76.
-dat.raw$final.gradeA.fix <- (dat.raw$f.Atot40-2.*dat.raw$QCORRECT)/38.
-dat.raw$f.tot100 <- dat.raw$f.tot78/.78
+dat.raw$final.grade.fix <- (dat.raw$SoloTotal74.f0-2.*dat.raw$QCORRECT)/72.
+#dat.raw$final.gradeA.fix <- (dat.raw$f.Atot40-2.*dat.raw$QCORRECT)/38.
+dat.raw$f.tot100 <- dat.raw$SoloTotal74.f0/.74
 ```
-The following is a summary of the variables present in the data file. The final 4 were caculated in this notebook. "Fix" refers to removing from the overall score on the test, the score of the specific question.
+The following is a summary of the variables present in the data file. The final 2 were caculated in this notebook. "Fix" refers to removing from the overall score on the test, the score of the specific question.
 ```{r}
 names(dat.raw)
 ```
@@ -53,9 +53,14 @@ names(dat.raw)
 ```{r echo = FALSE}
 ### Set categorical variables
 dat.raw$ID        <- factor(dat.raw$ID)
+dat.raw$COURSE    <- factor(dat.raw$COURSE)
+dat.raw$TERM      <- factor(dat.raw$TERM)
+dat.raw$EXAM      <- factor(dat.raw$EXAM)
 dat.raw$QNUM      <- factor(dat.raw$QNUM)
+dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
+dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
 dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
-dat.raw$f.version <- factor(dat.raw$f.version)
+dat.raw$version <- factor(dat.raw$version)
 
 ```
 
@@ -66,10 +71,10 @@ dat.raw$f.version <- factor(dat.raw$f.version)
 dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
 
 # Remove students that didn't receive full participation credit for both EYA questions
-dat.all.EYA <- subset(dat.all, EYAfinal==1)
+dat.all.EYA <- subset(dat.all, EYAinclude==1)
 
-# Look only at the 4 questions that had TREATMENT
-dat.trt <- subset(dat.all.EYA, QNUM==5 | QNUM==6 | QNUM==9 | QNUM==10)
+# Remove the NAN gender folks
+dat.trt <- subset(dat.all.EYA, Gender=="Female" | Gender=="Male")
 ```
 
 
@@ -109,7 +114,7 @@ Note that Final Exam V1 had questions 5 & 9 as treatment and V2 had questions 6 
 
 ```{r echo=FALSE}
 corr.by.question <- summarySE(
-  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM")
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM.0")
   )
 
 limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
@@ -119,7 +124,7 @@ corr.by.question
 
 ```{r echo=FALSE}
 
-ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
+ggplot(corr.by.question, aes(x=QNUM.0, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   labs(x = "Question number", y = "Fraction of EYA questions correct") +
@@ -156,18 +161,19 @@ ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
   guides(fill=guide_legend(title=NULL))
   
 ```
+
 ### Overall final exam grades show that the males outperformed the females
 Looking at final exam performance by gender and by test version. The effect looks the opposite of what we would expect from the Test 2 intervention questions being the more effective ones. Females benefit more from the intervention. However, their score on V2 as compared to V1 is worse than the males, not better. However, the effect of the intervention on overall test grade is 0.25% (approximately 5% per question, each worth approximately 5% of the test).
 
 ```{r echo=FALSE}
 
 final.by.gender <- summarySE(
-  subset(dat.trt,QNUM==5 & f.tot100>-0.1), # Each test score appears 4 times, so this it reduces it to 1 time
-  measurevar="f.tot100", groupvars=c("Gender","f.version"), calcBE=FALSE
+  subset(dat.trt,QNUM.0==5 & f.tot100>-0.1), # Each test score appears 4 times, so this it reduces it to 1 time
+  measurevar="f.tot100", groupvars=c("Gender","version"), calcBE=FALSE
   )
 limits <- aes(ymax = f.tot100 + se, ymin = f.tot100 - se)
 
-ggplot(final.by.gender, aes(x=Gender, y=f.tot100, fill=f.version)) +
+ggplot(final.by.gender, aes(x=Gender, y=f.tot100, fill=version)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   labs(x = "Gender", y = "Final Exam Grade (%)") +
@@ -180,6 +186,7 @@ ggplot(final.by.gender, aes(x=Gender, y=f.tot100, fill=f.version)) +
   guides(fill=guide_legend(title="Test Version"))
   
 ```
+
 ### Effect of intervention by final exam performance group (tertile)
 Since we know that females scored lower on the final exam than males, perhaps there will be a difference in the effectiveness of the intervention if we look at low, medium and high performers from the final exam. The graph shows no significant difference.
 
@@ -203,35 +210,16 @@ ggplot(s.fLMH, aes(x=final.grade.LMH, y=QCORRECT, fill=TREATMENT)) +
 
 ```
 
-### Intervention effectiveness by CRT score
-
-Spurrious correlation? The CRT scores of 2/3 are the ones where we see the difference between treatment and control.
-
-**TODO:** Have to check this with midterm data, data from last time we did the CRT and question pair data.
-
-```{r echo=FALSE}
-s.ncrt <- summarySE(dat.trt, measurevar="QCORRECT",
-                              groupvars=c("NCRT","TREATMENT"), .drop=FALSE)
-limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
-#options(repr.plot.width=5, repr.plot.height=3)
-
-ggplot(s.ncrt, aes(x=NCRT, y=QCORRECT, fill=TREATMENT)) + 
-    geom_bar(stat="identity", position=dodge) + 
-    ggtitle("Error bars are binomial errors") +
-    geom_errorbar(limits, position=dodge, width=0.5)
-```
-
-
 
 ### No difference in gender fractions taking each version of the test
 
 
 
 ```{r echo=FALSE}
-fv1 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Female" & dat.trt$f.version==1])
-fv2 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Female" & dat.trt$f.version==2])
-mv1 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Male" & dat.trt$f.version==1])
-mv2 <- length(dat.trt$Gender[dat.trt$QNUM==5 & dat.trt$Gender=="Male" & dat.trt$f.version==2])
+fv1 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Female" & dat.trt$version==1])
+fv2 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Female" & dat.trt$version==2])
+mv1 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Male" & dat.trt$version==1])
+mv2 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Male" & dat.trt$version==2])
 ffv1 <- fv1/(fv1+mv1)
 ffv2 <- fv2/(fv2+mv2)
 fmv1 <- mv1/(fv1+mv1)
@@ -254,11 +242,11 @@ ggplot(data, aes(fill=gender, y=value, x=version)) +
 
 ```
 
-# Quick analyses show effect size of d=0.13
+# Quick analyses show non-significant effect size
 
 ### Fisher's Exact for the four study questions combined
 
-This is a sanity check for the logistic regressions to come. Overall we see an effect size of d=0.11, which is small, but maybe larger than one would expect from this type of intervention.
+This is a sanity check for the logistic regressions to come. Fisher's Exact Test shows an odds ration consistent with 0
 
 ```{r echo=FALSE}
 ## fisher.2vector
@@ -336,25 +324,10 @@ r.df <- rbind(r.df,c('Gender', round(AIC(m),1), round(exp(tab[[2]]),3), round(ex
 #r.df
 ```
 
-### Treatment + overall course grade
-
-```{r echo=FALSE}
-m.course.grade <- glmer(QCORRECT ~ TREATMENT + course.grade.frac + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.course.grade
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Course grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'***Course grade'))
-```
-
 ### Treatment + Test Version
 
 ```{r echo=FALSE}
-m.test.version <- glmer(QCORRECT ~ TREATMENT + f.version + (1|QNUM) + (1|ID), 
+m.test.version <- glmer(QCORRECT ~ TREATMENT + version + (1|QNUM) + (1|ID), 
                 data = dat.trt, 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
 m <- m.test.version
@@ -378,7 +351,7 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Final Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'***Final Exam Grade'))
+                     round(exp(tab[[8]]),3),'None'))
 ```
 
 ### TREATMENT + Final Exam Grade Tertile
@@ -393,37 +366,7 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Final Exam LMH', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'***Final Exam LMH'))
-```
-
-### Treatment + number of CRT questions correct
-
-```{r echo=FALSE}
-m.ncrt <- glmer(QCORRECT ~ TREATMENT + NCRT + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.ncrt
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('NCRT', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'***NCRT'))
-```
-
-### TREATMENT + Final Exam Part A Grade (corrected for intervention question scores)
-
-```{r echo=FALSE}
-m.final.exam.partA <- glmer(QCORRECT ~ TREATMENT + final.gradeA.fix + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.final.exam.partA
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Final Exam Part A', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'***Final Exam Part A'))
+                     round(exp(tab[[8]]),3),'None'))
 ```
 
 ### TREATMENT + Gender + Final Exam Grade (corrected for intervention question scores)
@@ -438,37 +381,27 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Gender + Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
-                     round(exp(tab[[10]]),3),'***Gender, ***Exam Grade'))
+                     round(exp(tab[[10]]),3),'None'))
 ```
 
 ### TREATMENT + Gender + Overall Course Grade
 
 ```{r echo=FALSE}
-m.gender.course.grade <- glmer(QCORRECT ~ TREATMENT + Gender + course.grade.frac + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.gender.course.grade
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Gender + Course Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
-                     round(exp(tab[[10]]),3),'***Gender, ***Course Grade'))
+#m.gender.course.grade <- glmer(QCORRECT ~ TREATMENT + Gender + course.grade.frac #+ (1|QNUM) + (1|ID), 
+#                data = dat.trt, 
+#                family = binomial, control=glmerControl(optimizer="bobyqa"))
+#m <- m.gender.course.grade
+#print(summary(m))
+#se <- sqrt(diag(vcov(m)))
+#tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+#exp(tab)
+#r.df <- rbind(r.df,c('Gender + Course Grade', round(AIC(m),1), #round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
+#                     round(exp(tab[[10]]),3),'None'))
 ```
 
 ### Results
 
-Gender is a significant predictor and will be investigated further. Final exam grade (corrected for scores on intervention questions) and course grade are both good controls, but how good may depend on the course. NCRT and Gender will be investigated further in terms of interaction terms with other variables.
-
-The best baseline model is 
-
-  QCORRECT ~ TREATMENT + Gender + course.grade.frac + (1|QNUM) + (1|ID)
-
-or
-
-  QCORRECT ~ TREATMENT + Gender + final.grade.fix + (1|QNUM) + (1|ID)
-  
-Adding NCRT would improve the model further, but we do not always have access to this quantity so will pursue it only if it is an investigation of CRT score, not when it is only helping to improve the model.
+With the final exam data, we see no significant results from treatment
 
 ```{r}
 r.df
