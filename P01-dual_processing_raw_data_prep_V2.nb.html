@@ -1696,7 +1696,7 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
-<p>Produced by Joss Ives, <em>updated 2018 June 10, 16:55:12</em>. Based on data preparation documents by Patrick Dubois: <a href="https://github.com/pajodu/GERG/">GitHub</a></p>
+<p>Produced by Joss Ives, <em>updated 2018 June 10, 17:39:43</em>. Based on data preparation documents by Patrick Dubois: <a href="https://github.com/pajodu/GERG/">GitHub</a></p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>This file combines midterm, final exam and diagnostic data into a single file. This data format may need to be further modified for the logistic analysis.</p>
@@ -1774,6 +1774,21 @@ names(curDatClass)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
+<div id="make-a-diagnostic-df-for-p100-with-only-the-desired-columns" class="section level2">
+<h2>Make a diagnostic df (for P100) with only the desired columns</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RGlhZ25vc3RpYyA8LSBzZWxlY3QoZGF0UmF3RGlhZ25vc3RpYywgSUQsIFZlcnNpb24sIE5DUlQpXG5jb2xuYW1lcyhjdXJEYXREaWFnbm9zdGljKVtjb2xuYW1lcyhjdXJEYXREaWFnbm9zdGljKT09XCJWZXJzaW9uXCJdIDwtIFwiZC52ZXJzaW9uXCJcbm5hbWVzKGN1ckRhdERpYWdub3N0aWMpXG5gYGAifQ== -->
+<pre class="r"><code>curDatDiagnostic &lt;- select(datRawDiagnostic, ID, Version, NCRT)
+colnames(curDatDiagnostic)[colnames(curDatDiagnostic)==&quot;Version&quot;] &lt;- &quot;d.version&quot;
+names(curDatDiagnostic)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgXCJkLnZlcnNpb25cIiBcIk5DUlRcIiAgICAgXG4ifQ== -->
+<pre><code>[1] &quot;ID&quot;        &quot;d.version&quot; &quot;NCRT&quot;     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
 <div id="make-a-mt100-df-with-only-the-desired-columns" class="section level2">
 <h2>Make a MT100 df with only the desired columns</h2>
 <!-- rnb-text-end -->
@@ -1794,11 +1809,11 @@ names(curDatClass)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDAgPC0gc2VsZWN0KGRhdFJhd01UMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTMuc2NvcmUsIEE0LnNjb3JlLCBBNy5zY29yZSwgQTguc2NvcmUsXG4gICAgICAgICAgICAgICAgICAgICAgQTMudHJ0LCBBNC50cnQsIEE3LnRydCwgQTgudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDM2LCBFWUFpbmNsdWRlKVxuIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVyc1xuY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09XCJBMy5zY29yZVwiXSA8LSBcIkEzXCJcbmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PVwiQTQuc2NvcmVcIl0gPC0gXCJBNFwiXG5jb2xuYW1lcyhjdXJEYXRNVDEwMClbY29sbmFtZXMoY3VyRGF0TVQxMDApPT1cIkE3LnNjb3JlXCJdIDwtIFwiQTdcIlxuY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09XCJBOC5zY29yZVwiXSA8LSBcIkE4XCJcbm5hbWVzKGN1ckRhdE1UMTAwKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDAgPC0gc2VsZWN0KGRhdFJhd01UMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTMuc2NvcmUsIEE0LnNjb3JlLCBBNy5zY29yZSwgQTguc2NvcmUsXG4gICAgICAgICAgICAgICAgICAgICAgQTMudHJ0LCBBNC50cnQsIEE3LnRydCwgQTgudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDM2LCBFWUFpbmNsdWRlLCBWZXJzaW9uKVxuIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVyc1xuY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09XCJBMy5zY29yZVwiXSA8LSBcIkEzXCJcbmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PVwiQTQuc2NvcmVcIl0gPC0gXCJBNFwiXG5jb2xuYW1lcyhjdXJEYXRNVDEwMClbY29sbmFtZXMoY3VyRGF0TVQxMDApPT1cIkE3LnNjb3JlXCJdIDwtIFwiQTdcIlxuY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09XCJBOC5zY29yZVwiXSA8LSBcIkE4XCJcbm5hbWVzKGN1ckRhdE1UMTAwKVxuYGBgIn0= -->
 <pre class="r"><code>curDatMT100 &lt;- select(datRawMT100, ID, 
                       A3.score, A4.score, A7.score, A8.score,
                       A3.trt, A4.trt, A7.trt, A8.trt,
-                      SoloTotal36, EYAinclude)
+                      SoloTotal36, EYAinclude, Version)
 # Rename question numbers
 colnames(curDatMT100)[colnames(curDatMT100)==&quot;A3.score&quot;] &lt;- &quot;A3&quot;
 colnames(curDatMT100)[colnames(curDatMT100)==&quot;A4.score&quot;] &lt;- &quot;A4&quot;
@@ -1806,9 +1821,9 @@ colnames(curDatMT100)[colnames(curDatMT100)==&quot;A7.score&quot;] &lt;- &quot;A
 colnames(curDatMT100)[colnames(curDatMT100)==&quot;A8.score&quot;] &lt;- &quot;A8&quot;
 names(curDatMT100)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBM1wiICAgICAgICAgIFwiQTRcIiAgICAgICAgICBcIkE3XCIgICAgICAgICAgXCJBOFwiICAgICAgICAgIFwiQTMudHJ0XCIgICAgICBcIkE0LnRydFwiICAgICBcbiBbOF0gXCJBNy50cnRcIiAgICAgIFwiQTgudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDM2XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBM1wiICAgICAgICAgIFwiQTRcIiAgICAgICAgICBcIkE3XCIgICAgICAgICAgXCJBOFwiICAgICAgICAgIFwiQTMudHJ0XCIgICAgICBcIkE0LnRydFwiICAgICBcbiBbOF0gXCJBNy50cnRcIiAgICAgIFwiQTgudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDM2XCIgXCJFWUFpbmNsdWRlXCIgIFwiVmVyc2lvblwiICAgIFxuIn0= -->
 <pre><code> [1] &quot;ID&quot;          &quot;A3&quot;          &quot;A4&quot;          &quot;A7&quot;          &quot;A8&quot;          &quot;A3.trt&quot;      &quot;A4.trt&quot;     
- [8] &quot;A7.trt&quot;      &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot; </code></pre>
+ [8] &quot;A7.trt&quot;      &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot;  &quot;Version&quot;    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1816,14 +1831,16 @@ names(curDatMT100)</code></pre>
 <h3>Merge the data sets by ID and then make an anonymous version</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG5kcERhdFAxMDBtaWR0ZXJtIDwtIHNlbGVjdChkcERhdFAxMDBtaWR0ZXJtLC1JRClcbm5hbWVzKGRwRGF0UDEwMG1pZHRlcm0pXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG5kcERhdFAxMDBtaWR0ZXJtIDwtIG1lcmdlKGRwRGF0UDEwMG1pZHRlcm0sIGN1ckRhdERpYWdub3N0aWMsIGJ5PVwiSURcIiwgYWxsLng9VFJVRSlcbmRwRGF0UDEwMG1pZHRlcm0gPC0gc2VsZWN0KGRwRGF0UDEwMG1pZHRlcm0sLUlEKVxubmFtZXMoZHBEYXRQMTAwbWlkdGVybSlcbmBgYCJ9 -->
 <pre class="r"><code>dpDatP100midterm &lt;- merge(curDatMT100,curDatClass,by=&quot;ID&quot;)
+dpDatP100midterm &lt;- merge(dpDatP100midterm, curDatDiagnostic, by=&quot;ID&quot;, all.x=TRUE)
 dpDatP100midterm &lt;- select(dpDatP100midterm,-ID)
 names(dpDatP100midterm)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkEzXCIgICAgICAgICAgXCJBNFwiICAgICAgICAgIFwiQTdcIiAgICAgICAgICBcIkE4XCIgICAgICAgICAgXCJBMy50cnRcIiAgICAgIFwiQTQudHJ0XCIgICAgICBcIkE3LnRydFwiICAgICBcbiBbOF0gXCJBOC50cnRcIiAgICAgIFwiU29sb1RvdGFsMzZcIiBcIkVZQWluY2x1ZGVcIiAgXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkEzXCIgICAgICAgICAgXCJBNFwiICAgICAgICAgIFwiQTdcIiAgICAgICAgICBcIkE4XCIgICAgICAgICAgXCJBMy50cnRcIiAgICAgIFwiQTQudHJ0XCIgICAgICBcIkE3LnRydFwiICAgICBcbiBbOF0gXCJBOC50cnRcIiAgICAgIFwiU29sb1RvdGFsMzZcIiBcIkVZQWluY2x1ZGVcIiAgXCJWZXJzaW9uXCIgICAgIFwiQW5vbklEXCIgICAgICBcIkdlbmRlclwiICAgICAgXCJkLnZlcnNpb25cIiAgXG5bMTVdIFwiTkNSVFwiICAgICAgIFxuIn0= -->
 <pre><code> [1] &quot;A3&quot;          &quot;A4&quot;          &quot;A7&quot;          &quot;A8&quot;          &quot;A3.trt&quot;      &quot;A4.trt&quot;      &quot;A7.trt&quot;     
- [8] &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
+ [8] &quot;A8.trt&quot;      &quot;SoloTotal36&quot; &quot;EYAinclude&quot;  &quot;Version&quot;     &quot;AnonID&quot;      &quot;Gender&quot;      &quot;d.version&quot;  
+[15] &quot;NCRT&quot;       </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1864,16 +1881,16 @@ write.csv(dpDatP100midterm, file.path(anonDir100,dpOut), row.names = FALSE)</cod
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RmluYWwxMDAgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBMTMsIEExNCxcbiAgICAgICAgICAgICAgICAgICAgICBBNS50cnQsIEE2LnRydCwgQTEzLnRydCwgQTE0LnRydCxcbiAgICAgICAgICAgICAgICAgICAgICBTb2xvVG90YWw3NCwgRVlBaW5jbHVkZSlcbm5hbWVzKGN1ckRhdEZpbmFsMTAwKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RmluYWwxMDAgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAwLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBMTMsIEExNCxcbiAgICAgICAgICAgICAgICAgICAgICBBNS50cnQsIEE2LnRydCwgQTEzLnRydCwgQTE0LnRydCxcbiAgICAgICAgICAgICAgICAgICAgICBTb2xvVG90YWw3NCwgRVlBaW5jbHVkZSwgVmVyc2lvbilcbm5hbWVzKGN1ckRhdEZpbmFsMTAwKVxuYGBgIn0= -->
 <pre class="r"><code>curDatFinal100 &lt;- select(datRawFinal100, ID, 
                       A5, A6, A13, A14,
                       A5.trt, A6.trt, A13.trt, A14.trt,
-                      SoloTotal74, EYAinclude)
+                      SoloTotal74, EYAinclude, Version)
 names(curDatFinal100)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBNVwiICAgICAgICAgIFwiQTZcIiAgICAgICAgICBcIkExM1wiICAgICAgICAgXCJBMTRcIiAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICBcbiBbOF0gXCJBMTMudHJ0XCIgICAgIFwiQTE0LnRydFwiICAgICBcIlNvbG9Ub3RhbDc0XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBNVwiICAgICAgICAgIFwiQTZcIiAgICAgICAgICBcIkExM1wiICAgICAgICAgXCJBMTRcIiAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICBcbiBbOF0gXCJBMTMudHJ0XCIgICAgIFwiQTE0LnRydFwiICAgICBcIlNvbG9Ub3RhbDc0XCIgXCJFWUFpbmNsdWRlXCIgIFwiVmVyc2lvblwiICAgIFxuIn0= -->
 <pre><code> [1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A13&quot;         &quot;A14&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;     
- [8] &quot;A13.trt&quot;     &quot;A14.trt&quot;     &quot;SoloTotal74&quot; &quot;EYAinclude&quot; </code></pre>
+ [8] &quot;A13.trt&quot;     &quot;A14.trt&quot;     &quot;SoloTotal74&quot; &quot;EYAinclude&quot;  &quot;Version&quot;    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1881,14 +1898,16 @@ names(curDatFinal100)</code></pre>
 <h3>Merge the data sets by ID and then make an anonymous version</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDAsY3VyRGF0Q2xhc3MsYnk9XCJJRFwiKVxuZHBEYXRQMTAwZmluYWwgPC0gc2VsZWN0KGRwRGF0UDEwMGZpbmFsLC1JRClcbm5hbWVzKGRwRGF0UDEwMGZpbmFsKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAwZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDAsY3VyRGF0Q2xhc3MsYnk9XCJJRFwiKVxuZHBEYXRQMTAwZmluYWwgPC0gbWVyZ2UoZHBEYXRQMTAwZmluYWwsIGN1ckRhdERpYWdub3N0aWMsIGJ5PVwiSURcIiwgYWxsLng9VFJVRSlcbmRwRGF0UDEwMGZpbmFsIDwtIHNlbGVjdChkcERhdFAxMDBmaW5hbCwtSUQpXG5uYW1lcyhkcERhdFAxMDBmaW5hbClcbmBgYCJ9 -->
 <pre class="r"><code>dpDatP100final &lt;- merge(curDatFinal100,curDatClass,by=&quot;ID&quot;)
+dpDatP100final &lt;- merge(dpDatP100final, curDatDiagnostic, by=&quot;ID&quot;, all.x=TRUE)
 dpDatP100final &lt;- select(dpDatP100final,-ID)
 names(dpDatP100final)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTEzXCIgICAgICAgICBcIkExNFwiICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIkExMy50cnRcIiAgICBcbiBbOF0gXCJBMTQudHJ0XCIgICAgIFwiU29sb1RvdGFsNzRcIiBcIkVZQWluY2x1ZGVcIiAgXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTEzXCIgICAgICAgICBcIkExNFwiICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIkExMy50cnRcIiAgICBcbiBbOF0gXCJBMTQudHJ0XCIgICAgIFwiU29sb1RvdGFsNzRcIiBcIkVZQWluY2x1ZGVcIiAgXCJWZXJzaW9uXCIgICAgIFwiQW5vbklEXCIgICAgICBcIkdlbmRlclwiICAgICAgXCJkLnZlcnNpb25cIiAgXG5bMTVdIFwiTkNSVFwiICAgICAgIFxuIn0= -->
 <pre><code> [1] &quot;A5&quot;          &quot;A6&quot;          &quot;A13&quot;         &quot;A14&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;A13.trt&quot;    
- [8] &quot;A14.trt&quot;     &quot;SoloTotal74&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
+ [8] &quot;A14.trt&quot;     &quot;SoloTotal74&quot; &quot;EYAinclude&quot;  &quot;Version&quot;     &quot;AnonID&quot;      &quot;Gender&quot;      &quot;d.version&quot;  
+[15] &quot;NCRT&quot;       </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1927,18 +1946,19 @@ write.csv(dpDatP100final, file.path(anonDir100,dpOut), row.names = FALSE)</code>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDEgPC0gc2VsZWN0KGRhdFJhd01UMTAxLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUuc2NvcmUsIEE2LnNjb3JlLFxuICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDQzLCBFWUFpbmNsdWRlKVxuIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVyc1xuY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09XCJBNS5zY29yZVwiXSA8LSBcIkE1XCJcbmNvbG5hbWVzKGN1ckRhdE1UMTAxKVtjb2xuYW1lcyhjdXJEYXRNVDEwMSk9PVwiQTYuc2NvcmVcIl0gPC0gXCJBNlwiXG5uYW1lcyhjdXJEYXRNVDEwMSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0TVQxMDEgPC0gc2VsZWN0KGRhdFJhd01UMTAxLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUuc2NvcmUsIEE2LnNjb3JlLFxuICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LFxuICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDQzLCBFWUFpbmNsdWRlLCBWZXJzaW9uKVxuIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVyc1xuY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09XCJBNS5zY29yZVwiXSA8LSBcIkE1XCJcbmNvbG5hbWVzKGN1ckRhdE1UMTAxKVtjb2xuYW1lcyhjdXJEYXRNVDEwMSk9PVwiQTYuc2NvcmVcIl0gPC0gXCJBNlwiXG5uYW1lcyhjdXJEYXRNVDEwMSlcbmBgYCJ9 -->
 <pre class="r"><code>curDatMT101 &lt;- select(datRawMT101, ID, 
                       A5.score, A6.score,
                       A5.trt, A6.trt,
-                      SoloTotal43, EYAinclude)
+                      SoloTotal43, EYAinclude, Version)
 # Rename question numbers
 colnames(curDatMT101)[colnames(curDatMT101)==&quot;A5.score&quot;] &lt;- &quot;A5&quot;
 colnames(curDatMT101)[colnames(curDatMT101)==&quot;A6.score&quot;] &lt;- &quot;A6&quot;
 names(curDatMT101)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgICBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICAgXCJTb2xvVG90YWw0M1wiIFwiRVlBaW5jbHVkZVwiIFxuIn0= -->
-<pre><code>[1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;SoloTotal43&quot; &quot;EYAinclude&quot; </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgICBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICAgXCJTb2xvVG90YWw0M1wiIFwiRVlBaW5jbHVkZVwiIFxuWzhdIFwiVmVyc2lvblwiICAgIFxuIn0= -->
+<pre><code>[1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;SoloTotal43&quot; &quot;EYAinclude&quot; 
+[8] &quot;Version&quot;    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1946,14 +1966,15 @@ names(curDatMT101)</code></pre>
 <h3>Merge the data sets by ID and then make an anonymous version</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAxbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMSxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG5kcERhdFAxMDFtaWR0ZXJtIDwtIHNlbGVjdChkcERhdFAxMDFtaWR0ZXJtLC1JRClcbm5hbWVzKGRwRGF0UDEwMW1pZHRlcm0pXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAxbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMSxjdXJEYXRDbGFzcyxieT1cIklEXCIpXG5kcERhdFAxMDFtaWR0ZXJtIDwtIG1lcmdlKGRwRGF0UDEwMW1pZHRlcm0sIGN1ckRhdERpYWdub3N0aWMsIGJ5PVwiSURcIiwgYWxsLng9VFJVRSlcbmRwRGF0UDEwMW1pZHRlcm0gPC0gc2VsZWN0KGRwRGF0UDEwMW1pZHRlcm0sLUlEKVxubmFtZXMoZHBEYXRQMTAxbWlkdGVybSlcbmBgYCJ9 -->
 <pre class="r"><code>dpDatP101midterm &lt;- merge(curDatMT101,curDatClass,by=&quot;ID&quot;)
+dpDatP101midterm &lt;- merge(dpDatP101midterm, curDatDiagnostic, by=&quot;ID&quot;, all.x=TRUE)
 dpDatP101midterm &lt;- select(dpDatP101midterm,-ID)
 names(dpDatP101midterm)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQTVcIiAgICAgICAgICBcIkE2XCIgICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIlNvbG9Ub3RhbDQzXCIgXCJFWUFpbmNsdWRlXCIgIFwiQW5vbklEXCIgICAgIFxuWzhdIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
-<pre><code>[1] &quot;A5&quot;          &quot;A6&quot;          &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;SoloTotal43&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;     
-[8] &quot;Gender&quot;     </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICAgXCJTb2xvVG90YWw0M1wiIFwiRVlBaW5jbHVkZVwiICBcIlZlcnNpb25cIiAgICBcbiBbOF0gXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgICBcImQudmVyc2lvblwiICAgXCJOQ1JUXCIgICAgICAgXG4ifQ== -->
+<pre><code> [1] &quot;A5&quot;          &quot;A6&quot;          &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;SoloTotal43&quot; &quot;EYAinclude&quot;  &quot;Version&quot;    
+ [8] &quot;AnonID&quot;      &quot;Gender&quot;      &quot;d.version&quot;   &quot;NCRT&quot;       </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1977,8 +1998,8 @@ write.csv(dpDatP101midterm, file.path(anonDir101,dpOut), row.names = FALSE)</cod
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZGF0UmF3RmluYWwxMDEpXG5gYGAifQ== -->
 <pre class="r"><code>names(datRawFinal101)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgIFwiRmluYWxWZXJzaW9uXCIgICAgXCJmLkExLmFuc3dcIiAgICAgICBcImYuQTFcIiAgICAgICAgICAgIFwiZi5BMi5hbnN3XCIgICAgICBcbiBbNl0gXCJmLkEyXCIgICAgICAgICAgICBcImYuQTMuYW5zd1wiICAgICAgIFwiZi5BM1wiICAgICAgICAgICAgXCJmLkE0LmFuc3dcIiAgICAgICBcImYuQTRcIiAgICAgICAgICAgXG5bMTFdIFwiZi5BNS5hbnN3XCIgICAgICAgXCJBNVwiICAgICAgICAgICAgICBcImYuQTUuc2NvcmUuRVlBXCIgIFwiZi5BNi5hbnN3XCIgICAgICAgXCJBNlwiICAgICAgICAgICAgIFxuWzE2XSBcImYuQTYuc2NvcmUuRVlBXCIgIFwiZi5BNS5BNi5FWUFcIiAgICAgXCJmLkE3LmFuc3dcIiAgICAgICBcImYuQTdcIiAgICAgICAgICAgIFwiZi5BOC5hbnN3XCIgICAgICBcblsyMV0gXCJmLkE4XCIgICAgICAgICAgICBcImYuQTkuYW5zd1wiICAgICAgIFwiQTlcIiAgICAgICAgICAgICAgXCJmLkE5LnNjb3JlLkVZQVwiICBcImYuQTEwLmFuc3dcIiAgICAgXG5bMjZdIFwiQTEwXCIgICAgICAgICAgICAgXCJmLkExMC5zY29yZS5FWUFcIiBcImYuQTkuQTEwLkVZQVwiICAgIFwiZi5BMTEuYW5zd1wiICAgICAgXCJmLkExMVwiICAgICAgICAgIFxuWzMxXSBcImYuQTEyLmFuc3dcIiAgICAgIFwiZi5BMTJcIiAgICAgICAgICAgXCJmLkExMy5hbnN3XCIgICAgICBcImYuQTEzXCIgICAgICAgICAgIFwiZi5BMTQuYW5zd1wiICAgICBcblszNl0gXCJmLkExNFwiICAgICAgICAgICBcImYuQTE1LmFuc3dcIiAgICAgIFwiZi5BMTVcIiAgICAgICAgICAgXCJmLkExNi5hbnN3XCIgICAgICBcImYuQTE2XCIgICAgICAgICAgXG5bNDFdIFwiZi5BMTcuYW5zd1wiICAgICAgXCJmLkExN1wiICAgICAgICAgICBcImYuQTE4LmFuc3dcIiAgICAgIFwiZi5BMThcIiAgICAgICAgICAgXCJmLkExOWEuYW5zd1wiICAgIFxuWzQ2XSBcImYuQTE5YVwiICAgICAgICAgIFwiZi5BMTliLmFuc3dcIiAgICAgXCJmLkExOWJcIiAgICAgICAgICBcImYuQjFcIiAgICAgICAgICAgIFwiZi5CMlwiICAgICAgICAgICBcbls1MV0gXCJmLkIzXCIgICAgICAgICAgICBcImYuQjRcIiAgICAgICAgICAgIFwiQXRvdGFsNDBcIiAgICAgICAgXCJCdG90YWwzOFwiICAgICAgICBcIlNvbG9Ub3RhbDc4XCIgICAgXG5bNTZdIFwiRXhhbUdyYWRlMTAwXCIgICAgXCJBNS50cnRcIiAgICAgICAgICBcIkE2LnRydFwiICAgICAgICAgIFwiQTkudHJ0XCIgICAgICAgICAgXCJBMTAudHJ0XCIgICAgICAgIFxuWzYxXSBcIkVZQWluY2x1ZGVcIiAgICAgXG4ifQ== -->
-<pre><code> [1] &quot;ID&quot;              &quot;FinalVersion&quot;    &quot;f.A1.answ&quot;       &quot;f.A1&quot;            &quot;f.A2.answ&quot;      
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgICAgIFwiVmVyc2lvblwiICAgICAgICAgXCJmLkExLmFuc3dcIiAgICAgICBcImYuQTFcIiAgICAgICAgICAgIFwiZi5BMi5hbnN3XCIgICAgICBcbiBbNl0gXCJmLkEyXCIgICAgICAgICAgICBcImYuQTMuYW5zd1wiICAgICAgIFwiZi5BM1wiICAgICAgICAgICAgXCJmLkE0LmFuc3dcIiAgICAgICBcImYuQTRcIiAgICAgICAgICAgXG5bMTFdIFwiZi5BNS5hbnN3XCIgICAgICAgXCJBNVwiICAgICAgICAgICAgICBcImYuQTUuc2NvcmUuRVlBXCIgIFwiZi5BNi5hbnN3XCIgICAgICAgXCJBNlwiICAgICAgICAgICAgIFxuWzE2XSBcImYuQTYuc2NvcmUuRVlBXCIgIFwiZi5BNS5BNi5FWUFcIiAgICAgXCJmLkE3LmFuc3dcIiAgICAgICBcImYuQTdcIiAgICAgICAgICAgIFwiZi5BOC5hbnN3XCIgICAgICBcblsyMV0gXCJmLkE4XCIgICAgICAgICAgICBcImYuQTkuYW5zd1wiICAgICAgIFwiQTlcIiAgICAgICAgICAgICAgXCJmLkE5LnNjb3JlLkVZQVwiICBcImYuQTEwLmFuc3dcIiAgICAgXG5bMjZdIFwiQTEwXCIgICAgICAgICAgICAgXCJmLkExMC5zY29yZS5FWUFcIiBcImYuQTkuQTEwLkVZQVwiICAgIFwiZi5BMTEuYW5zd1wiICAgICAgXCJmLkExMVwiICAgICAgICAgIFxuWzMxXSBcImYuQTEyLmFuc3dcIiAgICAgIFwiZi5BMTJcIiAgICAgICAgICAgXCJmLkExMy5hbnN3XCIgICAgICBcImYuQTEzXCIgICAgICAgICAgIFwiZi5BMTQuYW5zd1wiICAgICBcblszNl0gXCJmLkExNFwiICAgICAgICAgICBcImYuQTE1LmFuc3dcIiAgICAgIFwiZi5BMTVcIiAgICAgICAgICAgXCJmLkExNi5hbnN3XCIgICAgICBcImYuQTE2XCIgICAgICAgICAgXG5bNDFdIFwiZi5BMTcuYW5zd1wiICAgICAgXCJmLkExN1wiICAgICAgICAgICBcImYuQTE4LmFuc3dcIiAgICAgIFwiZi5BMThcIiAgICAgICAgICAgXCJmLkExOWEuYW5zd1wiICAgIFxuWzQ2XSBcImYuQTE5YVwiICAgICAgICAgIFwiZi5BMTliLmFuc3dcIiAgICAgXCJmLkExOWJcIiAgICAgICAgICBcImYuQjFcIiAgICAgICAgICAgIFwiZi5CMlwiICAgICAgICAgICBcbls1MV0gXCJmLkIzXCIgICAgICAgICAgICBcImYuQjRcIiAgICAgICAgICAgIFwiQXRvdGFsNDBcIiAgICAgICAgXCJCdG90YWwzOFwiICAgICAgICBcIlNvbG9Ub3RhbDc4XCIgICAgXG5bNTZdIFwiRXhhbUdyYWRlMTAwXCIgICAgXCJBNS50cnRcIiAgICAgICAgICBcIkE2LnRydFwiICAgICAgICAgIFwiQTkudHJ0XCIgICAgICAgICAgXCJBMTAudHJ0XCIgICAgICAgIFxuWzYxXSBcIkVZQWluY2x1ZGVcIiAgICAgXG4ifQ== -->
+<pre><code> [1] &quot;ID&quot;              &quot;Version&quot;         &quot;f.A1.answ&quot;       &quot;f.A1&quot;            &quot;f.A2.answ&quot;      
  [6] &quot;f.A2&quot;            &quot;f.A3.answ&quot;       &quot;f.A3&quot;            &quot;f.A4.answ&quot;       &quot;f.A4&quot;           
 [11] &quot;f.A5.answ&quot;       &quot;A5&quot;              &quot;f.A5.score.EYA&quot;  &quot;f.A6.answ&quot;       &quot;A6&quot;             
 [16] &quot;f.A6.score.EYA&quot;  &quot;f.A5.A6.EYA&quot;     &quot;f.A7.answ&quot;       &quot;f.A7&quot;            &quot;f.A8.answ&quot;      
@@ -1996,16 +2017,16 @@ write.csv(dpDatP101midterm, file.path(anonDir101,dpOut), row.names = FALSE)</cod
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RmluYWwxMDEgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAxLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBOSwgQTEwLFxuICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBOS50cnQsIEExMC50cnQsXG4gICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzgsIEVZQWluY2x1ZGUpXG5uYW1lcyhjdXJEYXRGaW5hbDEwMSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VyRGF0RmluYWwxMDEgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAxLCBJRCwgXG4gICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBOSwgQTEwLFxuICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBOS50cnQsIEExMC50cnQsXG4gICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzgsIEVZQWluY2x1ZGUsIFZlcnNpb24pXG5uYW1lcyhjdXJEYXRGaW5hbDEwMSlcbmBgYCJ9 -->
 <pre class="r"><code>curDatFinal101 &lt;- select(datRawFinal101, ID, 
                       A5, A6, A9, A10,
                       A5.trt, A6.trt, A9.trt, A10.trt,
-                      SoloTotal78, EYAinclude)
+                      SoloTotal78, EYAinclude, Version)
 names(curDatFinal101)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBNVwiICAgICAgICAgIFwiQTZcIiAgICAgICAgICBcIkE5XCIgICAgICAgICAgXCJBMTBcIiAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICBcbiBbOF0gXCJBOS50cnRcIiAgICAgIFwiQTEwLnRydFwiICAgICBcIlNvbG9Ub3RhbDc4XCIgXCJFWUFpbmNsdWRlXCIgXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIklEXCIgICAgICAgICAgXCJBNVwiICAgICAgICAgIFwiQTZcIiAgICAgICAgICBcIkE5XCIgICAgICAgICAgXCJBMTBcIiAgICAgICAgIFwiQTUudHJ0XCIgICAgICBcIkE2LnRydFwiICAgICBcbiBbOF0gXCJBOS50cnRcIiAgICAgIFwiQTEwLnRydFwiICAgICBcIlNvbG9Ub3RhbDc4XCIgXCJFWUFpbmNsdWRlXCIgIFwiVmVyc2lvblwiICAgIFxuIn0= -->
 <pre><code> [1] &quot;ID&quot;          &quot;A5&quot;          &quot;A6&quot;          &quot;A9&quot;          &quot;A10&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;     
- [8] &quot;A9.trt&quot;      &quot;A10.trt&quot;     &quot;SoloTotal78&quot; &quot;EYAinclude&quot; </code></pre>
+ [8] &quot;A9.trt&quot;      &quot;A10.trt&quot;     &quot;SoloTotal78&quot; &quot;EYAinclude&quot;  &quot;Version&quot;    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2013,14 +2034,16 @@ names(curDatFinal101)</code></pre>
 <h3>Merge the data sets by ID and then make an anonymous version</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAxZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDEsY3VyRGF0Q2xhc3MsYnk9XCJJRFwiKVxuZHBEYXRQMTAxZmluYWwgPC0gc2VsZWN0KGRwRGF0UDEwMWZpbmFsLC1JRClcbm5hbWVzKGRwRGF0UDEwMWZpbmFsKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHBEYXRQMTAxZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDEsY3VyRGF0Q2xhc3MsYnk9XCJJRFwiKVxuZHBEYXRQMTAxZmluYWwgPC0gbWVyZ2UoZHBEYXRQMTAxZmluYWwsIGN1ckRhdERpYWdub3N0aWMsIGJ5PVwiSURcIiwgYWxsLng9VFJVRSlcbmRwRGF0UDEwMWZpbmFsIDwtIHNlbGVjdChkcERhdFAxMDFmaW5hbCwtSUQpXG5uYW1lcyhkcERhdFAxMDFmaW5hbClcbmBgYCJ9 -->
 <pre class="r"><code>dpDatP101final &lt;- merge(curDatFinal101,curDatClass,by=&quot;ID&quot;)
+dpDatP101final &lt;- merge(dpDatP101final, curDatDiagnostic, by=&quot;ID&quot;, all.x=TRUE)
 dpDatP101final &lt;- select(dpDatP101final,-ID)
 names(dpDatP101final)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTlcIiAgICAgICAgICBcIkExMFwiICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIkE5LnRydFwiICAgICBcbiBbOF0gXCJBMTAudHJ0XCIgICAgIFwiU29sb1RvdGFsNzhcIiBcIkVZQWluY2x1ZGVcIiAgXCJBbm9uSURcIiAgICAgIFwiR2VuZGVyXCIgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkE1XCIgICAgICAgICAgXCJBNlwiICAgICAgICAgIFwiQTlcIiAgICAgICAgICBcIkExMFwiICAgICAgICAgXCJBNS50cnRcIiAgICAgIFwiQTYudHJ0XCIgICAgICBcIkE5LnRydFwiICAgICBcbiBbOF0gXCJBMTAudHJ0XCIgICAgIFwiU29sb1RvdGFsNzhcIiBcIkVZQWluY2x1ZGVcIiAgXCJWZXJzaW9uXCIgICAgIFwiQW5vbklEXCIgICAgICBcIkdlbmRlclwiICAgICAgXCJkLnZlcnNpb25cIiAgXG5bMTVdIFwiTkNSVFwiICAgICAgIFxuIn0= -->
 <pre><code> [1] &quot;A5&quot;          &quot;A6&quot;          &quot;A9&quot;          &quot;A10&quot;         &quot;A5.trt&quot;      &quot;A6.trt&quot;      &quot;A9.trt&quot;     
- [8] &quot;A10.trt&quot;     &quot;SoloTotal78&quot; &quot;EYAinclude&quot;  &quot;AnonID&quot;      &quot;Gender&quot;     </code></pre>
+ [8] &quot;A10.trt&quot;     &quot;SoloTotal78&quot; &quot;EYAinclude&quot;  &quot;Version&quot;     &quot;AnonID&quot;      &quot;Gender&quot;      &quot;d.version&quot;  
+[15] &quot;NCRT&quot;       </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2039,7 +2062,7 @@ write.csv(dpDatP101final, file.path(anonDir101,dpOut), row.names = FALSE)</code>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1YWwgcHJvY2Vzc2luZyBkYXRhIHByZXBhcmF0aW9uIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQotLS0NClByb2R1Y2VkIGJ5IEpvc3MgSXZlcywgKnVwZGF0ZWQgYHIgZm9ybWF0KFN5cy50aW1lKCksICIlWSAlQiAlZCwgJUg6JU06JVMiKWAqLiBCYXNlZCBvbiBkYXRhIHByZXBhcmF0aW9uIGRvY3VtZW50cyBieSBQYXRyaWNrIER1Ym9pczogW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL3Bham9kdS9HRVJHLykNCg0KIyMgT3ZlcnZpZXcNCg0KVGhpcyBmaWxlIGNvbWJpbmVzIG1pZHRlcm0sIGZpbmFsIGV4YW0gYW5kIGRpYWdub3N0aWMgZGF0YSBpbnRvIGEgc2luZ2xlIGZpbGUuIFRoaXMgZGF0YSBmb3JtYXQgbWF5IG5lZWQgdG8gYmUgZnVydGhlciBtb2RpZmllZCBmb3IgdGhlIGxvZ2lzdGljIGFuYWx5c2lzLg0KDQojIyBMb2FkIGxpYnJhcmllcw0KYGBge3J9DQojaW5zdGFsbC5wYWNrYWdlcygiZHBseXIiKQ0KbGlicmFyeSgiZHBseXIiKQ0KYGBgDQoNCg0KIyMgU2V0IGRpcmVjdG9yaWVzDQoNClN0YXJ0IGJ5IHNldHRpbmcgZGlyZWN0b3JpZXMNCg0KYGBge3J9DQpzdGFydERpciA8LSBnZXR3ZCgpDQpyYXdEaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAwIC0gMjAxNy0wOSINCmFub25EaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMCAtIDIwMTctMDkiDQpyYXdEaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMSINCmFub25EaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDEiDQpnZW5kZXJEaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YSINCmBgYA0KDQpMb2FkIHJhdyBkYXRhDQoNCmBgYHtyfQ0KZGF0YVNvdXJjZXMgPC0gZGF0YS5mcmFtZShGaWxlbmFtZT1jKA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiUDEwWC1Bbm9uX2FuZF9HZW5kZXIuY3N2IiwgI0dlbmRlciBhbmQgYW5vbiBJRCBpbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJQMTAwLW1pZHRlcm0tZ3JhZGVzaGVldC1FWUEuY3N2IiwgIyBQMTAwIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlAxMDAtZmluYWwtZ3JhZGVzaGVldC1FWUEtbW9kLmNzdiIsICMgUDEwMCBGaW5hbCBleGFtIHJlc3VsdHMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkRpYWdub3N0aWMgLSBSYXcgLSBOb3QgQW5vbi5jc3YiLCAjIFAxMDEgZGlhZ25vc3RpYw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWItRVlBLmNzdiIsICNQMTAxIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInNvbG8tZ3JhZGVzaGVldCAoZmluYWwpIGdyYWRlZF90YWIuY3N2IiAjIFAxMDEgRmluYWwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgVGFnPWMoIkNsYXNzbGlzdCIsICJQMTAwTVQiLCAiUDEwMGZpbmFsIiwgIlAxMDFkaWFnbm9zdGljIiwgIlAxMDFNVCIsICJQMTAxZmluYWwiKSApDQoNCmRhdFJhd0NsYXNzIDwtIHJlYWQuY3N2KGZpbGUucGF0aChnZW5kZXJEaXIsZGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pKQ0KZGF0UmF3TVQxMDAgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMCxkYXRhU291cmNlcyRGaWxlbmFtZVsyXSkpDQpkYXRSYXdGaW5hbDEwMCA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAwLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzNdKSkNCmRhdFJhd0RpYWdub3N0aWMgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMSxkYXRhU291cmNlcyRGaWxlbmFtZVs0XSkpDQpkYXRSYXdNVDEwMSA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAxLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzVdKSkNCmRhdFJhd0ZpbmFsMTAxIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDEsZGF0YVNvdXJjZXMkRmlsZW5hbWVbNl0pKQ0KYGBgDQoNCiMjIE1ha2UgYSBjbGFzc2xpc3QgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdDbGFzcykNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdENsYXNzIDwtIHNlbGVjdChkYXRSYXdDbGFzcywgSUQsIEFub25JRCwgR2VuZGVyKSANCm5hbWVzKGN1ckRhdENsYXNzKQ0KYGBgDQoNCiMjIE1ha2UgYSBNVDEwMCBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd01UMTAwKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0TVQxMDAgPC0gc2VsZWN0KGRhdFJhd01UMTAwLCBJRCwgDQogICAgICAgICAgICAgICAgICAgICAgQTMuc2NvcmUsIEE0LnNjb3JlLCBBNy5zY29yZSwgQTguc2NvcmUsDQogICAgICAgICAgICAgICAgICAgICAgQTMudHJ0LCBBNC50cnQsIEE3LnRydCwgQTgudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDM2LCBFWUFpbmNsdWRlKQ0KIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVycw0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkEzLnNjb3JlIl0gPC0gIkEzIg0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkE0LnNjb3JlIl0gPC0gIkE0Ig0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkE3LnNjb3JlIl0gPC0gIkE3Ig0KY29sbmFtZXMoY3VyRGF0TVQxMDApW2NvbG5hbWVzKGN1ckRhdE1UMTAwKT09IkE4LnNjb3JlIl0gPC0gIkE4Ig0KDQpuYW1lcyhjdXJEYXRNVDEwMCkNCmBgYA0KDQojIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXRQMTAwbWlkdGVybSA8LSBtZXJnZShjdXJEYXRNVDEwMCxjdXJEYXRDbGFzcyxieT0iSUQiKQ0KZHBEYXRQMTAwbWlkdGVybSA8LSBzZWxlY3QoZHBEYXRQMTAwbWlkdGVybSwtSUQpDQpuYW1lcyhkcERhdFAxMDBtaWR0ZXJtKQ0KYGBgDQoNCiMjIyBTYXZlIGZpbGUgdG8gYW5vbnltaXplZCBmb2xkZXINCg0KYGBge3J9DQoNCmRwT3V0IDwtICJkcERhdFAxMDBtaWR0ZXJtLmNzdiINCndyaXRlLmNzdihkcERhdFAxMDBtaWR0ZXJtLCBmaWxlLnBhdGgoYW5vbkRpcjEwMCxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KIyMgTWFrZSBhIEZpbmFsMTAwIGRmIHdpdGggb25seSB0aGUgZGVzaXJlZCBjb2x1bW5zDQoNCmBgYHtyfQ0KbmFtZXMoZGF0UmF3RmluYWwxMDApDQpgYGANCg0KYGBge3J9DQpjdXJEYXRGaW5hbDEwMCA8LSBzZWxlY3QoZGF0UmF3RmluYWwxMDAsIElELCANCiAgICAgICAgICAgICAgICAgICAgICBBNSwgQTYsIEExMywgQTE0LA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBMTMudHJ0LCBBMTQudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDc0LCBFWUFpbmNsdWRlKQ0KbmFtZXMoY3VyRGF0RmluYWwxMDApDQpgYGANCg0KIyMjIE1lcmdlIHRoZSBkYXRhIHNldHMgYnkgSUQgYW5kIHRoZW4gbWFrZSBhbiBhbm9ueW1vdXMgdmVyc2lvbg0KDQpgYGB7cn0NCmRwRGF0UDEwMGZpbmFsIDwtIG1lcmdlKGN1ckRhdEZpbmFsMTAwLGN1ckRhdENsYXNzLGJ5PSJJRCIpDQpkcERhdFAxMDBmaW5hbCA8LSBzZWxlY3QoZHBEYXRQMTAwZmluYWwsLUlEKQ0KbmFtZXMoZHBEYXRQMTAwZmluYWwpDQpgYGANCg0KIyMjIFNhdmUgZmlsZSB0byBhbm9ueW1pemVkIGZvbGRlcg0KDQpgYGB7cn0NCg0KZHBPdXQgPC0gImRwRGF0UDEwMGZpbmFsLmNzdiINCndyaXRlLmNzdihkcERhdFAxMDBmaW5hbCwgZmlsZS5wYXRoKGFub25EaXIxMDAsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSkNCmBgYA0KDQoNCiMjIE1ha2UgYSBNVDEwMSBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd01UMTAxKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0TVQxMDEgPC0gc2VsZWN0KGRhdFJhd01UMTAxLCBJRCwgDQogICAgICAgICAgICAgICAgICAgICAgQTUuc2NvcmUsIEE2LnNjb3JlLA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDQzLCBFWUFpbmNsdWRlKQ0KIyBSZW5hbWUgcXVlc3Rpb24gbnVtYmVycw0KY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09IkE1LnNjb3JlIl0gPC0gIkE1Ig0KY29sbmFtZXMoY3VyRGF0TVQxMDEpW2NvbG5hbWVzKGN1ckRhdE1UMTAxKT09IkE2LnNjb3JlIl0gPC0gIkE2Ig0KbmFtZXMoY3VyRGF0TVQxMDEpDQpgYGANCg0KIyMjIE1lcmdlIHRoZSBkYXRhIHNldHMgYnkgSUQgYW5kIHRoZW4gbWFrZSBhbiBhbm9ueW1vdXMgdmVyc2lvbg0KDQpgYGB7cn0NCmRwRGF0UDEwMW1pZHRlcm0gPC0gbWVyZ2UoY3VyRGF0TVQxMDEsY3VyRGF0Q2xhc3MsYnk9IklEIikNCmRwRGF0UDEwMW1pZHRlcm0gPC0gc2VsZWN0KGRwRGF0UDEwMW1pZHRlcm0sLUlEKQ0KbmFtZXMoZHBEYXRQMTAxbWlkdGVybSkNCmBgYA0KDQojIyMgU2F2ZSBmaWxlIHRvIGFub255bWl6ZWQgZm9sZGVyDQoNCmBgYHtyfQ0KDQpkcE91dCA8LSAiZHBEYXRQMTAxbWlkdGVybS5jc3YiDQp3cml0ZS5jc3YoZHBEYXRQMTAxbWlkdGVybSwgZmlsZS5wYXRoKGFub25EaXIxMDEsZHBPdXQpLCByb3cubmFtZXMgPSBGQUxTRSkNCmBgYA0KDQoNCiMjIE1ha2UgYSBGaW5hbDEwMSBkZiB3aXRoIG9ubHkgdGhlIGRlc2lyZWQgY29sdW1ucw0KDQpgYGB7cn0NCm5hbWVzKGRhdFJhd0ZpbmFsMTAxKQ0KYGBgDQoNCmBgYHtyfQ0KY3VyRGF0RmluYWwxMDEgPC0gc2VsZWN0KGRhdFJhd0ZpbmFsMTAxLCBJRCwgDQogICAgICAgICAgICAgICAgICAgICAgQTUsIEE2LCBBOSwgQTEwLA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnRydCwgQTYudHJ0LCBBOS50cnQsIEExMC50cnQsDQogICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzgsIEVZQWluY2x1ZGUpDQpuYW1lcyhjdXJEYXRGaW5hbDEwMSkNCmBgYA0KDQojIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXRQMTAxZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDEsY3VyRGF0Q2xhc3MsYnk9IklEIikNCmRwRGF0UDEwMWZpbmFsIDwtIHNlbGVjdChkcERhdFAxMDFmaW5hbCwtSUQpDQpuYW1lcyhkcERhdFAxMDFmaW5hbCkNCmBgYA0KDQojIyMgU2F2ZSBmaWxlIHRvIGFub255bWl6ZWQgZm9sZGVyDQoNCmBgYHtyfQ0KDQpkcE91dCA8LSAiZHBEYXRQMTAxZmluYWwuY3N2Ig0Kd3JpdGUuY3N2KGRwRGF0UDEwMWZpbmFsLCBmaWxlLnBhdGgoYW5vbkRpcjEwMSxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KDQoNCg0KDQoNCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1YWwgcHJvY2Vzc2luZyBkYXRhIHByZXBhcmF0aW9uIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQotLS0NClByb2R1Y2VkIGJ5IEpvc3MgSXZlcywgKnVwZGF0ZWQgYHIgZm9ybWF0KFN5cy50aW1lKCksICIlWSAlQiAlZCwgJUg6JU06JVMiKWAqLiBCYXNlZCBvbiBkYXRhIHByZXBhcmF0aW9uIGRvY3VtZW50cyBieSBQYXRyaWNrIER1Ym9pczogW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL3Bham9kdS9HRVJHLykNCg0KIyMgT3ZlcnZpZXcNCg0KVGhpcyBmaWxlIGNvbWJpbmVzIG1pZHRlcm0sIGZpbmFsIGV4YW0gYW5kIGRpYWdub3N0aWMgZGF0YSBpbnRvIGEgc2luZ2xlIGZpbGUuIFRoaXMgZGF0YSBmb3JtYXQgbWF5IG5lZWQgdG8gYmUgZnVydGhlciBtb2RpZmllZCBmb3IgdGhlIGxvZ2lzdGljIGFuYWx5c2lzLg0KDQojIyBMb2FkIGxpYnJhcmllcw0KYGBge3J9DQojaW5zdGFsbC5wYWNrYWdlcygiZHBseXIiKQ0KbGlicmFyeSgiZHBseXIiKQ0KYGBgDQoNCg0KIyMgU2V0IGRpcmVjdG9yaWVzDQoNClN0YXJ0IGJ5IHNldHRpbmcgZGlyZWN0b3JpZXMNCg0KYGBge3J9DQpzdGFydERpciA8LSBnZXR3ZCgpDQpyYXdEaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAwIC0gMjAxNy0wOSINCmFub25EaXIxMDAgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMCAtIDIwMTctMDkiDQpyYXdEaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YS9QMTAxIC0gMjAxOC0wMSINCmFub25EaXIxMDEgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9Bbm9ueW1pemVkX0RhdGEvUDEwMSAtIDIwMTgtMDEiDQpnZW5kZXJEaXIgPC0gIkM6L1VzZXJzL0pvc3Mvb3duQ2xvdWQvU2hhcmVkX1JlYWRfT25seS9EUF9SYXdfRGF0YSINCmBgYA0KDQpMb2FkIHJhdyBkYXRhDQoNCmBgYHtyfQ0KZGF0YVNvdXJjZXMgPC0gZGF0YS5mcmFtZShGaWxlbmFtZT1jKA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiUDEwWC1Bbm9uX2FuZF9HZW5kZXIuY3N2IiwgI0dlbmRlciBhbmQgYW5vbiBJRCBpbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJQMTAwLW1pZHRlcm0tZ3JhZGVzaGVldC1FWUEuY3N2IiwgIyBQMTAwIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlAxMDAtZmluYWwtZ3JhZGVzaGVldC1FWUEtbW9kLmNzdiIsICMgUDEwMCBGaW5hbCBleGFtIHJlc3VsdHMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkRpYWdub3N0aWMgLSBSYXcgLSBOb3QgQW5vbi5jc3YiLCAjIFAxMDEgZGlhZ25vc3RpYw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiTVQgc29sby1ncmFkZXNoZWV0LWdyYWRlZF90YWItRVlBLmNzdiIsICNQMTAxIE1pZHRlcm0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInNvbG8tZ3JhZGVzaGVldCAoZmluYWwpIGdyYWRlZF90YWIuY3N2IiAjIFAxMDEgRmluYWwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgVGFnPWMoIkNsYXNzbGlzdCIsICJQMTAwTVQiLCAiUDEwMGZpbmFsIiwgIlAxMDFkaWFnbm9zdGljIiwgIlAxMDFNVCIsICJQMTAxZmluYWwiKSApDQoNCmRhdFJhd0NsYXNzIDwtIHJlYWQuY3N2KGZpbGUucGF0aChnZW5kZXJEaXIsZGF0YVNvdXJjZXMkRmlsZW5hbWVbMV0pKQ0KZGF0UmF3TVQxMDAgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMCxkYXRhU291cmNlcyRGaWxlbmFtZVsyXSkpDQpkYXRSYXdGaW5hbDEwMCA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAwLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzNdKSkNCmRhdFJhd0RpYWdub3N0aWMgPC0gcmVhZC5jc3YoZmlsZS5wYXRoKHJhd0RpcjEwMSxkYXRhU291cmNlcyRGaWxlbmFtZVs0XSkpDQpkYXRSYXdNVDEwMSA8LSByZWFkLmNzdihmaWxlLnBhdGgocmF3RGlyMTAxLGRhdGFTb3VyY2VzJEZpbGVuYW1lWzVdKSkNCmRhdFJhd0ZpbmFsMTAxIDwtIHJlYWQuY3N2KGZpbGUucGF0aChyYXdEaXIxMDEsZGF0YVNvdXJjZXMkRmlsZW5hbWVbNl0pKQ0KYGBgDQoNCiMjIE1ha2UgYSBjbGFzc2xpc3QgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdDbGFzcykNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdENsYXNzIDwtIHNlbGVjdChkYXRSYXdDbGFzcywgSUQsIEFub25JRCwgR2VuZGVyKSANCm5hbWVzKGN1ckRhdENsYXNzKQ0KYGBgDQoNCiMjIE1ha2UgYSBkaWFnbm9zdGljIGRmIChmb3IgUDEwMCkgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpjdXJEYXREaWFnbm9zdGljIDwtIHNlbGVjdChkYXRSYXdEaWFnbm9zdGljLCBJRCwgVmVyc2lvbiwgTkNSVCkNCmNvbG5hbWVzKGN1ckRhdERpYWdub3N0aWMpW2NvbG5hbWVzKGN1ckRhdERpYWdub3N0aWMpPT0iVmVyc2lvbiJdIDwtICJkLnZlcnNpb24iDQpuYW1lcyhjdXJEYXREaWFnbm9zdGljKQ0KDQpgYGANCg0KDQojIyBNYWtlIGEgTVQxMDAgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdNVDEwMCkNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdE1UMTAwIDwtIHNlbGVjdChkYXRSYXdNVDEwMCwgSUQsIA0KICAgICAgICAgICAgICAgICAgICAgIEEzLnNjb3JlLCBBNC5zY29yZSwgQTcuc2NvcmUsIEE4LnNjb3JlLA0KICAgICAgICAgICAgICAgICAgICAgIEEzLnRydCwgQTQudHJ0LCBBNy50cnQsIEE4LnRydCwNCiAgICAgICAgICAgICAgICAgICAgICBTb2xvVG90YWwzNiwgRVlBaW5jbHVkZSwgVmVyc2lvbikNCiMgUmVuYW1lIHF1ZXN0aW9uIG51bWJlcnMNCmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PSJBMy5zY29yZSJdIDwtICJBMyINCmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PSJBNC5zY29yZSJdIDwtICJBNCINCmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PSJBNy5zY29yZSJdIDwtICJBNyINCmNvbG5hbWVzKGN1ckRhdE1UMTAwKVtjb2xuYW1lcyhjdXJEYXRNVDEwMCk9PSJBOC5zY29yZSJdIDwtICJBOCINCg0KbmFtZXMoY3VyRGF0TVQxMDApDQpgYGANCg0KIyMjIE1lcmdlIHRoZSBkYXRhIHNldHMgYnkgSUQgYW5kIHRoZW4gbWFrZSBhbiBhbm9ueW1vdXMgdmVyc2lvbg0KDQpgYGB7cn0NCmRwRGF0UDEwMG1pZHRlcm0gPC0gbWVyZ2UoY3VyRGF0TVQxMDAsY3VyRGF0Q2xhc3MsYnk9IklEIikNCmRwRGF0UDEwMG1pZHRlcm0gPC0gbWVyZ2UoZHBEYXRQMTAwbWlkdGVybSwgY3VyRGF0RGlhZ25vc3RpYywgYnk9IklEIiwgYWxsLng9VFJVRSkNCmRwRGF0UDEwMG1pZHRlcm0gPC0gc2VsZWN0KGRwRGF0UDEwMG1pZHRlcm0sLUlEKQ0KbmFtZXMoZHBEYXRQMTAwbWlkdGVybSkNCmBgYA0KDQojIyMgU2F2ZSBmaWxlIHRvIGFub255bWl6ZWQgZm9sZGVyDQoNCmBgYHtyfQ0KZHBPdXQgPC0gImRwRGF0UDEwMG1pZHRlcm0uY3N2Ig0Kd3JpdGUuY3N2KGRwRGF0UDEwMG1pZHRlcm0sIGZpbGUucGF0aChhbm9uRGlyMTAwLGRwT3V0KSwgcm93Lm5hbWVzID0gRkFMU0UpDQpgYGANCg0KDQojIyBNYWtlIGEgRmluYWwxMDAgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdGaW5hbDEwMCkNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdEZpbmFsMTAwIDwtIHNlbGVjdChkYXRSYXdGaW5hbDEwMCwgSUQsIA0KICAgICAgICAgICAgICAgICAgICAgIEE1LCBBNiwgQTEzLCBBMTQsDQogICAgICAgICAgICAgICAgICAgICAgQTUudHJ0LCBBNi50cnQsIEExMy50cnQsIEExNC50cnQsDQogICAgICAgICAgICAgICAgICAgICAgU29sb1RvdGFsNzQsIEVZQWluY2x1ZGUsIFZlcnNpb24pDQpuYW1lcyhjdXJEYXRGaW5hbDEwMCkNCmBgYA0KDQojIyMgTWVyZ2UgdGhlIGRhdGEgc2V0cyBieSBJRCBhbmQgdGhlbiBtYWtlIGFuIGFub255bW91cyB2ZXJzaW9uDQoNCmBgYHtyfQ0KZHBEYXRQMTAwZmluYWwgPC0gbWVyZ2UoY3VyRGF0RmluYWwxMDAsY3VyRGF0Q2xhc3MsYnk9IklEIikNCmRwRGF0UDEwMGZpbmFsIDwtIG1lcmdlKGRwRGF0UDEwMGZpbmFsLCBjdXJEYXREaWFnbm9zdGljLCBieT0iSUQiLCBhbGwueD1UUlVFKQ0KZHBEYXRQMTAwZmluYWwgPC0gc2VsZWN0KGRwRGF0UDEwMGZpbmFsLC1JRCkNCm5hbWVzKGRwRGF0UDEwMGZpbmFsKQ0KYGBgDQoNCiMjIyBTYXZlIGZpbGUgdG8gYW5vbnltaXplZCBmb2xkZXINCg0KYGBge3J9DQoNCmRwT3V0IDwtICJkcERhdFAxMDBmaW5hbC5jc3YiDQp3cml0ZS5jc3YoZHBEYXRQMTAwZmluYWwsIGZpbGUucGF0aChhbm9uRGlyMTAwLGRwT3V0KSwgcm93Lm5hbWVzID0gRkFMU0UpDQpgYGANCg0KDQojIyBNYWtlIGEgTVQxMDEgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdNVDEwMSkNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdE1UMTAxIDwtIHNlbGVjdChkYXRSYXdNVDEwMSwgSUQsIA0KICAgICAgICAgICAgICAgICAgICAgIEE1LnNjb3JlLCBBNi5zY29yZSwNCiAgICAgICAgICAgICAgICAgICAgICBBNS50cnQsIEE2LnRydCwNCiAgICAgICAgICAgICAgICAgICAgICBTb2xvVG90YWw0MywgRVlBaW5jbHVkZSwgVmVyc2lvbikNCiMgUmVuYW1lIHF1ZXN0aW9uIG51bWJlcnMNCmNvbG5hbWVzKGN1ckRhdE1UMTAxKVtjb2xuYW1lcyhjdXJEYXRNVDEwMSk9PSJBNS5zY29yZSJdIDwtICJBNSINCmNvbG5hbWVzKGN1ckRhdE1UMTAxKVtjb2xuYW1lcyhjdXJEYXRNVDEwMSk9PSJBNi5zY29yZSJdIDwtICJBNiINCm5hbWVzKGN1ckRhdE1UMTAxKQ0KYGBgDQoNCiMjIyBNZXJnZSB0aGUgZGF0YSBzZXRzIGJ5IElEIGFuZCB0aGVuIG1ha2UgYW4gYW5vbnltb3VzIHZlcnNpb24NCg0KYGBge3J9DQpkcERhdFAxMDFtaWR0ZXJtIDwtIG1lcmdlKGN1ckRhdE1UMTAxLGN1ckRhdENsYXNzLGJ5PSJJRCIpDQpkcERhdFAxMDFtaWR0ZXJtIDwtIG1lcmdlKGRwRGF0UDEwMW1pZHRlcm0sIGN1ckRhdERpYWdub3N0aWMsIGJ5PSJJRCIsIGFsbC54PVRSVUUpDQpkcERhdFAxMDFtaWR0ZXJtIDwtIHNlbGVjdChkcERhdFAxMDFtaWR0ZXJtLC1JRCkNCm5hbWVzKGRwRGF0UDEwMW1pZHRlcm0pDQpgYGANCg0KIyMjIFNhdmUgZmlsZSB0byBhbm9ueW1pemVkIGZvbGRlcg0KDQpgYGB7cn0NCg0KZHBPdXQgPC0gImRwRGF0UDEwMW1pZHRlcm0uY3N2Ig0Kd3JpdGUuY3N2KGRwRGF0UDEwMW1pZHRlcm0sIGZpbGUucGF0aChhbm9uRGlyMTAxLGRwT3V0KSwgcm93Lm5hbWVzID0gRkFMU0UpDQpgYGANCg0KDQojIyBNYWtlIGEgRmluYWwxMDEgZGYgd2l0aCBvbmx5IHRoZSBkZXNpcmVkIGNvbHVtbnMNCg0KYGBge3J9DQpuYW1lcyhkYXRSYXdGaW5hbDEwMSkNCmBgYA0KDQpgYGB7cn0NCmN1ckRhdEZpbmFsMTAxIDwtIHNlbGVjdChkYXRSYXdGaW5hbDEwMSwgSUQsIA0KICAgICAgICAgICAgICAgICAgICAgIEE1LCBBNiwgQTksIEExMCwNCiAgICAgICAgICAgICAgICAgICAgICBBNS50cnQsIEE2LnRydCwgQTkudHJ0LCBBMTAudHJ0LA0KICAgICAgICAgICAgICAgICAgICAgIFNvbG9Ub3RhbDc4LCBFWUFpbmNsdWRlLCBWZXJzaW9uKQ0KbmFtZXMoY3VyRGF0RmluYWwxMDEpDQpgYGANCg0KIyMjIE1lcmdlIHRoZSBkYXRhIHNldHMgYnkgSUQgYW5kIHRoZW4gbWFrZSBhbiBhbm9ueW1vdXMgdmVyc2lvbg0KDQpgYGB7cn0NCmRwRGF0UDEwMWZpbmFsIDwtIG1lcmdlKGN1ckRhdEZpbmFsMTAxLGN1ckRhdENsYXNzLGJ5PSJJRCIpDQpkcERhdFAxMDFmaW5hbCA8LSBtZXJnZShkcERhdFAxMDFmaW5hbCwgY3VyRGF0RGlhZ25vc3RpYywgYnk9IklEIiwgYWxsLng9VFJVRSkNCmRwRGF0UDEwMWZpbmFsIDwtIHNlbGVjdChkcERhdFAxMDFmaW5hbCwtSUQpDQpuYW1lcyhkcERhdFAxMDFmaW5hbCkNCmBgYA0KDQojIyMgU2F2ZSBmaWxlIHRvIGFub255bWl6ZWQgZm9sZGVyDQoNCmBgYHtyfQ0KDQpkcE91dCA8LSAiZHBEYXRQMTAxZmluYWwuY3N2Ig0Kd3JpdGUuY3N2KGRwRGF0UDEwMWZpbmFsLCBmaWxlLnBhdGgoYW5vbkRpcjEwMSxkcE91dCksIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KDQoNCg0KDQoNCg0K</div>
 
 
 
