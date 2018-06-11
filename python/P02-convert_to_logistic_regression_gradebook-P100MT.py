@@ -55,7 +55,7 @@ for index, row in df.iterrows():
                       row['Version'], row['Gender'], row['EYAinclude'], \
                       row['d.version'], row['NCRT'] \
                       ])               
-        elif row[question]==0:
+        elif (row[question]==0 or row[question]==0.5):
             qcorrect = 0
             list2.append([row['AnonID'], \
                       iq,qnumstring, qnumstringshort, course, term, exam, \

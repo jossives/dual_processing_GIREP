@@ -1,0 +1,410 @@
+---
+title: "P03 Calculate z-score for each data set and combine"
+author: "Joss Ives"
+date: "June 10, 2018"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
+
+# Setup
+
+```{r echo=FALSE}
+# Load libraries
+library(plyr)
+#library(PerformanceAnalytics)
+library(dplyr)
+```
+
+```{r echo=FALSE}
+# Load data
+derived0.P100MT <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat_P100MT.csv")
+names(derived0.P100MT)
+```
+### Add additional calculated values
+```{r echo=FALSE}
+dat<-derived0.P100MT
+totalpts = 36.
+dat$ExamGrade.100 <- dat$SoloTotal36.M0/totalpts*100.
+dat$ExamGrade.fix <- (dat$SoloTotal36.M0-2.*dat$QCORRECT)/totalpts
+dat$ExamGrade.LMH <- as.integer(
+  cut(dat$SoloTotal36.M0, quantile(dat$SoloTotal36.M0, probs=0:3/3), include.lowest=TRUE)
+  )
+exam.mean = mean(dat$ExamGrade.fix)
+exam.sd = sd(dat$ExamGrade.fix)
+dat$ExamGrade.fix.z <- (dat$ExamGrade.fix-exam.mean)/exam.sd
+
+derived1.P100MT <- select(dat,-SoloTotal36.M0)
+names(derived1.P100MT)
+```
+
+
+The following is a summary of the variables present in the data file. The final 2 were caculated in this notebook. "Fix" refers to removing from the overall score on the test, the score of the specific question.
+```{r}
+names(dat.raw)
+```
+
+```{r echo = FALSE}
+### Set categorical variables
+dat.raw$ID        <- factor(dat.raw$ID)
+dat.raw$COURSE    <- factor(dat.raw$COURSE)
+dat.raw$TERM      <- factor(dat.raw$TERM)
+dat.raw$EXAM      <- factor(dat.raw$EXAM)
+dat.raw$QNUM      <- factor(dat.raw$QNUM)
+dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
+dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
+dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$version <- factor(dat.raw$version)
+
+```
+
+```{r echo=FALSE}
+### Make some data subsets
+
+# Keep only those data points where TREATMENT was set
+dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
+
+# Remove students that didn't receive full participation credit for both EYA questions
+dat.all.EYA <- subset(dat.all, EYAinclude==1)
+
+# Remove the NAN gender folks
+dat.trt <- subset(dat.all.EYA, Gender=="Female" | Gender=="Male")
+```
+
+
+```{r echo = FALSE}
+### Set some global variables
+dodge=position_dodge(width=0.9)
+```
+
+```{r}
+#dat.trt
+```
+
+
+# Data description
+
+
+```{r echo=FALSE}
+# Turn this off for now since it should really come before setting categorical vars
+### Look at correlations between the variables
+#chart.Correlation(select(dat.trt,TREATMENT,course.grade, f.tot100, #NCRT,QCORRECT,f.version,d.version),
+#  histogram=TRUE, pch=19)
+```
+
+
+
+```{r echo=FALSE}
+### Check if TREATMENT is predicted by Gender. It is not.
+#m <- glmer(TREATMENT ~ Gender + (1|ID), 
+#                data = dat.trt, 
+#                family = binomial, control=glmerControl(optimizer="bobyqa"))
+#print(summary(m))
+```
+
+### How well was each question answered?
+
+Note that Final Exam V1 had questions 5 & 9 as treatment and V2 had questions 6 & 10 as treatment. Thus both of the questions where we are seeing a difference are from the same version. We need to confirm that these two populations are not performing differently overall. This is likely done most effectively by controlling for version, gender and other differences within the logistic regression. There are too many confounding factors to be able to see through them using bar charts.
+
+```{r echo=FALSE}
+corr.by.question <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM.0")
+  )
+
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+corr.by.question
+```
+
+
+```{r echo=FALSE}
+
+ggplot(corr.by.question, aes(x=QNUM.0, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Question number", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") + 
+  guides(fill=guide_legend(title=NULL))
+  
+```
+
+
+### Performance on the EYA questions by gender.
+It looks like females benefit from the intervention more than males, but since the effective intervention questions were both on the same test, we need to confirm that this is not partially explained by there being a large gender difference in who wrote which test.
+```{r echo=FALSE}
+
+corr.by.gender <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","Gender")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Gender", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+  
+```
+
+### Overall final exam grades show that the males outperformed the females
+Looking at final exam performance by gender and by test version. The effect looks the opposite of what we would expect from the Test 2 intervention questions being the more effective ones. Females benefit more from the intervention. However, their score on V2 as compared to V1 is worse than the males, not better. However, the effect of the intervention on overall test grade is 0.25% (approximately 5% per question, each worth approximately 5% of the test).
+
+```{r echo=FALSE}
+
+final.by.gender <- summarySE(
+  subset(dat.trt,QNUM.0==5 & f.tot100>-0.1), # Each test score appears 4 times, so this it reduces it to 1 time
+  measurevar="f.tot100", groupvars=c("Gender","version"), calcBE=FALSE
+  )
+limits <- aes(ymax = f.tot100 + se, ymin = f.tot100 - se)
+
+ggplot(final.by.gender, aes(x=Gender, y=f.tot100, fill=version)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Gender", y = "Final Exam Grade (%)") +
+  #scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,100)) +
+  ggtitle("Error bars are standard error") +
+  guides(fill=guide_legend(title="Test Version"))
+  
+```
+
+### Effect of intervention by final exam performance group (tertile)
+Since we know that females scored lower on the final exam than males, perhaps there will be a difference in the effectiveness of the intervention if we look at low, medium and high performers from the final exam. The graph shows no significant difference.
+
+```{r echo=FALSE}
+
+s.fLMH <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("final.grade.LMH","TREATMENT")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(s.fLMH, aes(x=final.grade.LMH, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Final Exam Score (Tertile = Low, Medium, High)", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  #theme(legend.position="none")
+  #scale_x_discrete(labels=c("Low","Medium","High")) +
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+
+```
+
+
+### No difference in gender fractions taking each version of the test
+
+
+
+```{r echo=FALSE}
+fv1 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Female" & dat.trt$version==1])
+fv2 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Female" & dat.trt$version==2])
+mv1 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Male" & dat.trt$version==1])
+mv2 <- length(dat.trt$Gender[dat.trt$QNUM.0==5 & dat.trt$Gender=="Male" & dat.trt$version==2])
+ffv1 <- fv1/(fv1+mv1)
+ffv2 <- fv2/(fv2+mv2)
+fmv1 <- mv1/(fv1+mv1)
+fmv2 <- mv2/(fv2+mv2)
+#fisher.table(fv1, fv2, mv1, mv2)
+
+# create a dataset
+version=c(rep("V1" , 2) , rep("V2" , 2))
+gender=rep(c("Female" , "Male" ), 2)
+value=c(ffv1, fmv1, ffv2, fmv2)
+error=c(0,sqrt((ffv1*fmv1)/(fv1+mv1)),0,sqrt((ffv2*fmv2)/(fv2+mv2)))
+data=data.frame(version, gender,value, error)
+limits <- aes(ymax = value+error,
+              ymin = value-error)
+# Stacked Percent
+ggplot(data, aes(fill=gender, y=value, x=version)) + 
+#    geom_bar( stat="identity", position="fill")
+    geom_bar( stat="identity") +
+    geom_errorbar(limits, width=0.25)
+
+```
+
+# Quick analyses show non-significant effect size
+
+### Fisher's Exact for the four study questions combined
+
+This is a sanity check for the logistic regressions to come. Fisher's Exact Test shows an odds ration consistent with 0
+
+```{r echo=FALSE}
+## fisher.2vector
+# 2 vectors of 0s and 1s are passed
+# * The first is control (top row)
+# * The second is treatement (bottom row)
+# Adding parenthesis around assigning a variable causes the output to be displayed
+(f.result <- fisher.2vector(
+  dat.trt$QCORRECT[dat.trt$TREATMENT==0],
+  dat.trt$QCORRECT[dat.trt$TREATMENT==1]
+)) 
+
+```
+
+
+### Simple logistic regression
+
+```{r echo=FALSE}
+m.simple <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m <- m.simple
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+
+```{r echo=FALSE}
+# Create df to hold results
+Model.vars <- c('Simple')
+AIC.val <- c(round(AIC(m),1))
+Odds.treatment <- c(round(exp(tab[[2]]),3))
+LL <- c(round(exp(tab[[4]]),1))
+UL <- c(round(exp(tab[[6]]),1))
+Significant.Vars <-('None')
+r.df <- data.frame(Model.vars, AIC.val, Odds.treatment, LL, UL, Significant.Vars, stringsAsFactors = FALSE)
+r.df
+```
+
+
+
+### A quick summary of odds ratios so far
+```{r}
+odds.table <- matrix(c(
+  f.result$estimate[[1]],
+  cohens.d.from.odds.simple(f.result$estimate[[1]]),
+  exp(tab[[2]]),
+  cohens.d.from.odds.simple(exp(tab[[2]]))
+),ncol=2,byrow=TRUE)
+colnames(odds.table) <- c("Odds Ratio","Cohen's d")
+rownames(odds.table) <- c("Fisher's Exact Test","Logistic Regression")
+as.table(odds.table)
+
+
+#cat("Cohen's d\n ", cohens.d.from.odds.simple(result$estimate[[1]]),"\n")
+```
+
+# Other non-interaction models
+
+### Treatment + Gender
+
+```{r echo=FALSE}
+m.gender <- glmer(QCORRECT ~ TREATMENT + Gender + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m <- m.gender
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+r.df <- rbind(r.df,c('Gender', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
+                     round(exp(tab[[8]]),3),'***Gender'))
+#r.df
+```
+
+### Treatment + Test Version
+
+```{r echo=FALSE}
+m.test.version <- glmer(QCORRECT ~ TREATMENT + version + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m <- m.test.version
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+r.df <- rbind(r.df,c('Test Version', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
+                     round(exp(tab[[8]]),3),'None'))
+```
+
+### TREATMENT + Final Exam Grade (corrected for intervention question scores)
+
+```{r echo=FALSE}
+m.final.exam.grade <- glmer(QCORRECT ~ TREATMENT + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m <- m.final.exam.grade
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+r.df <- rbind(r.df,c('Final Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
+                     round(exp(tab[[8]]),3),'None'))
+```
+
+### TREATMENT + Final Exam Grade Tertile
+
+```{r echo=FALSE}
+m.final.exam.LMH <- glmer(QCORRECT ~ TREATMENT + final.grade.LMH + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m <- m.final.exam.LMH
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+r.df <- rbind(r.df,c('Final Exam LMH', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
+                     round(exp(tab[[8]]),3),'None'))
+```
+
+### TREATMENT + Gender + Final Exam Grade (corrected for intervention question scores)
+
+```{r echo=FALSE}
+m.gender.final.exam <- glmer(QCORRECT ~ TREATMENT + Gender + final.grade.fix + (1|QNUM) + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+m <- m.gender.final.exam
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+r.df <- rbind(r.df,c('Gender + Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
+                     round(exp(tab[[10]]),3),'None'))
+```
+
+### TREATMENT + Gender + Overall Course Grade
+
+```{r echo=FALSE}
+#m.gender.course.grade <- glmer(QCORRECT ~ TREATMENT + Gender + course.grade.frac #+ (1|QNUM) + (1|ID), 
+#                data = dat.trt, 
+#                family = binomial, control=glmerControl(optimizer="bobyqa"))
+#m <- m.gender.course.grade
+#print(summary(m))
+#se <- sqrt(diag(vcov(m)))
+#tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+#exp(tab)
+#r.df <- rbind(r.df,c('Gender + Course Grade', round(AIC(m),1), #round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
+#                     round(exp(tab[[10]]),3),'None'))
+```
+
+### Results
+
+With the final exam data, we see no significant results from treatment
+
+```{r}
+r.df
+```
