@@ -21,7 +21,7 @@ One (or more) file(s) to convert data to logistic regression format
 
 ### P03
 
-Some final data prep, to calculate for example corrected exam averages, z scores, etc so that these do not have to be redone in every analysis file
+Some final data prep, to calculate for example corrected exam averages, z scores, etc so that these do not have to be redone in every analysis file. All exams are combined into a single data file
 
 # Analyses
 
