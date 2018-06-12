@@ -1,5 +1,5 @@
 ---
-title: "A04 Explain Your Answer Report (All P100/P101 Exams)"
+title: "A04c CRT correlations (P101 Exams)"
 author: "Joss Ives"
 date: "June 10, 2018"
 output:
@@ -16,7 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 *updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
 
 # Overview
-This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
+
+
 
 # Setup
 
@@ -51,18 +52,17 @@ dat.raw$ID        <- factor(dat.raw$ID)
 dat.raw$COURSE    <- factor(dat.raw$COURSE)
 dat.raw$TERM      <- factor(dat.raw$TERM)
 dat.raw$EXAM      <- factor(dat.raw$EXAM)
-dat.raw$QNUM      <- factor(dat.raw$QNUM, 
+dat.raw$QNUM.relevel <- factor(dat.raw$QNUM, 
                             levels=c("m0171.3","m0171.4","m0171.7","m0171.8",
                                      "f0171.5","f0171.6","f0171.13","f0171.14",
                                      "m1172.5","m1172.6",
                                      "f1172.5","f1172.6","f1172.9","f1172.10"
                                      ))
+dat.raw$QNUM <- factor(dat.raw$QNUM) 
 dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
 dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
 dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
 dat.raw$Version <- factor(dat.raw$Version)
-dat.raw$ExamGrade.fix.LMH.factor <- dat.raw$ExamGrade.fix.LMH
-
 ```
 
 ```{r echo=FALSE}
@@ -73,9 +73,13 @@ dat.raw$ExamGrade.fix.LMH.factor <- dat.raw$ExamGrade.fix.LMH
 
 # Remove students that didn't receive full participation credit for both EYA questions
 dat.EYA <- subset(dat.raw, EYAinclude==1)
+# Include only P101 data, and only if those data have CRT data
+dat.p101 <- subset (dat.EYA, COURSE=="P101")
+dat.CRT <- subset(dat.p101, NCRT==0 | NCRT==1 | NCRT==2 | NCRT==3)
 
 # Remove the NAN gender folks
-dat.trt <- subset(dat.EYA, Gender=="Female" | Gender=="Male")
+dat.trt <- dat.CRT
+dat.trt.gender <- subset(dat.trt, Gender=="Female" | Gender=="Male")
 ```
 
 
@@ -95,7 +99,7 @@ dodge=position_dodge(width=0.9)
 
 ```{r echo=FALSE}
 corr.by.question <- summarySE(
-  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM")
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM.relevel")
   )
 
 limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
@@ -105,7 +109,7 @@ corr.by.question
 
 ```{r echo=FALSE}
 
-ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
+ggplot(corr.by.question, aes(x=QNUM.relevel, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   labs(x = "Question number", y = "Fraction of EYA questions correct") +
@@ -122,6 +126,9 @@ ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
 
 
 ### Performance on the EYA questions by gender.
+
+This comparison is not really that important considering what we ultimately figure out about the lack of gender effects, but we leave it for now.
+
 ```{r echo=FALSE}
 
 corr.by.gender <- summarySE(
@@ -143,65 +150,95 @@ ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
   
 ```
 
-### Effect of intervention by exam performance group (tertile)
-Since we know that females scored lower on the exams than males, perhaps there will be a difference in the effectiveness of the intervention if we look at low, medium and high performers from exams. The graph shows the largest effect on H, then L, then M
+### Effect of intervention by exam performance (tertile)
 
-This will be investigated further in A04t ("t" for tertile)
+As compared to the overall results from A04, we see that for the P101 exams, the intervention favours L more than H more than M (overall is H > L > M)
 
 ```{r echo=FALSE}
 
 s.fLMH <- summarySE(
-  dat.trt, measurevar="QCORRECT", groupvars=c("ExamGrade.fix.LMH.factor","TREATMENT")
+  dat.trt, measurevar="QCORRECT", groupvars=c("ExamGrade.fix.LMH","TREATMENT")
   )
 limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
 
-ggplot(s.fLMH, aes(x=ExamGrade.fix.LMH.factor, y=QCORRECT, fill=TREATMENT)) +
+ggplot(s.fLMH, aes(x=ExamGrade.fix.LMH, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   labs(x = "Final Exam Score (Tertile = Low, Medium, High)", y = "Fraction of EYA questions correct") +
   scale_fill_discrete(labels=c("Control","Treatment")) +
   #theme(legend.position="none")
-  #scale_x_discrete(labels=c("1"="Low","Medium","High")) +
+  #scale_x_discrete(labels=c("Low","Medium","High")) +
   scale_y_continuous(limits = c(0,1)) +
   ggtitle("Error bars are binomial errors") +
   guides(fill=guide_legend(title=NULL))
 
 ```
 
-
-
-# Quick analyses of effects sizes
-
-### Fisher's Exact for the four study questions combined
-
-This is a sanity check for the logistic regressions to come. Fisher's Exact Test shows an odds ration consistent with 0
+### Effect of intervention by CRT score and CRT median split
 
 ```{r echo=FALSE}
-## fisher.2vector
-# 2 vectors of 0s and 1s are passed
-# * The first is control (top row)
-# * The second is treatement (bottom row)
-# Adding parenthesis around assigning a variable causes the output to be displayed
-(f.result <- fisher.2vector(
-  dat.trt$QCORRECT[dat.trt$TREATMENT==0],
-  dat.trt$QCORRECT[dat.trt$TREATMENT==1]
-)) 
+
+s.fLMH <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("ExamGrade.fix.LMH","TREATMENT")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(s.fLMH, aes(x=ExamGrade.fix.LMH, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Final Exam Score (Tertile = Low, Medium, High)", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  #theme(legend.position="none")
+  #scale_x_discrete(labels=c("Low","Medium","High")) +
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
 
 ```
 
+# Logsitic regressions
 
-### Simple logistic regression
+### Run on all three LMH data subsets 
+
+To help make sure that the interaction terms are being interpreted correctly.
+
+Exam performance = "L" ("1")
 
 ```{r echo=FALSE}
-m.simple <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
+m <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, ExamGrade.fix.LMH==1), 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.simple
 print(summary(m))
 se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 ```
+
+Exam performance = "M" ("2")
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, ExamGrade.fix.LMH==2), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+Exam performance = "H" ("3")
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, ExamGrade.fix.LMH==3), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+###
 
 
 ```{r echo=FALSE}
@@ -217,23 +254,6 @@ r.df
 ```
 
 
-
-### A quick summary of odds ratios so far
-```{r}
-odds.table <- matrix(c(
-  f.result$estimate[[1]],
-  cohens.d.from.odds.simple(f.result$estimate[[1]]),
-  exp(tab[[2]]),
-  cohens.d.from.odds.simple(exp(tab[[2]]))
-),ncol=2,byrow=TRUE)
-colnames(odds.table) <- c("Odds Ratio","Cohen's d")
-rownames(odds.table) <- c("Fisher's Exact Test","Logistic Regression")
-as.table(odds.table)
-
-
-#cat("Cohen's d\n ", cohens.d.from.odds.simple(result$estimate[[1]]),"\n")
-```
-
 # Other non-interaction models
 
 ### Treatment + Gender
@@ -248,7 +268,7 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Gender', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'All'))
+                     round(exp(tab[[8]]),3),'***Gender'))
 #r.df
 ```
 
@@ -264,13 +284,13 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Final Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'All'))
+                     round(exp(tab[[8]]),3),'None'))
 ```
 
 ### TREATMENT + Final Exam Grade Tertile
 
 ```{r echo=FALSE}
-m.final.exam.LMH <- glmer(QCORRECT ~ TREATMENT + ExamGrade.fix.LMH + (1|QNUM) + (1|ID), 
+m.final.exam.LMH <- glmer(QCORRECT ~ TREATMENT + ExamGrade.LMH + (1|QNUM) + (1|ID), 
                 data = dat.trt, 
                 family = binomial, control=glmerControl(optimizer="bobyqa"))
 m <- m.final.exam.LMH
@@ -279,7 +299,7 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Final Exam LMH', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'All'))
+                     round(exp(tab[[8]]),3),'None'))
 ```
 
 ### TREATMENT + Gender + Final Exam Grade (corrected for intervention question scores)
@@ -294,7 +314,7 @@ se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
 r.df <- rbind(r.df,c('Gender + Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
-                     round(exp(tab[[10]]),3),'All'))
+                     round(exp(tab[[10]]),3),'None'))
 ```
 
 ### Results

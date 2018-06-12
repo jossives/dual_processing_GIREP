@@ -60,5 +60,11 @@ No effect for this data set
 
 In preparing this data set, I can see that we want to have all four tests processed individually, including how they are loaded into the Axx analysis scripts. However, they will be combined into a single data file within the script
 
+### A04c 
 
+Looking at CRT. Adding CRT.medsplit and ExamGrade.fix.LMH in the processing of the data files when opened.
+
+### A04g
+
+Looking at the possible differences in gender actions
 

@@ -1,0 +1,262 @@
+---
+title: "A04c CRT correlations (P101 Exams)"
+author: "Joss Ives"
+date: "June 10, 2018"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
+
+# Overview
+
+
+
+# Setup
+
+```{r echo=FALSE}
+# Load libraries
+library(plyr)
+library(lme4)
+library(ggplot2)
+library(PerformanceAnalytics)
+library(dplyr)
+source("jossfunc.R")
+```
+
+```{r echo=FALSE}
+# Load data
+dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat_all.csv")
+```
+
+```{r}
+names(dat.raw)
+```
+
+```{r echo = FALSE}
+### Create derived variables and set categorical ones
+dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
+dat.raw$CRT.medsplit <- factor(dat.raw$CRT.medsplit)
+dat.raw$ExamGrade.fix.LMH <- as.integer(
+  cut(dat.raw$ExamGrade.fix.z, 
+      quantile(dat.raw$ExamGrade.fix.z, probs=0:3/3), 
+      include.lowest=TRUE))
+#
+dat.raw$ID        <- factor(dat.raw$ID)
+dat.raw$COURSE    <- factor(dat.raw$COURSE)
+dat.raw$TERM      <- factor(dat.raw$TERM)
+dat.raw$EXAM      <- factor(dat.raw$EXAM)
+dat.raw$QNUM.relevel <- factor(dat.raw$QNUM, 
+                            levels=c("m0171.3","m0171.4","m0171.7","m0171.8",
+                                     "f0171.5","f0171.6","f0171.13","f0171.14",
+                                     "m1172.5","m1172.6",
+                                     "f1172.5","f1172.6","f1172.9","f1172.10"
+                                     ))
+dat.raw$QNUM <- factor(dat.raw$QNUM) 
+dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
+dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
+dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$Version <- factor(dat.raw$Version)
+dat.raw$NCRT.factor <- factor(dat.raw$NCRT)
+
+### Make some data subsets
+
+# Remove students that didn't receive full participation credit for both EYA questions
+dat.EYA <- subset(dat.raw, EYAinclude==1)
+# Include only P101 data, and only if those data have CRT data
+dat.p101 <- subset (dat.EYA, COURSE=="P101")
+dat.CRT <- subset(dat.p101, NCRT==0 | NCRT==1 | NCRT==2 | NCRT==3)
+
+# Remove the NAN gender folks
+dat.trt <- dat.CRT
+dat.trt.gender <- subset(dat.trt, Gender=="Female" | Gender=="Male")
+```
+
+
+```{r echo = FALSE}
+### Set some global variables
+dodge=position_dodge(width=0.9)
+```
+
+
+# Data description
+
+### How well was each question answered?
+
+```{r echo=FALSE}
+corr.by.question <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM.relevel")
+  )
+
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+corr.by.question
+```
+
+
+```{r echo=FALSE}
+
+ggplot(corr.by.question, aes(x=QNUM.relevel, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Question number", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  #theme(axis.text = element_text(face = "bold")) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") + 
+  guides(fill=guide_legend(title=NULL))
+  
+```
+
+
+### Performance on the EYA questions by gender.
+
+This comparison is not really that important considering what we ultimately figure out about the lack of gender effects, but we leave it for now.
+
+```{r echo=FALSE}
+
+corr.by.gender <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","Gender")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Gender", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+  
+```
+
+### Effect of intervention by exam performance (tertile)
+
+As compared to the overall results from A04, we see that for the P101 exams, the intervention favours L more than H more than M (overall is H > L > M)
+
+```{r echo=FALSE}
+
+s.fLMH <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("ExamGrade.fix.LMH","TREATMENT")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(s.fLMH, aes(x=ExamGrade.fix.LMH, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Final Exam Score (Tertile = Low, Medium, High)", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  #theme(legend.position="none")
+  #scale_x_discrete(labels=c("Low","Medium","High")) +
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+
+```
+
+### Effect of intervention by CRT score and CRT median split
+
+```{r echo=FALSE}
+
+corr.by.CRT <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","NCRT")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.by.CRT, aes(x=NCRT, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "CRT Score", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+  
+```
+
+```{r echo=FALSE}
+
+corr.by.CRTmedsplit <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","CRT.medsplit")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.by.CRTmedsplit, aes(x=CRT.medsplit, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "CRT Score Median Split", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  ggtitle("Error bars are binomial errors") +
+  guides(fill=guide_legend(title=NULL))
+  
+```
+
+# Logsitic regressions
+
+### Run on both of the median splits
+
+To help make sure that the interaction terms are being interpreted correctly.
+
+CRT Low
+
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT + ExamGrade.fix.z + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, CRT.medsplit==0), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+CRT High
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT + ExamGrade.fix.z + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, CRT.medsplit==1), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+### Try to grab useful variables from the fit
+
+```{r}
+
+length(fixef(m))
+names(fixef(m))
+
+fixef.df <-as.data.frame(fixef(m))
+#fixef.df
+rownames(fixef.df)
+fixef.df["TREATMENT1",]
+exp(tab)
+odds.df <-as.data.frame(exp(tab))
+odds.df["TREATMENT1","Est"]
+odds.df["TREATMENT1","LL"]
+odds.df["TREATMENT1","UL"]
+```
+
