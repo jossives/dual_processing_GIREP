@@ -3,10 +3,10 @@ title: "A02 Initial Explain Your Answee Report (P101 Final exam - Jan, 2018)"
 author: "Joss Ives"
 date: "June 7, 2018"
 output:
-  word_document: default
-  pdf_document: default
   html_document:
     keep_md: yes
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
