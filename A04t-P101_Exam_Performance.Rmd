@@ -74,12 +74,7 @@ dat.raw$Version <- factor(dat.raw$Version)
 # Remove students that didn't receive full participation credit for both EYA questions
 dat.EYA <- subset(dat.raw, EYAinclude==1)
 # Include only P101 data, and only if those data have CRT data
-dat.p101 <- subset (dat.EYA, COURSE=="P101")
-dat.CRT <- subset(dat.p101, NCRT==0 | NCRT==1 | NCRT==2 | NCRT==3)
-
-# Remove the NAN gender folks
-dat.trt <- dat.CRT
-dat.trt.gender <- subset(dat.trt, Gender=="Female" | Gender=="Male")
+dat.trt <- subset(dat.EYA, Gender=="Female" | Gender=="Male")
 ```
 
 
@@ -125,56 +120,7 @@ ggplot(corr.by.question, aes(x=QNUM.relevel, y=QCORRECT, fill=TREATMENT)) +
 ```
 
 
-### Performance on the EYA questions by gender.
-
-This comparison is not really that important considering what we ultimately figure out about the lack of gender effects, but we leave it for now.
-
-```{r echo=FALSE}
-
-corr.by.gender <- summarySE(
-  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","Gender")
-  )
-limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
-
-ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
-  geom_bar(stat="identity", position=dodge) + 
-  geom_errorbar(limits, position=dodge, width=0.25) +
-  labs(x = "Gender", y = "Fraction of EYA questions correct") +
-  scale_fill_discrete(labels=c("Control","Treatment")) +
-  theme_bw() + 
-  theme(axis.text = element_text(face = "bold")) + 
-  #theme(legend.position="none")
-  scale_y_continuous(limits = c(0,1)) +
-  ggtitle("Error bars are binomial errors") +
-  guides(fill=guide_legend(title=NULL))
-  
-```
-
 ### Effect of intervention by exam performance (tertile)
-
-As compared to the overall results from A04, we see that for the P101 exams, the intervention favours L more than H more than M (overall is H > L > M)
-
-```{r echo=FALSE}
-
-s.fLMH <- summarySE(
-  dat.trt, measurevar="QCORRECT", groupvars=c("ExamGrade.fix.LMH","TREATMENT")
-  )
-limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
-
-ggplot(s.fLMH, aes(x=ExamGrade.fix.LMH, y=QCORRECT, fill=TREATMENT)) +
-  geom_bar(stat="identity", position=dodge) + 
-  geom_errorbar(limits, position=dodge, width=0.25) +
-  labs(x = "Final Exam Score (Tertile = Low, Medium, High)", y = "Fraction of EYA questions correct") +
-  scale_fill_discrete(labels=c("Control","Treatment")) +
-  #theme(legend.position="none")
-  #scale_x_discrete(labels=c("Low","Medium","High")) +
-  scale_y_continuous(limits = c(0,1)) +
-  ggtitle("Error bars are binomial errors") +
-  guides(fill=guide_legend(title=NULL))
-
-```
-
-### Effect of intervention by CRT score and CRT median split
 
 ```{r echo=FALSE}
 
@@ -212,6 +158,15 @@ print(summary(m))
 se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
+
+odds.df <-as.data.frame(exp(tab))
+name1 <- "L"
+val1 <-odds.df["TREATMENT1","Est"]
+LL1 <- odds.df["TREATMENT1","LL"]
+UL1 <- odds.df["TREATMENT1","UL"]
+fe.df <- as.data.frame(coef(summary(m)))
+p1 <- fe.df["TREATMENT1","Pr(>|z|)"]
+
 ```
 
 Exam performance = "M" ("2")
@@ -224,6 +179,15 @@ print(summary(m))
 se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
+
+odds.df <-as.data.frame(exp(tab))
+name2 <- "M"
+val2 <-odds.df["TREATMENT1","Est"]
+LL2 <- odds.df["TREATMENT1","LL"]
+UL2 <- odds.df["TREATMENT1","UL"]
+fe.df <- as.data.frame(coef(summary(m)))
+p2 <- fe.df["TREATMENT1","Pr(>|z|)"]
+
 ```
 
 Exam performance = "H" ("3")
@@ -236,7 +200,30 @@ print(summary(m))
 se <- sqrt(diag(vcov(m)))
 tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
 exp(tab)
+name3 <- "H"
+
+odds.df <-as.data.frame(exp(tab))
+val3 <-odds.df["TREATMENT1","Est"]
+LL3 <- odds.df["TREATMENT1","LL"]
+UL3 <- odds.df["TREATMENT1","UL"]
+fe.df <- as.data.frame(coef(summary(m)))
+p3 <- fe.df["TREATMENT1","Pr(>|z|)"]
+
 ```
+
+# Summarize the treatment values
+
+```{r}
+
+Group <- c(name1,name2,name3)
+Treatment.val <-c(val1,val2,val3)
+LL <-c(LL1,LL2,LL3)
+UL <-c(UL1,UL2,UL3)
+p.val <-c(p1,p2,p3)
+data.frame(Group,Treatment.val,LL,UL,p.val)
+```
+
+
 
 ###
 

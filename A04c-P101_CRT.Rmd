@@ -28,6 +28,9 @@ library(lme4)
 library(ggplot2)
 library(PerformanceAnalytics)
 library(dplyr)
+# For plot_model
+library(sjPlot)
+#
 source("jossfunc.R")
 ```
 
@@ -44,6 +47,7 @@ names(dat.raw)
 ### Create derived variables and set categorical ones
 dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
 dat.raw$CRT.medsplit <- factor(dat.raw$CRT.medsplit)
+dat.raw$CRT.medsplit.relevel <- factor(dat.raw$CRT.medsplit,c("1","0"))
 dat.raw$ExamGrade.fix.LMH <- as.integer(
   cut(dat.raw$ExamGrade.fix.z, 
       quantile(dat.raw$ExamGrade.fix.z, probs=0:3/3), 
@@ -71,9 +75,9 @@ dat.raw$NCRT.factor <- factor(dat.raw$NCRT)
 # Remove students that didn't receive full participation credit for both EYA questions
 dat.EYA <- subset(dat.raw, EYAinclude==1)
 # Include only P101 data, and only if those data have CRT data
-dat.p101 <- subset (dat.EYA, COURSE=="P101")
-dat.CRT <- subset(dat.p101, NCRT==0 | NCRT==1 | NCRT==2 | NCRT==3)
-
+#dat.p101 <- subset (dat.EYA, COURSE=="P101")
+#dat.CRT <- subset(dat.p101, NCRT==0 | NCRT==1 | NCRT==2 | NCRT==3)
+dat.CRT <- subset(dat.EYA, NCRT==0 | NCRT==1 | NCRT==2 | NCRT==3)
 # Remove the NAN gender folks
 dat.trt <- dat.CRT
 dat.trt.gender <- subset(dat.trt, Gender=="Female" | Gender=="Male")
@@ -242,6 +246,34 @@ tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se
 exp(tab)
 ```
 
+### Run with interaction terms
+
+CRT low as baseline
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT*CRT.medsplit + ExamGrade.fix.z + (1|QNUM) + (1|ID), 
+                data = dat.trt,
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+CRT high as baseline
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT*CRT.medsplit.relevel + ExamGrade.fix.z + (1|QNUM) + (1|ID), 
+                data = dat.trt,
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+```
+
+
+
 ### Try to grab useful variables from the fit
 
 ```{r}
@@ -258,5 +290,13 @@ odds.df <-as.data.frame(exp(tab))
 odds.df["TREATMENT1","Est"]
 odds.df["TREATMENT1","LL"]
 odds.df["TREATMENT1","UL"]
+```
+
+```{r}
+coef(summary(m))
+```
+
+```{r}
+plot_model(m, vline.color = "blue")
 ```
 
