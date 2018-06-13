@@ -11,7 +11,7 @@ output:
 
 
 
-*updated by Joss Ives 2018 June 12, 09:11:08*
+*updated by Joss Ives 2018 June 12, 17:33:21*
 
 # Overview
 This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
@@ -185,8 +185,10 @@ names(dat.raw)
 ### Performance on the EYA questions by gender.
 ![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
-### Effect of intervention by final exam performance group (tertile)
-Since we know that females scored lower on the exams than males, perhaps there will be a difference in the effectiveness of the intervention if we look at low, medium and high performers from the final exam. The graph shows no significant difference.
+### Effect of intervention by exam performance group (tertile)
+Since we know that females scored lower on the exams than males, perhaps there will be a difference in the effectiveness of the intervention if we look at low, medium and high performers from exams. The graph shows the largest effect on H, then L, then M
+
+This will be investigated further in A04t ("t" for tertile)
 
 ![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
@@ -212,7 +214,6 @@ This is a sanity check for the logistic regressions to come. Fisher's Exact Test
 ## odds ratio 
 ##   1.149996
 ```
-
 
 ### Simple logistic regression
 
@@ -288,6 +289,59 @@ as.table(odds.table)
 ```r
 #cat("Cohen's d\n ", cohens.d.from.odds.simple(result$estimate[[1]]),"\n")
 ```
+
+# Question by question results, ordered by question easiness
+
+
+```r
+#does.this.work <- summarySE(
+#  dat.trt, measurevar="ExamGrade.fix.z", groupvars=c("QNUM","TREATMENT","QCORRECT")
+#  )
+
+#limits <- aes(ymax = ExamGrade.fix.z + binomial.error, ymin = QCORRECT - binomial.error)
+
+#does.this.work
+
+# Summarize a dataset by two variables
+# Note the use of the '.' function to allow
+# group and sex to be used without quoting
+#ddply(dat.trt, .(QNUM,TREATMENT,QCORRECT), summarise,
+# cnt = length(QCORRECT)
+#)
+
+# An example using a formula for .variables
+#ddply(baseball[1:100,], ~ year, nrow)
+# Applying two functions; nrow and ncol
+#ddply(baseball, .(lg), c("nrow", "ncol"))
+
+# Calculate mean runs batted in for each year
+#rbi <- ddply(baseball, .(year), summarise,
+#  mean_rbi = mean(rbi, na.rm = TRUE))
+# Plot a line chart of the result
+#plot(mean_rbi ~ year, type = "l", data = rbi)
+#
+# make new variable career_year based on the
+# start year for each player (id)
+#base2 <- ddply(baseball, .(id), mutate,
+# career_year = year - min(year) + 1
+#)
+```
+
+
+
+```r
+#qnames <- levels(dat.trt$QNUM)
+#testy <- apply()
+#qvec.c.0 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==0 & dat.trt$TREATMENT==0 & dat.trt$QNUM==qnames[1]])
+#qvec.c.1 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==1 & dat.trt$TREATMENT==0 & dat.trt$QNUM==qnames[1]])
+#qvec.t.0 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==0 & dat.trt$TREATMENT==1 & dat.trt$QNUM==qnames[1]])
+#qvec.t.1 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==1 & dat.trt$TREATMENT==1 & dat.trt$QNUM==qnames[1]])
+#dat.trt$QCORRECT[dat.trt$QNUM==qnames]
+#dat.trt$QCORRECT[dat.trt$TREATMENT==0],
+#dat.trt$QCORRECT[dat.trt$TREATMENT==1]
+```
+
+
 
 # Other non-interaction models
 

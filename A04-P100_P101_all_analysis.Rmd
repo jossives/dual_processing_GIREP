@@ -189,7 +189,6 @@ This is a sanity check for the logistic regressions to come. Fisher's Exact Test
 
 ```
 
-
 ### Simple logistic regression
 
 ```{r echo=FALSE}
@@ -233,6 +232,57 @@ as.table(odds.table)
 
 #cat("Cohen's d\n ", cohens.d.from.odds.simple(result$estimate[[1]]),"\n")
 ```
+
+# Question by question results, ordered by question easiness
+
+```{r}
+#does.this.work <- summarySE(
+#  dat.trt, measurevar="ExamGrade.fix.z", groupvars=c("QNUM","TREATMENT","QCORRECT")
+#  )
+
+#limits <- aes(ymax = ExamGrade.fix.z + binomial.error, ymin = QCORRECT - binomial.error)
+
+#does.this.work
+
+# Summarize a dataset by two variables
+# Note the use of the '.' function to allow
+# group and sex to be used without quoting
+#ddply(dat.trt, .(QNUM,TREATMENT,QCORRECT), summarise,
+# cnt = length(QCORRECT)
+#)
+
+# An example using a formula for .variables
+#ddply(baseball[1:100,], ~ year, nrow)
+# Applying two functions; nrow and ncol
+#ddply(baseball, .(lg), c("nrow", "ncol"))
+
+# Calculate mean runs batted in for each year
+#rbi <- ddply(baseball, .(year), summarise,
+#  mean_rbi = mean(rbi, na.rm = TRUE))
+# Plot a line chart of the result
+#plot(mean_rbi ~ year, type = "l", data = rbi)
+#
+# make new variable career_year based on the
+# start year for each player (id)
+#base2 <- ddply(baseball, .(id), mutate,
+# career_year = year - min(year) + 1
+#)
+```
+
+
+```{r}
+#qnames <- levels(dat.trt$QNUM)
+#testy <- apply()
+#qvec.c.0 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==0 & dat.trt$TREATMENT==0 & dat.trt$QNUM==qnames[1]])
+#qvec.c.1 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==1 & dat.trt$TREATMENT==0 & dat.trt$QNUM==qnames[1]])
+#qvec.t.0 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==0 & dat.trt$TREATMENT==1 & dat.trt$QNUM==qnames[1]])
+#qvec.t.1 <- length(dat.trt$QCORRECT[dat.trt$QCORRECT==1 & dat.trt$TREATMENT==1 & dat.trt$QNUM==qnames[1]])
+#dat.trt$QCORRECT[dat.trt$QNUM==qnames]
+#dat.trt$QCORRECT[dat.trt$TREATMENT==0],
+#dat.trt$QCORRECT[dat.trt$TREATMENT==1]
+```
+
+
 
 # Other non-interaction models
 

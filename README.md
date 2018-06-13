@@ -68,3 +68,9 @@ Looking at CRT. Adding CRT.medsplit and ExamGrade.fix.LMH in the processing of t
 
 Looking at the possible differences in gender actions
 
+# Todo
+
+Some analyses to perform
+* Question difficulty vs Odds ratio
+* Median split on exam scores...see if crt.split x exam.split means/shows anything
+

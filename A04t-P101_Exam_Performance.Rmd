@@ -47,6 +47,12 @@ dat.raw$ExamGrade.fix.LMH <- as.integer(
   cut(dat.raw$ExamGrade.fix.z, 
       quantile(dat.raw$ExamGrade.fix.z, probs=0:3/3), 
       include.lowest=TRUE))
+dat.raw$ExamGrade.fix.medsplit <- as.integer(
+  cut(dat.raw$ExamGrade.fix.z, 
+      quantile(dat.raw$ExamGrade.fix.z, probs=0:2/2), 
+      include.lowest=TRUE))
+dat.raw$ExamGrade.fix.medsplit <- factor(dat.raw$ExamGrade.fix.medsplit)
+dat.raw$ExamGrade.fix.medsplit.r <- factor(dat.raw$ExamGrade.fix.medsplit, levels=c("2","1"))
 #
 dat.raw$ID        <- factor(dat.raw$ID)
 dat.raw$COURSE    <- factor(dat.raw$COURSE)
@@ -62,6 +68,7 @@ dat.raw$QNUM <- factor(dat.raw$QNUM)
 dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
 dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
 dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$TREATMENT.r <- factor(dat.raw$TREATMENT, levels=c("1","0"))
 dat.raw$Version <- factor(dat.raw$Version)
 ```
 
@@ -211,103 +218,92 @@ p3 <- fe.df["TREATMENT1","Pr(>|z|)"]
 
 ```
 
-# Summarize the treatment values
+Exam performance = Below Median
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, ExamGrade.fix.medsplit==1), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+name4 <- "Below Median"
+odds.df <-as.data.frame(exp(tab))
+val4 <-odds.df["TREATMENT1","Est"]
+LL4 <- odds.df["TREATMENT1","LL"]
+UL4 <- odds.df["TREATMENT1","UL"]
+fe.df <- as.data.frame(coef(summary(m)))
+p4 <- fe.df["TREATMENT1","Pr(>|z|)"]
+
+```
+
+Exam performance = Above Median
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT + (1|QNUM) + (1|ID), 
+                data = subset(dat.trt, ExamGrade.fix.medsplit==2), 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+name5 <- "Above Median"
+odds.df <-as.data.frame(exp(tab))
+val5 <-odds.df["TREATMENT1","Est"]
+LL5 <- odds.df["TREATMENT1","LL"]
+UL5 <- odds.df["TREATMENT1","UL"]
+fe.df <- as.data.frame(coef(summary(m)))
+p5 <- fe.df["TREATMENT1","Pr(>|z|)"]
+
+```
+
+### Summary of L,M,H exam interactions with treatement
 
 ```{r}
 
-Group <- c(name1,name2,name3)
-Treatment.val <-c(val1,val2,val3)
-LL <-c(LL1,LL2,LL3)
-UL <-c(UL1,UL2,UL3)
-p.val <-c(p1,p2,p3)
+Group <- c(name1,name2,name3,name4,name5)
+Treatment.val <-c(val1,val2,val3,val4,val5)
+LL <-c(LL1,LL2,LL3,LL4,LL5)
+UL <-c(UL1,UL2,UL3,UL4,UL5)
+p.val <-c(p1,p2,p3,p4,p5)
 data.frame(Group,Treatment.val,LL,UL,p.val)
 ```
 
 
 
-###
-
-
-```{r echo=FALSE}
-# Create df to hold results
-Model.vars <- c('Simple')
-AIC.val <- c(round(AIC(m),1))
-Odds.treatment <- c(round(exp(tab[[2]]),3))
-LL <- c(round(exp(tab[[4]]),1))
-UL <- c(round(exp(tab[[6]]),1))
-Significant.Vars <-('None')
-r.df <- data.frame(Model.vars, AIC.val, Odds.treatment, LL, UL, Significant.Vars, stringsAsFactors = FALSE)
-r.df
-```
-
-
-# Other non-interaction models
-
-### Treatment + Gender
-
-```{r echo=FALSE}
-m.gender <- glmer(QCORRECT ~ TREATMENT + Gender + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.gender
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Gender', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'***Gender'))
-#r.df
-```
-
-### TREATMENT + Final Exam Grade (corrected for intervention question scores)
-
-```{r echo=FALSE}
-m.final.exam.grade <- glmer(QCORRECT ~ TREATMENT + ExamGrade.fix.z + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.final.exam.grade
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Final Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'None'))
-```
-
-### TREATMENT + Final Exam Grade Tertile
-
-```{r echo=FALSE}
-m.final.exam.LMH <- glmer(QCORRECT ~ TREATMENT + ExamGrade.LMH + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.final.exam.LMH
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Final Exam LMH', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[5]]),3), 
-                     round(exp(tab[[8]]),3),'None'))
-```
-
-### TREATMENT + Gender + Final Exam Grade (corrected for intervention question scores)
-
-```{r echo=FALSE}
-m.gender.final.exam <- glmer(QCORRECT ~ TREATMENT + Gender + ExamGrade.fix.z + (1|QNUM) + (1|ID), 
-                data = dat.trt, 
-                family = binomial, control=glmerControl(optimizer="bobyqa"))
-m <- m.gender.final.exam
-print(summary(m))
-se <- sqrt(diag(vcov(m)))
-tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
-exp(tab)
-r.df <- rbind(r.df,c('Gender + Exam Grade', round(AIC(m),1), round(exp(tab[[2]]),3), round(exp(tab[[6]]),3), 
-                     round(exp(tab[[10]]),3),'None'))
-```
-
-### Results
-
-With the final exam data, we see no significant results from treatment
-
 ```{r}
-r.df
+dat.trt
 ```
+
+
+
+
+# TREATMENT interactions with exam.z as continuous variable
+
+I have no idea what the results for this mean???
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT*ExamGrade.fix.z + (1|QNUM) + (1|ID), 
+                dat.trt,
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+```
+
+```{r echo=FALSE}
+m <- glmer(QCORRECT ~ TREATMENT.r*ExamGrade.fix.z + (1|QNUM) + (1|ID), 
+                dat.trt,
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+print(summary(m))
+se <- sqrt(diag(vcov(m)))
+tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+exp(tab)
+
+```
+
