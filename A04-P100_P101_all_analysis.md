@@ -11,7 +11,7 @@ output:
 
 
 
-*updated by Joss Ives 2018 June 12, 17:33:21*
+*updated by Joss Ives 2018 June 13, 14:20:07*
 
 # Overview
 This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
