@@ -68,6 +68,10 @@ Looking at CRT. Adding CRT.medsplit and ExamGrade.fix.LMH in the processing of t
 
 Looking at the possible differences in gender actions
 
+### A04q
+
+Looking at question by question (odds ratio vs difficulty)
+
 # Todo
 
 Some analyses to perform

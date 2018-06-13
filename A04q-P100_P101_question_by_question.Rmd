@@ -1,0 +1,188 @@
+---
+title: "A04 Explain Your Answer Report (All P100/P101 Exams)"
+author: "Joss Ives"
+date: "June 10, 2018"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*updated by Joss Ives `r format(Sys.time(), "%Y %B %d, %H:%M:%S")`*
+
+# Overview
+This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
+
+# Setup
+
+```{r echo=FALSE}
+# Load libraries
+library(plyr)
+library(lme4)
+library(ggplot2)
+library(PerformanceAnalytics)
+library(dplyr)
+source("jossfunc.R")
+```
+
+```{r echo=FALSE}
+# Load data
+dat.raw <- read.csv("C:/Users/Joss/ownCloud/Shared/DP_Derived_Data/dpLogisticDat_all.csv")
+```
+
+```{r}
+names(dat.raw)
+```
+
+```{r echo = FALSE}
+### Create derived variables and set categorical ones
+dat.raw$CRT.medsplit <- trunc(dat.raw$NCRT/2)
+dat.raw$ExamGrade.fix.LMH <- as.integer(
+  cut(dat.raw$ExamGrade.fix.z, 
+      quantile(dat.raw$ExamGrade.fix.z, probs=0:3/3), 
+      include.lowest=TRUE))
+#
+dat.raw$ID        <- factor(dat.raw$ID)
+dat.raw$COURSE    <- factor(dat.raw$COURSE)
+dat.raw$TERM      <- factor(dat.raw$TERM)
+dat.raw$EXAM      <- factor(dat.raw$EXAM)
+dat.raw$QNUM      <- factor(dat.raw$QNUM, 
+                            levels=c("m0171.3","m0171.4","m0171.7","m0171.8",
+                                     "f0171.5","f0171.6","f0171.13","f0171.14",
+                                     "m1172.5","m1172.6",
+                                     "f1172.5","f1172.6","f1172.9","f1172.10"
+                                     ))
+dat.raw$QNUM.m0171.4 <- relevel(dat.raw$QNUM,("m0171.4"))
+
+dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
+dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
+dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
+dat.raw$Version <- factor(dat.raw$Version)
+dat.raw$ExamGrade.fix.LMH.factor <- dat.raw$ExamGrade.fix.LMH
+
+```
+
+```{r}
+#levels(dat.raw$QNUM.m0171.4)
+```
+
+
+```{r echo=FALSE}
+### Make some data subsets
+
+# Keep only those data points where TREATMENT was set
+#dat.all <- subset(dat.raw, TREATMENT==0 | TREATMENT==1)
+
+# Remove students that didn't receive full participation credit for both EYA questions
+dat.EYA <- subset(dat.raw, EYAinclude==1)
+
+# Remove the NAN gender folks
+dat.trt <- subset(dat.EYA, Gender=="Female" | Gender=="Male")
+```
+
+
+```{r}
+varlist <- levels(dat.trt$QNUM)
+vlen <- length(varlist)
+
+varlist2 <- character(vlen)
+odds <- numeric(vlen)
+LL <- numeric(vlen)
+UL <- numeric(vlen)
+pval <- numeric(vlen)
+
+for (i in 1:vlen){
+  dat.trt$QNUM.r <- relevel(dat.trt$QNUM,varlist[i])
+  print(i)
+  dat.trt$QNUM.r
+  m <- glmer(QCORRECT ~ TREATMENT*QNUM.r + ExamGrade.fix.z + (1|ID), 
+                data = dat.trt, 
+                family = binomial, control=glmerControl(optimizer="bobyqa"))
+  summary(m)
+  se <- sqrt(diag(vcov(m)))
+  tab <- cbind(Est = fixef(m), LL = fixef(m) - 1.96 * se, UL = fixef(m) + 1.96 *se)
+  odds.df <-as.data.frame(exp(tab))
+  varlist2[i] <- varlist[i] # Sanity check
+  odds[i] <-odds.df["TREATMENT1","Est"]
+  LL[i] <- odds.df["TREATMENT1","LL"]
+  UL[i] <- odds.df["TREATMENT1","UL"]
+  fe.df <- as.data.frame(coef(summary(m)))
+  pval[i] <- fe.df["TREATMENT1","Pr(>|z|)"]
+  }
+varlist2
+odds
+LL
+UL
+pval
+```
+
+```{r echo = FALSE}
+### Set some global variables
+dodge=position_dodge(width=0.9)
+```
+
+
+```{r}
+q <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("QNUM")
+  )
+
+obq.df <- data.frame(order.0 = as.factor(1:vlen),
+                 y = odds,
+                 ymin = LL,
+                 ymax = UL,
+                 ease = q$QCORRECT,
+                 qname = varlist)
+
+ease.df <- obq.df[order(obq.df$ease),]
+ease.df$ease.order <- as.factor(1:vlen)
+ease.df
+
+obq.df2 <- ease.df[order(ease.df$order.0),]
+obq.df2
+```
+
+
+```{r echo=FALSE}
+corr.by.question <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM")
+  )
+
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "Question number", y = "Fraction of EYA questions correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  theme_bw() + 
+  #theme(axis.text = element_text(face = "bold")) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  #theme(legend.position="none")
+  scale_y_continuous(limits = c(0,1)) +
+  scale_x_discrete(limits=ease.df$qname) +
+  ggtitle("Error bars are binomial errors") + 
+  guides(fill=guide_legend(title=NULL))
+  
+obq.df <- data.frame(x = as.factor(1:vlen),
+                 y = odds,
+                 ymin = LL,
+                 ymax = UL)
+
+ggplot(data = ease.df,aes(x = ease.order,y = y)) + 
+    geom_point() + 
+    geom_errorbar(aes(ymin = ymin,ymax = ymax)) +
+    geom_hline(yintercept=1, color="blue") +
+    #scale_x_discrete(limits=ease.df$qname) +
+    theme_bw() 
+    
+
+```
+
+Will likely want to mix multiple plots http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+
