@@ -11,7 +11,7 @@ output:
 
 
 
-*updated by Joss Ives 2018 June 12, 12:02:54*
+*updated by Joss Ives 2018 June 14, 12:18:58*
 
 # Overview
 
@@ -82,10 +82,6 @@ output:
 ## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union
-```
-
-```
-## #refugeeswelcome
 ```
 
 
@@ -195,6 +191,18 @@ As compared to the overall results from A04, we see that for the P101 exams, the
 ### Effect of intervention by CRT score and CRT median split
 
 ![](A04c-P101_CRT_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
+  labs(x = "Gender", y = "Fraction correct (Binomial Error)") +
+  scale_fill_manual(values=cbPalette3, labels=c("Control ","Treatment")) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  theme(legend.position="top") +
+  theme(axis.text = element_text(size= 12)) +
+  theme(axis.title = element_text(size= 12)) +
+  guides(fill=guide_legend(title=NULL))
 
 ![](A04c-P101_CRT_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 

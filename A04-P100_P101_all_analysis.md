@@ -11,7 +11,7 @@ output:
 
 
 
-*updated by Joss Ives 2018 June 13, 14:20:07*
+*updated by Joss Ives 2018 June 14, 12:44:12*
 
 # Overview
 This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
@@ -181,16 +181,28 @@ names(dat.raw)
 
 ![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
+ggplot(edata.treatment, aes(x=TREATMENT, y=QCORR, fill=TREATMENT)) +
+  geom_bar(stat="identity") + geom_errorbar(limits, width=0.25) +
+  labs(x = "", y = "Fraction Correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  scale_x_discrete(labels=c("Control","Treatment")) +
+  #theme_bw() +
+  theme(legend.position="none") +
+  scale_y_continuous(breaks = c(0,.2,.4,.6,.8,1), limits = c(0,1), expand = c(0.01,0)) +
+  ggtitle("Explain Your Answer: All Data")
+
+### Performance on the EYA questions overall.
+![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 ### Performance on the EYA questions by gender.
-![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 ### Effect of intervention by exam performance group (tertile)
 Since we know that females scored lower on the exams than males, perhaps there will be a difference in the effectiveness of the intervention if we look at low, medium and high performers from exams. The graph shows the largest effect on H, then L, then M
 
 This will be investigated further in A04t ("t" for tertile)
 
-![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](A04-P100_P101_all_analysis_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 
 

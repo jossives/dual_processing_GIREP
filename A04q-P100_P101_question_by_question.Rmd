@@ -27,6 +27,7 @@ library(lme4)
 library(ggplot2)
 library(PerformanceAnalytics)
 library(dplyr)
+library(ggpubr)
 source("jossfunc.R")
 ```
 
@@ -124,6 +125,10 @@ pval
 ```{r echo = FALSE}
 ### Set some global variables
 dodge=position_dodge(width=0.9)
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbPalette2 <- c("#56B4E9", "#E69F00", "#999999", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbPalette3 <- c("#56B4E9", "#D55E00", "#E69F00", "#999999", "#009E73", "#F0E442", "#0072B2", "#CC79A7")
 ```
 
 
@@ -147,6 +152,55 @@ obq.df2 <- ease.df[order(ease.df$order.0),]
 obq.df2
 ```
 
+```{r echo=FALSE}
+corr.by.question <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT","QNUM")
+  )
+
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+p1 <- ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  labs(x = "", y = "Fraction correct\n(Binomial Error)") +
+  theme_bw() + 
+  scale_y_continuous(limits = c(0,1)) +
+  #scale_x_discrete(limits=ease.df$qname, position = "top") +
+  scale_x_discrete(limits=ease.df$qname) +   
+  scale_fill_manual(values=cbPalette3, labels=c("Control ","Treatment")) +
+  theme(legend.position="top") +
+  #theme(axis.text = element_text(size= 12)) +
+  #theme(axis.title = element_text(size= 12)) +
+  theme(axis.title.x=element_blank(), 
+        axis.text.x=element_blank(), 
+        axis.ticks.x=element_blank()
+        ) +
+  guides(fill=guide_legend(title=NULL))
+  
+obq.df <- data.frame(x = as.factor(1:vlen),
+                 y = odds,
+                 ymin = LL,
+                 ymax = UL)
+
+p2 <- ggplot(data = ease.df,aes(x = ease.order,y = y)) + 
+    labs(x = "Question number", y = "Odds ratio\n(95% Conf. Int.)") +
+    geom_pointrange(aes(ymin = ymin,ymax = ymax), shape=21, fill='black',size=0.75)+
+    # geom_pointrange(fill='blue', color='grey', shape=21, fatten = 20, size = 5)
+    geom_hline(yintercept=1, color=cbPalette3[1]) +
+    theme(axis.text = element_text(size= 12)) +
+    theme(axis.title = element_text(size= 12)) +
+    theme_bw() 
+    
+#
+#geom_errorbar(data=d, mapping=aes(x=drink, ymin=upper, ymax=lower), width=0.2, size=1, color="blue") + 
+#geom_point(data=d, mapping=aes(x=drink, y=mean), size=4, shape=21, fill="white") +
+
+ggarrange(p1, p2, heights = c(3, 2),
+          ncol = 1, nrow = 2, align = "v")
+
+```
+
+
 
 ```{r echo=FALSE}
 corr.by.question <- summarySE(
@@ -155,18 +209,22 @@ corr.by.question <- summarySE(
 
 limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
 
-ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
+p1 <- ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
-  labs(x = "Question number", y = "Fraction of EYA questions correct") +
-  scale_fill_discrete(labels=c("Control","Treatment")) +
+  labs(x = "", y = "Fraction correct\n(Binomial Error)") +
   theme_bw() + 
-  #theme(axis.text = element_text(face = "bold")) + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  #theme(legend.position="none")
   scale_y_continuous(limits = c(0,1)) +
-  scale_x_discrete(limits=ease.df$qname) +
-  ggtitle("Error bars are binomial errors") + 
+  #scale_x_discrete(limits=ease.df$qname, position = "top") +
+  scale_x_discrete(limits=ease.df$qname) +   
+  scale_fill_manual(values=cbPalette3, labels=c("Control ","Treatment")) +
+  theme(legend.position="top") +
+  #theme(axis.text = element_text(size= 12)) +
+  #theme(axis.title = element_text(size= 12)) +
+  theme(axis.title.x=element_blank(), 
+        axis.text.x=element_blank(), 
+        axis.ticks.x=element_blank()
+        ) +
   guides(fill=guide_legend(title=NULL))
   
 obq.df <- data.frame(x = as.factor(1:vlen),
@@ -174,13 +232,25 @@ obq.df <- data.frame(x = as.factor(1:vlen),
                  ymin = LL,
                  ymax = UL)
 
-ggplot(data = ease.df,aes(x = ease.order,y = y)) + 
-    geom_point() + 
-    geom_errorbar(aes(ymin = ymin,ymax = ymax)) +
-    geom_hline(yintercept=1, color="blue") +
-    #scale_x_discrete(limits=ease.df$qname) +
+p2 <- ggplot(data = ease.df,aes(x = ease.order,y = y)) + 
+    labs(x = "Question number", y = "Odds ratio\n(95% Conf. Int.)") +
+    #geom_point(size=2) + 
+    #geom_errorbar(aes(ymin = ymin,ymax = ymax), width=0, size = 1.5 )+
+    #geom_pointrange(aes(ymin = ymin,ymax = ymax))+
+    geom_crossbar(aes(ymin = ymin,ymax = ymax, width=.6))+
+    geom_hline(yintercept=1, color=cbPalette3[1]) +
+    #scale_y_continuous(limits = c(.5,3.)) +
+  #scale_x_discrete(limits=ease.df$qname) +
+    theme(axis.text = element_text(size= 12)) +
+    theme(axis.title = element_text(size= 12)) +
     theme_bw() 
     
+#
+#geom_errorbar(data=d, mapping=aes(x=drink, ymin=upper, ymax=lower), width=0.2, size=1, color="blue") + 
+#geom_point(data=d, mapping=aes(x=drink, y=mean), size=4, shape=21, fill="white") +
+
+ggarrange(p1, p2, heights = c(3, 2),
+          ncol = 1, nrow = 2, align = "v")
 
 ```
 

@@ -61,7 +61,7 @@ dat.raw$QNUM.0    <- factor(dat.raw$QNUM.0)
 dat.raw$QNUM.long <- factor(dat.raw$QNUM.long)
 dat.raw$TREATMENT <- factor(dat.raw$TREATMENT)
 dat.raw$Version <- factor(dat.raw$Version)
-dat.raw$ExamGrade.fix.LMH.factor <- dat.raw$ExamGrade.fix.LMH
+dat.raw$ExamGrade.fix.LMH.factor <- factor(dat.raw$ExamGrade.fix.LMH)
 
 ```
 
@@ -123,6 +123,41 @@ ggplot(corr.by.question, aes(x=QNUM, y=QCORRECT, fill=TREATMENT)) +
   
 ```
 
+ggplot(edata.treatment, aes(x=TREATMENT, y=QCORR, fill=TREATMENT)) +
+  geom_bar(stat="identity") + geom_errorbar(limits, width=0.25) +
+  labs(x = "", y = "Fraction Correct") +
+  scale_fill_discrete(labels=c("Control","Treatment")) +
+  scale_x_discrete(labels=c("Control","Treatment")) +
+  #theme_bw() +
+  theme(legend.position="none") +
+  scale_y_continuous(breaks = c(0,.2,.4,.6,.8,1), limits = c(0,1), expand = c(0.01,0)) +
+  ggtitle("Explain Your Answer: All Data")
+
+### Performance on the EYA questions overall.
+```{r echo=FALSE}
+
+corr.simple <- summarySE(
+  dat.trt, measurevar="QCORRECT", groupvars=c("TREATMENT")
+  )
+limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error)
+
+ggplot(corr.simple, aes(x=TREATMENT, y=QCORRECT, fill=TREATMENT)) +
+  labs(x = "", y = "Fraction correct (Binomial Error)") +
+  scale_fill_manual(values=cbPalette3) +
+  geom_bar(stat="identity", position=dodge) + 
+  geom_errorbar(limits, position=dodge, width=0.25) +
+  scale_x_discrete(labels=c("Control","Treatment")) +
+  scale_y_continuous(limits = c(0,1)) +
+  #scale_x_discrete(limits=c("Control","Treatment")) +
+  theme_bw() + 
+  theme(axis.text = element_text(face = "bold")) + 
+  #theme(legend.position="top") +
+  theme(axis.text = element_text(size= 12)) +
+  theme(axis.title = element_text(size= 12)) +
+  theme(legend.position="none") 
+
+  
+```
 
 ### Performance on the EYA questions by gender.
 ```{r echo=FALSE}
@@ -138,6 +173,7 @@ ggplot(corr.by.gender, aes(x=Gender, y=QCORRECT, fill=TREATMENT)) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +
   theme_bw() + 
+  scale_y_continuous(limits = c(0,1)) +
   theme(axis.text = element_text(face = "bold")) + 
   theme(legend.position="top") +
   theme(axis.text = element_text(size= 12)) +
@@ -160,7 +196,9 @@ limits <- aes(ymax = QCORRECT + binomial.error, ymin = QCORRECT - binomial.error
 
 ggplot(s.fLMH, aes(x=ExamGrade.fix.LMH.factor, y=QCORRECT, fill=TREATMENT)) +
   #scale_x_discrete(labels=c("1","2","H")) +
-  labs(x = "Final Exam Score (Tertile = Low, Medium, High)", y = "Fraction correct (Binomial Error)") +
+  labs(x = "Final Exam Score Quantile", y = "Fraction correct (Binomial Error)") +
+  scale_x_discrete(labels=c("Low","Medium", "High")) +
+  scale_y_continuous(limits = c(0,1)) +
   scale_fill_manual(values=cbPalette3, labels=c("Control ","Treatment")) +
   geom_bar(stat="identity", position=dodge) + 
   geom_errorbar(limits, position=dodge, width=0.25) +

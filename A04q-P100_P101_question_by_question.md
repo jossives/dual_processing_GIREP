@@ -1,5 +1,5 @@
 ---
-title: "A04 Explain Your Answer Report (All P100/P101 Exams)"
+title: "A04q by question"
 author: "Joss Ives"
 date: "June 10, 2018"
 output:
@@ -11,7 +11,7 @@ output:
 
 
 
-*updated by Joss Ives 2018 June 12, 23:39:38*
+*updated by Joss Ives 2018 June 14, 16:10:18*
 
 # Overview
 This report discusses the initial analysis of the W2017-T1 data from the Physics 100 course. In this course, 4 questions were used to look at the effect of asking students to explain their answer after a multiple-choice question. This used a crossover protocol, where there were 2 versions of the test and each version had 2 explain your answer questions that the other group did not. 
@@ -81,6 +81,10 @@ This report discusses the initial analysis of the W2017-T1 data from the Physics
 ## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union
+```
+
+```
+## Loading required package: magrittr
 ```
 
 
@@ -267,8 +271,16 @@ obq.df2
 ## 14      14 1.2351398 0.9041799 1.687242 0.5825627 f1172.10          8
 ```
 
+![](A04q-P100_P101_question_by_question_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
-![](A04q-P100_P101_question_by_question_files/figure-html/unnamed-chunk-10-1.png)<!-- -->![](A04q-P100_P101_question_by_question_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
+
+
+
+```
+## Warning: Ignoring unknown aesthetics: width
+```
+
+![](A04q-P100_P101_question_by_question_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 Will likely want to mix multiple plots http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 
